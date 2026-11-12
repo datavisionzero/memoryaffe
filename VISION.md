@@ -45,6 +45,19 @@ dieser Datensätze. Markdown soll sowohl lesbar dargestellt als auch bearbeitet
 werden können. Die genaue technische Speicherung von Markdown-Inhalten und
 Metadaten bleibt eine Implementierungsentscheidung.
 
+### Versionierung und Aufbewahrung
+
+Änderungen an Markdown-Inhalten werden versioniert, unabhängig davon, ob sie
+über die Webapp, die CLI oder MCP erfolgen. Die Versionshistorie wird nur
+begrenzt aufbewahrt. Nutzer können die Aufbewahrungsgrenze einstellen,
+beispielsweise auf maximal X Versionen je Datensatz. Wird diese Grenze
+überschritten, werden die ältesten Versionen automatisch entfernt; der aktuelle
+Inhalt bleibt erhalten.
+
+Der genaue Geltungsbereich der Einstellung, der Standardwert und die Zählweise
+der aktuellen Fassung gegenüber historischen Versionen werden bei der
+Umsetzung festgelegt.
+
 ### Vaults
 
 Vaults bilden die oberste Ebene der Inhaltshierarchie. Jeder Datensatz gehört
