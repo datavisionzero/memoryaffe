@@ -45,11 +45,22 @@ dieser Datensätze. Markdown soll sowohl lesbar dargestellt als auch bearbeitet
 werden können. Die genaue technische Speicherung von Markdown-Inhalten und
 Metadaten bleibt eine Implementierungsentscheidung.
 
+Jeder Datensatz besitzt eine stabile ID. Titel dürfen mehrfach vorkommen und
+sich ändern; Agenten adressieren Datensätze beim Bearbeiten über ihre ID.
+Die optionale Zusammenfassung wird vom Nutzer oder Agenten geschrieben.
+memoryaffe erzeugt sie zunächst nicht selbst und benötigt keinen eigenen
+KI-Anbieter. Der MVP unterstützt Markdown und Metadaten, jedoch keine
+Dateianhänge wie hochgeladene Bilder oder PDFs. Normale Links im Markdown
+sind möglich.
+
 ### Versionierung und Aufbewahrung
 
 Eine Version umfasst Markdown-Inhalt, Titel, Zusammenfassung und zugewiesene
 Tags. Jede tatsächliche Änderung erzeugt eine Version, unabhängig davon, ob
 sie über die Webapp, die CLI oder MCP erfolgt.
+
+Zu jeder Änderung werden Zeitpunkt und Verursacher gespeichert: der Nutzer
+oder der benannte Agentenzugang. Diese Angaben sind in der Historie sichtbar.
 
 Standardmäßig bleiben pro Datensatz 20 historische Versionen zusätzlich zur
 aktuellen Fassung erhalten. Nutzer können dieses Limit pro Vault einstellen;
@@ -84,6 +95,12 @@ Nur Nutzer dürfen Vaults anlegen und löschen; Agenten erhalten diese Befugnis
 nicht. Jeder Agentenzugang wird ausdrücklich für einen oder mehrere Vaults
 freigeschaltet. Zugriffe und Suchergebnisse bleiben auf diese freigegebenen
 Vaults begrenzt.
+
+Nutzer können Datensätze über die Webapp zwischen eigenen Vaults verschieben;
+Agenten erhalten diese Möglichkeit zunächst nicht. Die Historie bleibt dabei
+erhalten, unterliegt aber ab dem Verschieben dem Versionslimit des Ziel-Vaults.
+Ab diesem Zeitpunkt gelten auch dessen Zugriffsrechte. Tags werden im Ziel-Vault
+nach Namen zugeordnet oder dort angelegt.
 
 ### Tags
 
@@ -162,9 +179,19 @@ gelten unabhängig vom Zugangsweg.
 
 ## Webapp und Bedienung
 
-Die Benutzeroberfläche ist eine moderne, klare Webapp mit Darkmode. Sie dient
-als direkter Zugang zum eigenen Langzeitgedächtnis und zur Verwaltung der
-Agentenzugänge.
+Die Benutzeroberfläche ist eine moderne, klare Webapp mit Darkmode als Standard,
+zusätzlichem Lightmode und der Option, der Systemeinstellung zu folgen. Sie
+dient als direkter Zugang zum eigenen Langzeitgedächtnis und zur Verwaltung
+der Agentenzugänge. Die UI wird zunächst auf Deutsch und Englisch angeboten;
+die Sprache lässt sich im Profil auswählen.
+
+Ein Markdown-Quelltexteditor mit Vorschau ermöglicht die Bearbeitung.
+Änderungen werden ausdrücklich gespeichert; es gibt zunächst kein Autosave.
+Vor dem Verlassen ungespeicherter Änderungen wird gewarnt. Dadurch erzeugen
+Tipp-Pausen keine historischen Versionen.
+
+Die Webapp ist responsiv: Suche, Lesen und einfache Bearbeitung funktionieren
+auch auf Smartphones. Eine separate native App gehört nicht zum MVP.
 
 Die grundlegende Navigation folgt einer vertrauten Anordnung:
 
@@ -181,11 +208,14 @@ Adminbereich, damit sie die alltägliche Nutzung nicht überfrachten.
 ## Konten, Anmeldung und Einladungen
 
 Es gibt keine öffentliche Registrierung. Der erste Admin richtet die
-Installation ein; weitere Nutzer erhalten ausschließlich Einladungen vom
+Installation über eine geführte Einrichtung ein; weitere Nutzer erhalten ausschließlich Einladungen vom
 Admin. Einladungslinks dienen einmalig zur Kontoeinrichtung mit E-Mail-Adresse
 und Passwort. Sie gelten sieben Tage, sind widerrufbar und können zur manuellen
 Weitergabe kopiert oder optional per SMTP versendet werden. Danach erfolgt
 die reguläre Anmeldung mit E-Mail-Adresse und Passwort.
+
+Neue Nutzer starten mit einem automatisch angelegten persönlichen Vault,
+den sie umbenennen können.
 
 Die gesamte Anwendung muss ohne SMTP-Server betreibbar sein. Ohne SMTP erzeugt
 der Admin bei vergessenem Passwort einen einmaligen Reset-Link zur manuellen
@@ -241,6 +271,13 @@ Die technische Grundlage orientiert sich an planaffe:
 Die konkrete Architektur und gemeinsame Konventionen mit planaffe werden bei
 der Umsetzung festgelegt. Self-Hosting, kleine Mehrbenutzerinstallationen und
 der Betrieb ohne SMTP sind dabei grundlegende Anforderungen.
+
+## Umfang der ersten Version
+
+Zum MVP gehören Webapp, CLI und ein echter Remote-MCP-Zugang, einschließlich
+der hier festgelegten Berechtigungen, Versionierung, Suche, Papierkörbe,
+Kontoverwaltung und Datenmitnahme. Semantische Suche und zusätzliche
+Komfortfunktionen folgen später.
 
 ## Offene Produkt- und Architekturentscheidungen
 
