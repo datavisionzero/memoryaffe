@@ -42,8 +42,9 @@ Jede Erinnerung ist ein Datensatz mit:
 
 Die Webapp ermöglicht das Ansehen, Anlegen, Bearbeiten, Suchen und Löschen
 dieser Datensätze. Markdown soll sowohl lesbar dargestellt als auch bearbeitet
-werden können. Die genaue technische Speicherung von Markdown-Inhalten und
-Metadaten bleibt eine Implementierungsentscheidung.
+werden können. Markdown-Inhalte werden als Text in PostgreSQL gespeichert,
+gemeinsam mit Metadaten und Versionen. Markdown-Dateien entstehen beim Export;
+ein zusätzlich synchronisierter Ordner auf dem Server ist nicht vorgesehen.
 
 Jeder Datensatz besitzt eine stabile ID. Titel dürfen mehrfach vorkommen und
 sich ändern; Agenten adressieren Datensätze beim Bearbeiten über ihre ID.
@@ -177,6 +178,16 @@ können. Eine lediglich ähnlich benannte HTTP-API genügt diesem Anspruch nicht
 Agentenzugänge müssen authentifiziert sein; Vault-Freigaben und Tag-Regeln
 gelten unabhängig vom Zugangsweg.
 
+Die CLI verbindet sich mit einer memoryaffe-Installation. Sie besitzt weder
+eine separate lokale Datenbank noch einen Offline-Synchronisationsmodus. Im
+Heimnetz verbindet sie sich über die lokale Serveradresse. Sie unterstützt
+Windows, Linux und macOS sowie lesbare Ausgabe und einen JSON-Modus für
+Agenten und Skripte.
+
+Die Webapp zeigt je Agentenzugang passende Verbindungsinformationen und
+kopierbare Konfigurationsbeispiele. Die konkreten Authentifizierungsverfahren
+werden nach Prüfung der vorgesehenen MCP-Clients festgelegt.
+
 ## Webapp und Bedienung
 
 Die Benutzeroberfläche ist eine moderne, klare Webapp mit Darkmode als Standard,
@@ -208,8 +219,9 @@ Adminbereich, damit sie die alltägliche Nutzung nicht überfrachten.
 ## Konten, Anmeldung und Einladungen
 
 Es gibt keine öffentliche Registrierung. Der erste Admin richtet die
-Installation über eine geführte Einrichtung ein; weitere Nutzer erhalten ausschließlich Einladungen vom
-Admin. Einladungslinks dienen einmalig zur Kontoeinrichtung mit E-Mail-Adresse
+Installation über eine geführte Einrichtung ein; weitere Nutzer erhalten
+ausschließlich Einladungen vom Admin. Einladungslinks dienen einmalig zur
+Kontoeinrichtung mit E-Mail-Adresse
 und Passwort. Sie gelten sieben Tage, sind widerrufbar und können zur manuellen
 Weitergabe kopiert oder optional per SMTP versendet werden. Danach erfolgt
 die reguläre Anmeldung mit E-Mail-Adresse und Passwort.
@@ -257,8 +269,24 @@ geschützter Transport gehören zu diesem Betriebsmodell.
 memoryaffe soll auch vollständig im lokalen Netz betrieben werden können,
 ohne öffentliche Erreichbarkeit. Für Agenten, die ausschließlich die CLI
 verwenden, ist dies ein vorgesehener Betriebsmodus. Die Webapp ist dabei lokal
-erreichbar. Ob und wie zusätzlich ein lokaler MCP-Betrieb unterstützt wird,
-wird gesondert evaluiert.
+erreichbar. Ziel ist, denselben MCP-Server auch ausschließlich im Heimnetz
+erreichbar betreiben zu können. Ob zusätzlich eine lokale Prozessanbindung
+benötigt wird, wird anhand der vorgesehenen Clients geprüft.
+
+### Installation und laufender Betrieb
+
+Docker Compose ist der primäre Installationsweg mit Anwendung und PostgreSQL.
+Eine dokumentierte Beispielkonfiguration gehört zum MVP. Im laufenden Betrieb
+sind keine Cloud-Dienste verpflichtend; es gibt keine Telemetrie und keine
+eigene KI-Anbindung. Rein lokale Nutzung erfordert keinen Internetzugriff.
+
+Updates werden bewusst vom Betreiber durchgeführt. Zum Veröffentlichungsprozess
+gehören Versionshinweise, Datenbankmigrationen und eine Anleitung zur vorherigen
+Sicherung.
+
+Der separate Adminbereich zeigt Anwendungsversion, Systemzustand und
+Speicherverbrauch. Betriebslogs enthalten standardmäßig keine Markdown-Inhalte,
+Passwörter oder Zugangsschlüssel.
 
 ## Technische Ausrichtung
 
@@ -281,8 +309,10 @@ Komfortfunktionen folgen später.
 
 ## Offene Produkt- und Architekturentscheidungen
 
-- **Lokales MCP:** Welche Transport- und Betriebsvarianten sind für rein lokale
-  Installationen sinnvoll und mit den vorgesehenen Agenten kompatibel?
+- **MCP-Kompatibilität:** Zwei bis drei konkrete Agenten beziehungsweise
+  Anwendungen für die ersten Kompatibilitätstests sind noch auszuwählen.
+  Anhand dieser Clients wird auch der Bedarf für eine zusätzliche lokale
+  Prozessanbindung geprüft.
 - **Agentenauthentifizierung:** Wie werden Zugangsdaten technisch ausgegeben
   und der Widerruf umgesetzt? Die benannten Zugänge und Berechtigungsstufen
   pro Vault sind festgelegt.
