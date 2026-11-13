@@ -2,8 +2,17 @@
 
 Stand: 13. November 2026. Grundlage ist [VISION.md](VISION.md).
 Dieses Dokument legt die technische Arbeitsgrundlage fest; es beschreibt noch
-keine implementierte oder getestete Anwendung. Bibliotheken und genaue Versionen
-werden bei ihrer Einführung auf Kompatibilität und Lizenz geprüft.
+keine implementierte oder getestete Anwendung. Paketversionen, Kompatibilität
+und Lizenzen werden vor dem Grundgerüstbau geprüft und festgehalten.
+
+## Entscheidungsstatus
+
+Block 1 (Architektur und Toolchains) wurde vom Nutzer bestätigt: modularer
+Monolith mit vier Backend-Schichten, EF Core/Npgsql, Go-CLI, React/TypeScript/
+Vite und die unten benannten UI-Bausteine sowie generierte OpenAPI-Clients.
+Die übrigen technischen Konkretisierungen dieses Dokuments bleiben Entwurf,
+soweit sie nicht bereits ausdrücklich in der Produktvision beschlossen sind.
+Vor dem Grundgerüst werden alle weiteren Entscheidungsblöcke gemeinsam geklärt.
 
 ## Bezug zu planaffe
 
@@ -15,8 +24,8 @@ ADRs 0002–0005 und 0017, Projektdateien, Web-Paketmanifest und Compose.
 Übernommen werden vier Backend-Schichten, EF Core/PostgreSQL, React mit eigener
 Toolchain, eine Go-CLI, generierte HTTP-Clients und ein gemeinsames Serverimage
 für Backend und gebaute Webapp. Go folgt hier bewusst planaffe und erlaubt eine
-CLI-Auslieferung ohne installierte .NET-Laufzeit. Dies ist eine technische
-Entwurfsentscheidung, keine zusätzliche Produktanforderung.
+CLI-Auslieferung ohne installierte .NET-Laufzeit. Diese Technologieauswahl
+ist als Teil von Block 1 bestätigt.
 
 Nicht übernommen werden Issue-Workflow, Projektrollen, Claims, die dortige
 Token-Anmeldung für die Webapp oder eine allgemeine Gleichstellung von CLI und
@@ -55,6 +64,11 @@ Domain hat keine äußeren Abhängigkeiten, Application hängt von Domain ab,
 Infrastructure implementiert Application-Ports. Api verbindet diese Teile.
 HTTP und MCP rufen dieselben Anwendungsfälle auf; die CLI spricht ausschließlich
 HTTP. Kein Adapter führt eigene Datenbankabfragen oder Berechtigungslogik ein.
+
+EF Core mit Npgsql übernimmt Datenzugriff und versionierte Schema-Migrationen.
+Gezieltes SQL in Infrastructure ist für Suche und atomare Operationen zulässig.
+Es gibt keine generische Repository-Abstraktion pro Tabelle; Ports beschreiben
+benötigte Operationen mit klaren Transaktionsgrenzen.
 
 ## Datenmodell
 
@@ -166,9 +180,14 @@ Inhalte wird anhand eines Testkorpus festgelegt. Rechte, Tags und Löschstatus
 filtern vor Pagination und Trefferzählung. Sortierung besitzt einen stabilen
 ID-Tiebreaker; kein Treffertext wird als ungeprüftes HTML ausgegeben.
 
-Die React-Webapp orientiert sich an planaffes Designbasis aus Tailwind,
-zugänglichen UI-Primitiven, CodeMirror und Markdown-Rendering. Konkrete Pakete
-werden separat geprüft. Keine ungefilterte HTML-Ausführung im Markdown.
+Die bestätigte Frontend-Basis ist eine React-Single-Page-App mit TypeScript und
+Vite. ASP.NET Core liefert die gebauten statischen Dateien aus; Node ist nur
+zum Bauen erforderlich. Server-seitiges React-Rendering ist nicht vorgesehen.
+Tailwind CSS mit zentralen Designvariablen, Base UI mit eigenen Komponenten,
+React Router, CodeMirror sowie react-markdown mit remark-gfm bilden die UI-Basis.
+Vitest und Testing Library sind für Frontend-Tests vorgesehen. Versionen und
+gemeinsame Kompatibilität werden vor dem Grundgerüstbau geprüft.
+Keine ungefilterte HTML-Ausführung im Markdown.
 Navigation, Vault-Wechsel, Suche, Editor, Historie, Papierkorb und Einstellungen
 bilden den Nutzerbereich; Administration bekommt eigene Routen und Navigation.
 Deutsch/Englisch, Themes, Tastaturbedienung und mobile Darstellung werden von
@@ -206,5 +225,5 @@ Logs vermeiden Inhalte und Geheimnisse; Telemetrie wird nicht eingebaut.
 - Tag-Normalisierung, Volltext-Sprachkonfiguration und ZIP-Manifest.
 - Runtime-/Paketversionen, CLI-Zielarchitekturen und Release-Matrix.
 
-Diese Punkte sind eingegrenzte Implementierungsentscheidungen und werden in
-der jeweils zuständigen Etappe des [Umsetzungsplans](IMPLEMENTATION.md) geprüft.
+Diese Punkte werden vor dem Grundgerüstbau entschieden und dokumentiert.
+Der [Umsetzungsplan](IMPLEMENTATION.md) trennt diese Vorarbeit von der Umsetzung.

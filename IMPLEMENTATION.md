@@ -4,11 +4,26 @@ Stand: 13. November 2026. Basis: [Vision](VISION.md) und
 [Architekturentwurf](ARCHITECTURE.md). Alle Etappen sind geplant, keine ist
 bereits umgesetzt. Der MVP ist erst nach Etappe 7 vollständig.
 
+## 0. Entscheidungen vor dem Grundgerüst abschließen
+
+Architektur/Toolchains sind bestätigt. Identität und Sicherheit, Datenrandfälle,
+Schnittstellen, UI-Abläufe sowie Betrieb und Lieferung werden noch gemeinsam
+entschieden. Paketversionen und Lizenzen, MCP-/OAuth-Bibliotheken und das
+Registrierungsverfahren werden vorab geprüft. Falls ein technischer Versuch
+notwendig ist, wird er ausdrücklich als isolierte Kompatibilitätsprüfung
+geplant; er ist kein Beginn des Produktbaus.
+
+**Abnahme:** Keine offenen wesentlichen Produkt- oder Architekturentscheidungen.
+Verträge, Abhängigkeiten und Abnahmekriterien sind verbindlich dokumentiert.
+Erst danach beginnt Etappe 1. Für die spätere autonome Arbeit mit Subagenten
+werden Aufgaben, Zuständigkeiten, Abhängigkeiten und Integrationsprüfungen
+festgelegt. Wesentliche Entscheidungen werden nicht an die Umsetzung delegiert.
+
 ## 1. Grundgerüst und Vertragskonventionen
 
 Vier .NET-Projekte, React-Webapp, Go-CLI, PostgreSQL-Entwicklungskonfiguration
-und CI aufbauen. Toolchains pinnen, Abhängigkeiten samt Lizenzen prüfen.
-Begriffe, Fehlercodes, Revisionen, Limits und API-Generierung dokumentieren.
+und CI nach den Entscheidungen aus Etappe 0 aufbauen. Festgelegte Toolchains
+und Abhängigkeiten pinnen; vereinbarte Vertragskonventionen umsetzen.
 
 **Abnahme:** Backend und beide Clients bauen reproduzierbar; CI prüft Format,
 Typen und Tests. Ein Container startet mit PostgreSQL; Readiness meldet einen
@@ -16,10 +31,10 @@ Datenbankausfall korrekt. Noch keine Produktvollständigkeit behaupten.
 
 ## 2. Früher ChatGPT-Durchstich
 
-Vor umfangreicher Featurearbeit MCP-SDK und OAuth-Bibliothek evaluieren.
+Das in Etappe 0 ausgewählte MCP-SDK und die OAuth-Bibliothek integrieren.
 Discovery, Anmeldung/Consent, Tokenprüfung und ein authentifiziertes Lesetool
 mit minimalem Testdatensatz implementieren. Registrierungsmethode anhand der
-realen ChatGPT-Verbindung wählen und als Architekturentscheidung festhalten.
+realen ChatGPT-Verbindung gegen die festgelegte Architektur überprüfen.
 Testcode darf nur mit klarer Trennung von Produktionsfunktionen landen.
 
 **Abnahme:** MCP Inspector prüft Initialisierung, Schemas und Fehler.
