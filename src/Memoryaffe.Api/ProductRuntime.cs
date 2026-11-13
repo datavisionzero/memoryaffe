@@ -42,7 +42,7 @@ public class ProductRuntime(Database db, AccountService accounts, MemoryService 
         if (result is BrowserResult browser)
         {
             var cookieOptions = new CookieOptions { HttpOnly = true, Secure = !options.Development, SameSite = SameSiteMode.Strict, Path = "/", IsEssential = true };
-            if (browser.SessionToken != null) { cookieOptions.SameSite = SameSiteMode.Lax; cookieOptions.MaxAge = TimeSpan.FromDays(op.Body.Bool("rememberMe") ? 30 : 7); context.Response.Cookies.Append(Cookie, browser.SessionToken, cookieOptions); context.Response.Cookies.Delete(FlowCookie); }
+            if (browser.SessionToken != null) { cookieOptions.SameSite = SameSiteMode.Lax; cookieOptions.MaxAge = browser.SessionLifetime ?? throw new InvalidOperationException("Sitzungsdauer fehlt."); context.Response.Cookies.Append(Cookie, browser.SessionToken, cookieOptions); context.Response.Cookies.Delete(FlowCookie); }
             if (browser.FlowToken != null) { cookieOptions.MaxAge = TimeSpan.FromMinutes(5); context.Response.Cookies.Append(FlowCookie, browser.FlowToken, cookieOptions); }
             if (browser.ClearSession) context.Response.Cookies.Delete(Cookie);
             result = browser.Data;

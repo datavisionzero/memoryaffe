@@ -58,7 +58,12 @@ export async function runLifecycle({ owner, Browser, check, same, expect, secret
   const second = new Browser({ password }); await second.refreshCsrf(); await second.ok('POST', '/api/v1/auth/login', { email, password }); await second.refreshCsrf();
   await user.ok('POST', '/api/v1/me/sessions/revoke-others', {}); expect(await second.request('GET', '/api/v1/me'), 401, 'authentication_required'); await user.ok('GET', '/api/v1/me');
   const reset = await owner.ok('POST', `/api/v1/admin/accounts/${profile.id}/password-reset`, { expectedRevision: profile.revision, sendEmail: false }); const resetToken = new URLSearchParams(new URL(reset.url).hash.slice(1)).get('token'); secrets.add(resetToken);
-  const newPassword = randomBytes(24).toString('base64url'); secrets.add(newPassword); const resetBrowser = new Browser({ password: newPassword }); await resetBrowser.refreshCsrf(); await resetBrowser.ok('POST', '/api/v1/auth/password-reset/redeem', { token: resetToken, newPassword });
+  const newPassword = '😀'.repeat(128); secrets.add(newPassword); const resetBrowser = new Browser({ password: newPassword }); await resetBrowser.refreshCsrf();
+  for (const invalid of ['😀'.repeat(14), '😀'.repeat(129)]) {
+    const rejected = await resetBrowser.request('POST', '/api/v1/auth/password-reset/redeem', { token: resetToken, newPassword: invalid });
+    expect(rejected, 400, 'validation_failed'); check(rejected.data.message === 'Neues Passwort benötigt 15 bis 128 Zeichen.', 'Reset must explain the new-password limits');
+  }
+  await resetBrowser.ok('POST', '/api/v1/auth/password-reset/redeem', { token: resetToken, newPassword });
   expect(await user.request('GET', '/api/v1/me'), 401, 'authentication_required'); expect(await resetBrowser.request('POST', '/api/v1/auth/password-reset/redeem', { token: resetToken, newPassword }), 410, 'flow_expired');
   await resetBrowser.ok('POST', '/api/v1/auth/login', { email, password: newPassword }); await resetBrowser.refreshCsrf();
   const setup = await resetBrowser.proved('POST', '/api/v1/me/totp/setup', {}, 'web_setup_totp'); secrets.add(setup.secret); const code = totp(setup.secret); secrets.add(code); const codes = await resetBrowser.ok('POST', '/api/v1/me/totp/confirm', { setupId: setup.setupId, code }); for (const c of codes.codes) secrets.add(c);

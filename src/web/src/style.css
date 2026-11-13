@@ -1166,6 +1166,21 @@ footer span {
   margin: 20px 0;
   font-size: 12px;
 }
+.field-error {
+  display: block;
+  color: var(--danger, #d86d65);
+  margin-top: 6px;
+}
+.password-field {
+  margin-bottom: 21px;
+}
+.password-field label {
+  margin-bottom: 9px;
+}
+.password-field > small {
+  display: block;
+  margin-top: 6px;
+}
 .text-diff pre {
   background: var(--bg);
   border: 1px solid var(--line);

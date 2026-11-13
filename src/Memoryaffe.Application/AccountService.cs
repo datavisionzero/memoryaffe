@@ -124,7 +124,8 @@ public class AccountService(IDataStore db, ISecurity security, ProductOptions op
     }
     public BrowserResult SignIn(Account a, bool remembered, string device)
     {
-        var token = J.Secret(); var s = new WebSession { OwnerId = a.Id, Hash = J.Hash(token), Remembered = remembered, Device = string.Concat(device.EnumerateRunes().Take(150).Select(x => x.ToString())), ExpiresAt = Clock.Now.AddDays(remembered ? 30 : 7) }; Db.Add(s); return new(Profile(a), SessionToken: token);
+        var lifetime = TimeSpan.FromDays(remembered ? 30 : 7);
+        var token = J.Secret(); var s = new WebSession { OwnerId = a.Id, Hash = J.Hash(token), Remembered = remembered, Device = string.Concat(device.EnumerateRunes().Take(150).Select(x => x.ToString())), ExpiresAt = Clock.Now.Add(lifetime) }; Db.Add(s); return new(Profile(a), SessionToken: token, SessionLifetime: lifetime);
     }
     public void Revoke(Guid id, bool credentials, Guid? except = null)
     {

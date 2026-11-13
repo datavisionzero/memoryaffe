@@ -33,8 +33,31 @@ public sealed class Contracts
     }
     public void Validate(JsonNode? input, JsonNode schema, JsonObject? root = null)
     {
-        try { if (!Valid(input, schema, root ?? Web)) throw J.Fail(400, "validation_failed", "Die Eingabe entspricht nicht dem Schnittstellenvertrag."); }
+        try { if (!Valid(input, schema, root ?? Web)) throw J.Fail(400, "validation_failed", PasswordValidationMessage(input, schema, root ?? Web) ?? "Die Eingabe entspricht nicht dem Schnittstellenvertrag."); }
         catch (Exception ex) when (ex is FormatException or InvalidOperationException or ArgumentException) { throw J.Fail(400, "validation_failed", "Ungültige Eingabe."); }
+    }
+    // Explain public password limits without reflecting submitted values or weakening the schema.
+    private static string? PasswordValidationMessage(JsonNode? input, JsonNode schema, JsonObject root)
+    {
+        JsonNode Resolve(JsonNode node)
+        {
+            if (node["$ref"] is not { } reference) return node;
+            JsonNode target = root;
+            foreach (var key in reference.GetValue<string>().Split('/').Skip(1)) target = target[key.Replace("~1", "/").Replace("~0", "~")]!;
+            return Resolve(target);
+        }
+        if (input is not JsonObject body || Resolve(schema)["properties"] is not JsonObject properties) return null;
+        foreach (var name in new[] { "password", "newPassword", "currentPassword" })
+        {
+            if (properties[name] is not { } property) continue;
+            var rule = Resolve(property);
+            if (rule["minLength"] is not { } min || rule["maxLength"] is not { } max) continue;
+            var label = name == "newPassword" ? "Neues Passwort" : name == "currentPassword" ? "Aktuelles Passwort" : "Passwort";
+            if (body[name] is not JsonValue value || value.GetValueKind() != JsonValueKind.String) return $"{label} fehlt oder ist ungültig.";
+            var length = value.GetValue<string>().EnumerateRunes().Count();
+            if (length < min.GetValue<int>() || length > max.GetValue<int>()) return $"{label} benötigt {min.GetValue<int>()} bis {max.GetValue<int>()} Zeichen.";
+        }
+        return null;
     }
     private static bool Valid(JsonNode? value, JsonNode schema, JsonObject root)
     {

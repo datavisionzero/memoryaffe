@@ -22,6 +22,32 @@ Planungs-/Vertragswerk. Start, Konfiguration und Betreiberbefehle stehen in der
 
 ## Reproduzierbare Prüfpunkte
 
+### Korrektur der Kontoformulare am 13. November 2026
+
+Setup, Einladung, Reset und Passwortänderung zeigen die unveränderte Regel
+15–128 Unicodezeichen und feldbezogene Fehler. Die Browserprüfung zählt
+Codepoints statt UTF-16-Einheiten; Login bleibt bei 1–128 Zeichen. Der Server
+erklärt verletzte Passwortgrenzen ohne eingegebene Werte zurückzugeben.
+Einmallinks und Zweitfaktorformulare behalten nach Navigation keinen fremden
+Formularzustand. Abgelaufene Faktorabläufe erlauben einen neuen Login;
+„Angemeldet bleiben“ setzt auch nach dem zweiten Faktor Cookie und Serversitzung
+konsistent auf 30 statt 7 Tage.
+
+Nachweise für diese Korrektur: eigener frischer PostgreSQL18-/API-Lauf auf
+Windows mit 11 erfolgreichen Prüfgruppen einschließlich Setup, Einladung,
+128-Emoji-Reset/Login, CLI, Lifecycle und TOTP; 11 Playwright-Tests bestanden
+(32,9 s), darunter vier neue Authformularfälle und Faktorabbruch/Neustart.
+Der neue Setup-UI-Negativtest simuliert ausschließlich den Setupstatus, um das
+Formular auch auf einer eingerichteten Testinstanz zu prüfen; erfolgreiche
+Einrichtung und Login wurden zusätzlich gegen echte API/PostgreSQL geprüft.
+Ein unabhängiger Nachreview auf weiterer leerer Testdatenbank prüfte alle vier
+Fehler sowie ASCII-/Emoji-Grenzen 14/15/128/129 und unveränderte Leerzeichen.
+.NET-Releasebuild ohne Warnungen, 26 Unit-Tests, 94 Vertragsfälle,
+Clientdrift und der echte OAuth-/MCP-SDK-Korpus bestanden ebenfalls.
+Bestehende Entwicklungsdaten wurden für die Tests nicht geändert.
+
+### Bestehende Prototypnachweise
+
 - `dotnet restore memoryaffe.sln --locked-mode` und
   `dotnet build memoryaffe.sln -c Release --no-restore`: bestanden.
 - `dotnet test tests/Memoryaffe.Tests -c Release --no-restore`:26Tests bestanden.

@@ -208,6 +208,7 @@ test("Einladung ohne SMTP, mobile Redaktion, Dialogfokus, externe Bilder und fre
     exact: true,
   });
   await trigger.click();
+  await expect(user.getByRole("dialog").getByRole("button", { name: "Schließen" })).toBeFocused();
   await user.keyboard.press("Shift+Tab");
   await expect(
     user.getByRole("dialog").getByRole("button", { name: "Bestätigen" }),
@@ -288,6 +289,31 @@ test("Einladung ohne SMTP, mobile Redaktion, Dialogfokus, externe Bilder und fre
   await user.getByLabel("E-Mail-Adresse", { exact: true }).fill(invitedEmail);
   await user.getByLabel("Passwort", { exact: true }).fill(password);
   await user.getByRole("button", { name: "Anmelden", exact: true }).click();
+  await user.getByRole("button", { name: "Passwort vergessen?", exact: true }).click();
+  await expect(user.getByLabel("E-Mail-Adresse", { exact: true })).toBeVisible();
+  await expect(user.getByLabel("Code", { exact: true })).toHaveCount(0);
+  await user.getByRole("button", { name: "Zur Anmeldung", exact: true }).click();
+  await user.getByLabel("E-Mail-Adresse", { exact: true }).fill(invitedEmail);
+  await user.getByLabel("Passwort", { exact: true }).fill(password);
+  await user.getByRole("button", { name: "Anmelden", exact: true }).click();
+  await user.getByRole("button", { name: "Anmeldung neu beginnen", exact: true }).click();
+  await expect(user.getByLabel("E-Mail-Adresse", { exact: true })).toBeVisible();
+  await user.getByLabel("E-Mail-Adresse", { exact: true }).fill(invitedEmail);
+  await user.getByLabel("Passwort", { exact: true }).fill(password);
+  await user.getByRole("button", { name: "Anmelden", exact: true }).click();
+  await user.locator('select[name="factorKind"]').selectOption("recoveryCode");
+  await user.getByLabel("Code", { exact: true }).fill("invalid-regression-recovery-code");
+  for (let attempt = 0; attempt < 6; attempt++) {
+    const response = user.waitForResponse(r => r.url().endsWith("/api/v1/auth/login/second-factor"));
+    await user.getByRole("button", { name: "Bestätigen", exact: true }).click();
+    expect((await response).status()).toBe(attempt < 5 ? 401 : 410);
+  }
+  await expect(user.getByLabel("E-Mail-Adresse", { exact: true })).toBeVisible();
+  await expect(user.getByRole("alert")).toHaveText("Bitte Anmeldung erneut beginnen.");
+  await user.getByLabel("E-Mail-Adresse", { exact: true }).fill(invitedEmail);
+  await user.getByLabel("Passwort", { exact: true }).fill(password);
+  await user.getByLabel("Angemeldet bleiben", { exact: true }).check();
+  await user.getByRole("button", { name: "Anmelden", exact: true }).click();
   await user.locator('select[name="factorKind"]').selectOption("recoveryCode");
   await user.getByLabel("Code", { exact: true }).fill(recovery);
   await user.getByRole("button", { name: "Bestätigen", exact: true }).click();
@@ -299,6 +325,7 @@ test("Einladung ohne SMTP, mobile Redaktion, Dialogfokus, externe Bilder und fre
 test("Agentenverwaltung: bestätigter Zugang, einmaliger Token, Rechteerweiterung und sofortige Reduktion", async ({
   page,
   playwright,
+  baseURL,
 }) => {
   await page.goto("/login");
   await page.getByLabel("E-Mail-Adresse", { exact: true }).fill(email);
@@ -327,7 +354,7 @@ test("Agentenverwaltung: bestätigter Zugang, einmaliger Token, Rechteerweiterun
   const token = await dialog.locator("textarea").inputValue();
   await dialog.getByRole("button", { name: "Schließen", exact: true }).click();
   const agent = await playwright.request.newContext({
-    baseURL: "http://127.0.0.1:5080",
+    baseURL,
     extraHTTPHeaders: { Authorization: "Bearer " + token },
   });
   expect((await agent.get("/api/v1/vaults")).status()).toBe(200);
@@ -507,7 +534,7 @@ test("OAuth-Consent: ausdrücklicher Vault, kumulative Scope-Reduktion und echte
   const verifier = "Browser_Pkce_Verifier_".repeat(4);
   const challenge = createHash("sha256").update(verifier).digest("base64url");
   const client = "https://client.example.test/metadata.json";
-  const resource = "http://127.0.0.1:5080/mcp";
+  const resource = baseURL + "/mcp";
   const params = new URLSearchParams({
     response_type: "code",
     client_id: client,
@@ -519,7 +546,7 @@ test("OAuth-Consent: ausdrücklicher Vault, kumulative Scope-Reduktion und echte
     code_challenge_method: "S256",
   });
   const authorize = await page.request.get(
-    "http://127.0.0.1:5080/oauth/authorize?" + params,
+    baseURL + "/oauth/authorize?" + params,
     { maxRedirects: 0 },
   );
   expect(authorize.status()).toBe(302);
@@ -550,10 +577,10 @@ test("OAuth-Consent: ausdrücklicher Vault, kumulative Scope-Reduktion und echte
     .click();
   const callback = new URL((await callbackRequest).url());
   expect(callback.searchParams.get("state")).toBe("browser-consent-state");
-  expect(callback.searchParams.get("iss")).toBe("http://127.0.0.1:5080");
+  expect(callback.searchParams.get("iss")).toBe(baseURL);
   expect(Boolean(callback.searchParams.get("code"))).toBeTruthy();
   const oauth = await playwright.request.newContext();
-  const tokens = await oauth.post("http://127.0.0.1:5080/oauth/token", {
+  const tokens = await oauth.post(baseURL + "/oauth/token", {
     form: {
       grant_type: "authorization_code",
       client_id: client,
@@ -567,7 +594,7 @@ test("OAuth-Consent: ausdrücklicher Vault, kumulative Scope-Reduktion und echte
   const issued = await tokens.json();
   expect(issued.scope).toBe("memory:read");
   const bearer = await playwright.request.newContext({
-    baseURL: "http://127.0.0.1:5080",
+    baseURL,
     extraHTTPHeaders: { Authorization: "Bearer " + issued.access_token },
   });
   const vaults = await bearer.get("/api/v1/vaults");

@@ -69,6 +69,12 @@ export async function runIntegration() {
     if (reuse) { check(process.env.MEMORYAFFE_TEST_ADMIN_PASSWORD, 'Reuse requires an explicit admin password'); await owner.refreshCsrf(); await owner.ok('POST', '/api/v1/auth/login', { email: adminEmail, password: adminPassword }); await owner.refreshCsrf(); expect(await owner.request('POST', '/api/v1/setup', payload), 403, 'permission_denied'); return; }
     expect(await owner.request('POST', '/api/v1/setup', payload, { csrf: false }), 403, 'csrf_failed');
     await owner.refreshCsrf();
+    for (const invalid of ['short', '😀'.repeat(8), '😀'.repeat(129)]) {
+      const rejected = await owner.request('POST', '/api/v1/setup', { ...payload, password: invalid });
+      expect(rejected, 400, 'validation_failed');
+      check(rejected.data.message === 'Passwort benötigt 15 bis 128 Zeichen.', 'Setup must explain the password limits');
+      check(!JSON.stringify(rejected.data).includes(invalid), 'Validation echoed a submitted password');
+    }
     expect(await owner.request('POST', '/api/v1/setup', { ...payload, setupSecret: randomUUID() }), 403, 'permission_denied');
     const account = await owner.ok('POST', '/api/v1/setup', payload); check(account.role === 'admin', 'Setup did not create admin');
     await owner.refreshCsrf(); const profile = await owner.ok('GET', '/api/v1/me'); check(profile.email === adminEmail, 'Setup session missing');
@@ -80,7 +86,10 @@ export async function runIntegration() {
     const invitation = await owner.ok('POST', '/api/v1/admin/invitations', { email: `integration-user-${nonce}@example.test`, role: 'user', sendEmail: false });
     const url = new URL(invitation.link.url); check(!url.searchParams.has('token') && url.hash.startsWith('#token='), 'Invitation token must be in URL fragment');
     const inviteToken = new URLSearchParams(url.hash.slice(1)).get('token'); check(inviteToken, 'Invitation link has no token'); secrets.add(inviteToken);
-    await other.refreshCsrf(); await other.ok('POST', '/api/v1/auth/invitations/redeem', { token: inviteToken, password: userPassword }); await other.refreshCsrf();
+    await other.refreshCsrf();
+    const invalidInvite = await other.request('POST', '/api/v1/auth/invitations/redeem', { token: inviteToken, password: '😀'.repeat(8) });
+    expect(invalidInvite, 400, 'validation_failed'); check(invalidInvite.data.message === 'Passwort benötigt 15 bis 128 Zeichen.', 'Invitation must explain the password limits');
+    await other.ok('POST', '/api/v1/auth/invitations/redeem', { token: inviteToken, password: userPassword }); await other.refreshCsrf();
     const user = await other.ok('GET', '/api/v1/me'); check(user.role === 'user', 'Invitation role changed');
     const replay = await other.request('POST', '/api/v1/auth/invitations/redeem', { token: inviteToken, password: userPassword }); expect(replay, 410, 'flow_expired');
     expect(await other.request('GET', '/api/v1/admin/accounts'), 403, 'permission_denied');

@@ -26,6 +26,7 @@ import {
   Download,
 } from "lucide-react";
 import { api, all, refreshCsrf, ApiError, operation } from "./api";
+import { PasswordField } from "./password-field";
 import type { components } from "./generated/web-api";
 import "./style.css";
 import {
@@ -49,8 +50,11 @@ type Draft = Pick<Memory, "title" | "summary" | "markdown"> & {
   tagIds: string[];
 };
 let initialToken = "";
+const initialTokenRoute = ["/invite", "/reset-password", "/recover-account"].includes(location.pathname)
+  ? location.pathname : "";
 try {
-  initialToken = decodeURIComponent(location.hash.replace(/^#(?:token=)?/, ""));
+  if (initialTokenRoute)
+    initialToken = decodeURIComponent(location.hash.replace(/^#(?:token=)?/, ""));
 } catch {
   initialToken = "";
 }
@@ -131,6 +135,8 @@ function App() {
   const t = (de: string, eng: string) => (en ? eng : de);
   const current = vaults.find((v) => v.id === vaultId);
   const editing = route.endsWith("/edit") || route.endsWith("/new");
+  const flowToken = route === initialTokenRoute ? initialToken : "";
+  const passwordFlow = route === "/reset-password" || route === "/recover-account";
   const pending = useRef(0);
   const searchGeneration = useRef(0);
   function go(path: string, force = false) {
@@ -145,6 +151,10 @@ function App() {
       )
     )
       return;
+    if (path !== route) {
+      initialToken = "";
+      setFactor(false);
+    }
     setDirty(false);
     setDraft(null);
     setMemory(null);
@@ -165,6 +175,8 @@ function App() {
     try {
       await fn();
     } catch (e) {
+      if (e instanceof ApiError && e.code === "flow_expired" && factor)
+        setFactor(false);
       if (e instanceof ApiError && e.code === "csrf_failed" && profile) {
         try {
           const currentProfile = await api("/me");
@@ -282,6 +294,10 @@ function App() {
         return;
       }
       setDirty(false);
+      if (location.pathname !== route) {
+        initialToken = "";
+        setFactor(false);
+      }
       setRoute(location.pathname);
     };
     window.addEventListener("popstate", p);
@@ -289,7 +305,7 @@ function App() {
       window.removeEventListener("beforeunload", f);
       window.removeEventListener("popstate", p);
     };
-  }, [dirty]);
+  }, [dirty, route]);
   useEffect(() => {
     if (!profile) return;
     void run(async () => {
@@ -382,6 +398,8 @@ function App() {
       void run(() => fn(data));
     };
   function field(label: string, name: string, type = "text", value?: string) {
+    if (name === "newPassword")
+      return <PasswordField label={label} name={name} isNew en={en} />;
     return (
       <label>
         {label}
@@ -390,7 +408,6 @@ function App() {
           type={type}
           required
           defaultValue={value}
-          minLength={name === "newPassword" ? 15 : undefined}
         />
       </label>
     );
@@ -455,6 +472,7 @@ function App() {
               </div>
             )}
             <form
+              key={route + (factor ? ":factor" : ":password")}
               onSubmit={submit(async (d) => {
                 const val = (k: string) => String(d.get(k) || "");
                 if (factor) {
@@ -478,7 +496,7 @@ function App() {
                 if (route === "/invite") {
                   await authenticated(
                     await api("/auth/invitations/redeem", "POST", {
-                      token: initialToken || val("token"),
+                      token: flowToken || val("token"),
                       password: val("password"),
                     }),
                   );
@@ -488,13 +506,13 @@ function App() {
                   route === "/reset-password" ||
                   route === "/recover-account"
                 ) {
-                  if (initialToken) {
+                  if (flowToken) {
                     await api(
                       route === "/recover-account"
                         ? "/auth/account-recovery/redeem"
                         : "/auth/password-reset/redeem",
                       "POST",
-                      { token: initialToken, newPassword: val("newPassword") },
+                      { token: flowToken, newPassword: val("newPassword") },
                     );
                     initialToken = "";
                     go("/login");
@@ -540,23 +558,19 @@ function App() {
               ) : (
                 <>
                   {route !== "/invite" &&
-                    !initialToken &&
+                    !flowToken &&
                     field("E-Mail-Adresse", "email", "email")}
                   {route === "/setup" &&
                     field("Betreibersecret", "setupSecret", "password")}
-                  {((!route.includes("reset") && !route.includes("recover")) ||
-                    !!initialToken) &&
-                    field(
-                      initialToken
-                        ? "Neues Passwort (mindestens 15 Zeichen)"
-                        : "Passwort",
-                      route.includes("reset") || route.includes("recover")
-                        ? "newPassword"
-                        : "password",
-                      "password",
-                    )}
+                  {(!passwordFlow || !!flowToken) && (
+                    <PasswordField
+                      label={flowToken ? "Neues Passwort (mindestens 15 Zeichen)" : "Passwort"}
+                      name={passwordFlow ? "newPassword" : "password"}
+                      isNew={route === "/setup" || route === "/invite" || passwordFlow}
+                    />
+                  )}
                   {route === "/invite" &&
-                    !initialToken &&
+                    !flowToken &&
                     field("Einladungstoken", "token")}
                   {route === "/login" && (
                     <label className="checkbox">
@@ -581,6 +595,13 @@ function App() {
                 <ChevronRight size={16} />
               </button>
             </form>
+            {factor && (
+              <button className="text-button" onClick={() => {
+                setFactor(false);
+                setError("");
+                setNotice("Bitte mit E-Mail-Adresse und Passwort neu anmelden.");
+              }}>Anmeldung neu beginnen</button>
+            )}
             <p className="trust">
               <Shield size={16} /> Der Infrastrukturbetreiber kann gespeicherte
               Inhalte lesen. Verwende nur eine Installation, der du vertraust.

@@ -45,6 +45,7 @@ CLI-Betrieb prüft Systemvertrauen. Die Tests aktivieren nur Loopback-HTTP.
 Die Module prüfen:
 
 - Kern: CSRF/Setup, Einladung ohne SMTP, zwei Konten, fremde IDs auch als Admin,
+  erklärende Passwortvalidierung für Setup/Einladung mit Unicodegrenzen,
   strikte Eingabe, parallele Revisionen, Noop/Historie, Idempotenz/Löschreplay,
   einmalige aktionsgebundene Bestätigung und alle acht echten Go-CLI-Operationen.
 - `lifecycle.mjs`: Versionslimit0/2 und Senkung im Papierkorb, Tagaktionen auf
@@ -71,6 +72,7 @@ Die Module prüfen:
   OAuth-Fehlerformat einschließlich ungültigem UTF-8. Erfolgreiche OAuth-/MCP-
   SDK-Abläufe werden separat in `tests/Memoryaffe.ProtocolTests` geprüft.
 - `totp.mjs`: Aktivierung, Code-Replay, atomarer Recovery-Code-Race und Abschaltung.
+  Zusätzlich Cookie-/Serversitzungsdauer nach zweitem Faktor (7/30 Tage).
 
 Exit0 bedeutet, dass sämtliche aktivierten Assertions erfolgreich waren. Die
 PASS-Zeilen und JSON-Ergebnisdatei enthalten keine Cookies, Tokens, Passwörter

@@ -49,4 +49,4 @@ public sealed class ProductException(int status, string code, string message) : 
 }
 public record Operation(string Id, JsonObject Body, JsonObject Path, JsonObject Query, string? IdempotencyKey = null, string? Proof = null);
 public record ProductOptions(string BaseUrl, string SetupSecret, bool Development = false, int TestRateMultiplier = 1);
-public record BrowserResult(object Data, string? SessionToken = null, string? FlowToken = null, bool ClearSession = false);
+public record BrowserResult(object Data, string? SessionToken = null, string? FlowToken = null, bool ClearSession = false, TimeSpan? SessionLifetime = null);
