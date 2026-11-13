@@ -30,6 +30,10 @@ Beschränkung auf memoryaffe-Archive und betreibergeführte Datensicherung.
 Die neun Webapp-Bedienregeln zu Einstieg, Navigation, Datensatzansicht,
 Editor, Entwürfen, Historie, Löschen, externen Bildern und Bedienbarkeit
 sind ebenfalls bestätigt.
+Bestätigt sind Kontoverwaltung und Wiederherstellung: mehrere Admins mit Schutz
+des letzten aktiven Admins, E-Mail-Bindung der Einladung, E-Mail-Änderung,
+2FA-Verwaltung, getrennter Passwort-Reset und umfassende Kontowiederherstellung,
+endgültige Kontolöschung sowie erneute Authentifizierung für Sicherheitsaktionen.
 Die übrigen technischen Konkretisierungen dieses Dokuments bleiben Entwurf,
 soweit sie nicht bereits ausdrücklich in der Produktvision beschlossen sind.
 Vor dem Grundgerüst werden alle weiteren Entscheidungsblöcke gemeinsam geklärt.
@@ -156,6 +160,14 @@ Passwort-Hasher gespeichert. Einladungs- und Reset-Geheimnisse werden nur
 gehasht gespeichert und atomar einmalig verbraucht. Die erste Einrichtung wird
 durch ein einmaliges Betreibergeheimnis geschützt und nach Abschluss gesperrt.
 
+Mehrere Admins sind erlaubt. Sperre, Löschung oder Herabstufung dürfen niemals
+den letzten aktiven Admin entfernen; dies gilt auch bei konkurrierenden
+Operationen. Einladungen sind an die vom Admin angegebene, beim Einlösen
+unveränderbare E-Mail-Adresse gebunden. Ohne SMTP dient diese als Anmeldename
+ohne behauptete Mailbox-Verifizierung. Mit SMTP erfordert eine E-Mail-Änderung
+das Passwort des Nutzers und Bestätigung der neuen Adresse per Link; ohne SMTP
+nimmt der Admin die Änderung nach persönlicher Abstimmung vor.
+
 Passwörter haben 15 bis 128 Zeichen; Leerzeichen, Einfügen und Passwortmanager
 werden unterstützt. Es gibt keine erzwungenen Zeichengruppen und keinen
 regelmäßigen Wechselzwang. Wiederholte Anmeldefehler werden pro Konto und
@@ -172,18 +184,32 @@ Eine normale Passwortänderung verlangt das bisherige Passwort und beendet
 andere Web-Sitzungen. Ein Passwort-Reset beendet alle Web-Sitzungen und widerruft
 sämtliche Agentenzugangsdaten einschließlich OAuth-Verbindungen. Die benannten
 Agentenzugänge und ihre Rechte bleiben für eine erneute Einrichtung erhalten.
+Ein normaler Passwort-Reset deaktiviert keine bestehende 2FA.
 
 TOTP mit Wiederherstellungscodes gehört zum MVP und funktioniert ohne SMTP.
 Die Einrichtung ist für alle Konten freiwillig, ausdrücklich auch für Admins.
 Sie wird ausschließlich später im Profil angeboten. Weder Ersteinrichtung noch
 Einladung/Kontoanlage enthalten einen 2FA-Schritt oder eine Aufforderung dazu.
 Passkeys und externe Loginanbieter sind zunächst nicht vorgesehen.
+Aktivierung erfordert das aktuelle Passwort und einen erfolgreichen TOTP-Test.
+Abschalten oder Ersetzen erfordert Passwort plus TOTP oder Wiederherstellungscode.
+Neue Wiederherstellungscodes machen sämtliche alten Codes ungültig.
 
-Ein dokumentierter Befehl innerhalb des Servercontainers kann für einen
-bestehenden Admin einen einmaligen Wiederherstellungslink erzeugen. Damit ist
-Wiederherstellung ohne SMTP und zweiten Admin möglich; sie erfordert Zugriff
-auf die Infrastruktur. Die genaue Behandlung eines verlorenen zweiten Faktors
-und die Absicherung dieses Ablaufs werden vor Implementierung konkretisiert.
+Für einen vollständig verlorenen zweiten Faktor erzeugt der Admin einen
+gesonderten einmaligen Kontowiederherstellungslink mit einer Stunde Gültigkeit.
+Beim Einlösen setzt der Betroffene ein neues Passwort; 2FA wird zurückgesetzt
+und alle Sitzungen und Agentenzugangsdaten werden widerrufen. Ein dokumentierter
+Befehl innerhalb des Servercontainers erzeugt für einen bestehenden Admin
+denselben Link. Dieser Weg benötigt Infrastrukturzugriff, aber weder SMTP
+noch einen zweiten Admin.
+
+Nutzer können das eigene Konto löschen, Admins andere Konten. Nach ausdrücklicher
+Bestätigung werden Konto, Vaults, Historie und Zugänge endgültig entfernt,
+ohne Kontopapierkorb. Kontolöschung, Rollenänderungen und umfassende
+Kontowiederherstellung verlangen eine erneute Passwortbestätigung des
+Handelnden und bei aktivierter 2FA zusätzlich den zweiten Faktor. Der
+Container-Wiederherstellungsweg setzt stattdessen Infrastrukturzugriff voraus.
+Extern aufbewahrte Backups bleiben in Verantwortung des Betreibers.
 
 Für die CLI werden widerrufbare Agententokens vorgesehen, nur bei Ausgabe im
 Klartext sichtbar. Übergabe über geschützte Konfiguration oder Umgebungsvariable,

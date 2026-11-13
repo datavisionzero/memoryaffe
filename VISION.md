@@ -327,6 +327,14 @@ Kontoeinrichtung mit E-Mail-Adresse
 und Passwort. Sie gelten sieben Tage, sind widerrufbar und können zur manuellen
 Weitergabe kopiert oder optional per SMTP versendet werden. Danach erfolgt
 die reguläre Anmeldung mit E-Mail-Adresse und Passwort.
+Einladungen sind an die vom Admin angegebene E-Mail-Adresse gebunden; beim
+Einlösen ist diese nicht änderbar. Ohne SMTP dient sie als Anmeldename, ohne
+behauptete Bestätigung der Mailbox-Inhaberschaft. Mit SMTP können Nutzer ihre
+Adresse nach Passwortbestätigung und Bestätigung der neuen Adresse per Link
+ändern. Ohne SMTP ändert der Admin sie nach persönlicher Abstimmung.
+
+Mehrere Admins sind erlaubt. Der letzte aktive Admin darf weder gesperrt noch
+gelöscht oder zum normalen Nutzer herabgestuft werden.
 
 Neue Nutzer starten mit einem automatisch angelegten persönlichen Vault,
 den sie umbenennen können.
@@ -336,14 +344,32 @@ verfügbar. Sie ist für alle Nutzer freiwillig, auch für Administratoren, und
 funktioniert ohne SMTP. Die Aktivierung erfolgt ausschließlich später im Profil.
 Bei der Ersteinrichtung und der Kontoanlage gibt es weder einen 2FA-Schritt
 noch eine Aufforderung zur Einrichtung.
+Die Aktivierung verlangt das aktuelle Passwort und einen erfolgreichen
+TOTP-Test. Abschalten oder Ersetzen verlangt Passwort plus TOTP oder einen
+Wiederherstellungscode. Neue Wiederherstellungscodes machen alte ungültig.
 
 Die gesamte Anwendung muss ohne SMTP-Server betreibbar sein. Ohne SMTP erzeugt
 der Admin bei vergessenem Passwort einen einmaligen Reset-Link zur manuellen
 Weitergabe. Mit konfiguriertem SMTP können Nutzer einen Reset-Link selbst
 anfordern und per E-Mail erhalten. Reset-Links gelten jeweils eine Stunde.
+Ein normaler Passwort-Reset lässt aktivierte 2FA bestehen und widerruft alle
+Sitzungen und Agentenzugangsdaten.
+
+Bei vollständig verlorenem zweiten Faktor kann der Admin einen gesonderten,
+einmaligen Kontowiederherstellungslink mit einer Stunde Gültigkeit erzeugen.
+Beim Einlösen wird ein neues Passwort gesetzt, 2FA zurückgesetzt und sämtliche
+Sitzungen sowie Agentenzugangsdaten widerrufen. Für ausgesperrte Admins ist
+derselbe Ablauf über einen dokumentierten Containerbefehl mit Infrastrukturzugriff
+verfügbar.
 
 Der Admin kann Konten sperren. Dadurch enden bestehende Sitzungen und die
 Agentenzugänge des Kontos werden sofort unbrauchbar. Inhalte bleiben erhalten.
+Nutzer können ihr eigenes Konto löschen; Admins können andere Konten löschen.
+Nach ausdrücklicher Bestätigung werden Konto, Vaults, Historie und Zugänge
+endgültig entfernt, ohne zusätzlichen Kontopapierkorb. Kontolöschung,
+Rollenänderungen und umfassende Kontowiederherstellung verlangen erneut das
+Passwort des Handelnden und bei aktivierter 2FA zusätzlich den zweiten Faktor.
+Der Container-Wiederherstellungsweg setzt stattdessen Infrastrukturzugriff voraus.
 
 ## Vertrauen und Privatsphäre
 

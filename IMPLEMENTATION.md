@@ -7,9 +7,10 @@ bereits umgesetzt. Der MVP ist erst nach Etappe 7 vollständig.
 ## 0. Entscheidungen vor dem Grundgerüst abschließen
 
 Architektur/Toolchains sowie die Regeln zu Anmeldung und Sicherheit sind
-bestätigt. Sicherheitsdetails wie die Wiederherstellung bei verlorenem zweiten
-Faktor, weitere Datenrandfälle, Schnittstellen, UI-Abläufe sowie Betrieb und Lieferung
-werden noch gemeinsam entschieden. Beschlossen ist eine begrenzte OAuth-
+bestätigt, ebenso Kontowiederherstellung, Datenregeln, Suchverhalten,
+Datenmitnahme und zentrale UI-Abläufe. Weitere Vertragsdetails und Randfälle
+sowie Betrieb und Lieferung werden noch gemeinsam entschieden.
+Beschlossen ist eine begrenzte OAuth-
 Eigenimplementierung mit CIMD und einer betreiberverwalteten Liste erlaubter
 Client-URLs, zunächst ChatGPT, ohne DCR. ASP.NET Core Identity bleibt die
 Anmeldebasis. Paketversionen und Lizenzen werden vorab geprüft. Der vollständige
@@ -77,6 +78,21 @@ Sitzungs- und Tokenfristen, Rotation und sofortiger Widerruf entsprechen dem
 Architekturvertrag. Passwortänderung beendet andere Web-Sitzungen; Passwort-Reset
 beendet alle Web-Sitzungen und widerruft sämtliche Agentenzugangsdaten, erhält
 aber benannte Zugänge und Rechte für deren erneute Einrichtung.
+Ein normaler Passwort-Reset erhält aktivierte 2FA. Umfassende Wiederherstellung
+setzt Passwort und 2FA zurück und widerruft Sitzungen sowie Agentenzugangsdaten;
+der gesonderte Link ist einmalig und gilt eine Stunde. Der Containerweg für
+Admins funktioniert ohne SMTP und zweiten Admin. 2FA-Aktivierung verlangt
+Passwort und TOTP-Test; Abschalten/Ersetzen verlangt Passwort plus TOTP oder
+Wiederherstellungscode. Neue Wiederherstellungscodes entwerten alte.
+
+Einladungen erlauben keine Änderung der gebundenen Adresse. E-Mail-Änderungen
+werden mit und ohne SMTP entsprechend dem Architekturvertrag geprüft.
+Mehrere Admins sind möglich; auch konkurrierende Sperr-, Lösch- oder
+Herabstufungsversuche können nicht den letzten aktiven Admin entfernen.
+Eigene Kontolöschung und administrative Löschung anderer Konten entfernen
+Konto, Vaults, Historie und Zugänge endgültig ohne Kontopapierkorb.
+Kontolöschung, Rollenänderung und umfassende Wiederherstellung prüfen die
+erneute Authentifizierung des Handelnden, einschließlich dessen aktivierter 2FA.
 
 ## 4. Inhalte, Tags, Historie und Suche
 
