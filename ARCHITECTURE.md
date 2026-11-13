@@ -42,6 +42,10 @@ Bestätigt sind CLI-Profile, sichere Token-Eingabe und ausdrückliche lokale
 Speicherung, Datei-/stdin-Eingabe, Ausgabe-/Exitcode-Konventionen,
 nichtinteraktive Agentenaufrufe, begrenzte Wiederholungen, kompakte
 MCP-Schreibergebnisse und ein lesender Verbindungsprüfbefehl.
+Die übergreifenden Randfälle sind bestätigt: reservierte Vault-Namen im
+Papierkorb, versionierte Tag-Löschung, Suchsprachenwechsel mit verfügbarer
+bisheriger Suche, sofortige Rechtereduktion, Export oberhalb der Importgrenzen,
+restriktive Startwerte für Agenten und Einstieg bei fehlendem letztem Vault.
 Die übrigen technischen Konkretisierungen dieses Dokuments bleiben Entwurf,
 soweit sie nicht bereits ausdrücklich in der Produktvision beschlossen sind.
 Vor dem Grundgerüst werden alle weiteren Entscheidungsblöcke gemeinsam geklärt.
@@ -123,6 +127,8 @@ Zeitpunkte werden in UTC gespeichert. IDs sind unabhängig von Titeln.
 Vault-Namen sind pro Konto ohne Unterscheidung der Groß-/Kleinschreibung
 eindeutig; Datensatztitel dürfen mehrfach vorkommen. Das Löschen des letzten
 Vaults ist erlaubt und erzeugt keinen automatischen Ersatz.
+Die Namensreservierung gilt auch für Vaults im Papierkorb bis zur endgültigen
+Löschung, damit Wiederherstellung keinen Namenskonflikt erzeugt.
 
 Historische Tag-Namen werden als Snapshot erhalten, damit spätere Umbenennungen
 keine alten Versionen verändern. Wiederherstellung löst Namen im aktuellen
@@ -134,6 +140,9 @@ Vergleichsabbildung werden vor dem Grundgerüst im Datenvertrag festgeschrieben.
 Umbenennen und Zusammenführen von Tags ändern aktuelle Zuordnungen und erzeugen
 für betroffene Datensätze neue Revisionen und historische Snapshots gemäß
 Vault-Limit. Alte Snapshots werden dabei nicht geändert.
+Vollständiges Tag-Löschen entfernt aktuelle Zuordnungen, erzeugt für betroffene
+Datensätze Revisionen und historische Snapshots nach denselben Regeln und
+verändert keine alten Snapshots.
 
 ## Transaktionen und Aufbewahrung
 
@@ -224,6 +233,9 @@ Klartext sichtbar. Übergabe über geschützte Konfiguration oder Umgebungsvaria
 nicht als Kommandozeilenargument. Der Server prüft bei jedem Zugriff Konto,
 Agentenzugang und aktuelle Vault-Rechte. Sperren und Widerruf wirken dadurch
 auch auf bereits ausgegebene Zugangsdaten.
+Auch Rechtereduktionen wirken sofort auf bestehende Tokens. Neue Agentenzugänge
+haben keine automatisch ausgewählten Vaults; die angebotene Stufe ist
+Lesen/Suchen. Neue Konten erlauben Agenten standardmäßig keine Tag-Erstellung.
 
 CLI-Tokens gelten standardmäßig 90 Tage; bei Erstellung sind 30, 90, 365 Tage
 oder unbegrenzte Gültigkeit wählbar. Die UI zeigt Ablauf und letzte Nutzung.
@@ -371,6 +383,8 @@ Englisch oder sprachneutral wählbar, mit sprachneutral als Standard und
 unabhängig von der Oberflächensprache. Die konkrete Index-/Abfragekonfiguration
 und der Wechsel der Suchsprache werden vor dem Grundgerüst anhand eines
 Testkorpus festgelegt, einschließlich vaultübergreifender Suche.
+Änderung der Suchsprache indexiert bestehende Inhalte neu. Bis zur vollständig
+abgeschlossenen Umstellung bleibt die bisherige Suche verfügbar.
 
 Mehrere Begriffe werden standardmäßig mit UND verknüpft und dürfen über die
 drei Inhaltsfelder verteilt vorkommen. Anführungszeichen bedeuten Wortgruppen,
@@ -402,7 +416,9 @@ Deutsch/Englisch, Themes, Tastaturbedienung und mobile Darstellung werden von
 Beginn an berücksichtigt. Fonts und Assets werden lokal ausgeliefert.
 
 Nach Anmeldung führt der Einstieg zur Suche im zuletzt verwendeten, noch
-vorhandenen Vault. Die linke Navigation enthält Suche, Datensätze, Tags,
+vorhandenen Vault. Fehlt der zuletzt verwendete Vault, wird
+ein vorhandener eigener Vault gewählt; ohne Vault erscheint der leere Zustand
+mit „Vault anlegen“. Die linke Navigation enthält Suche, Datensätze, Tags,
 Papierkorb und Vault-Einstellungen; Agentenzugänge und Profil sind kontoweit.
 Datensätze besitzen eigene verlinkbare Leseseiten mit Bearbeitungsaktion.
 Bei Rückkehr zur Suche bleiben Suchtext, Filter und Position erhalten.
@@ -472,6 +488,10 @@ Datensatzgrenzen geprüft. Fehler führen zur Ablehnung mit verständlicher
 Fehlerliste, ohne Teilimport oder stilles Abschneiden. Verbindliche Grenzen:
 100 MiB komprimiert, 500 MiB entpackt und 10.000 Datensätze pro Import.
 Nur das dokumentierte memoryaffe-ZIP-Format ist im MVP unterstützt.
+Die Importgrenzen begrenzen nicht den Export. Größere Exporte bleiben möglich;
+die UI weist auf die Überschreitung der normalen Importgrenzen hin.
+Eine vollständige Wiederherstellung benötigt das separate Installationsbackup;
+ein Vault-Export ist kein Ersatz dafür.
 Historie und Papierkorb gehören zur vollständigen Installationssicherung.
 
 Backups umfassen PostgreSQL, erforderliche Konfiguration und persistente

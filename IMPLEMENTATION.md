@@ -94,6 +94,9 @@ Eigene Kontolöschung und administrative Löschung anderer Konten entfernen
 Konto, Vaults, Historie und Zugänge endgültig ohne Kontopapierkorb.
 Kontolöschung, Rollenänderung und umfassende Wiederherstellung prüfen die
 erneute Authentifizierung des Handelnden, einschließlich dessen aktivierter 2FA.
+Neue Konten erlauben Agenten keine Tag-Erstellung. Neue Agentenzugänge wählen
+keine Vaults automatisch; die angebotene Stufe ist Lesen/Suchen. Reduzierte
+Rechte wirken auch mit bereits ausgegebenen Tokens sofort.
 
 ## 4. Inhalte, Tags, Historie und Suche
 
@@ -112,6 +115,8 @@ ordnet historische Tag-Namen zu oder legt fehlende Tags nach Vorschau an.
 Tag-Vergleiche ignorieren Groß-/Kleinschreibung und Rand-Leerzeichen, erhalten
 aber Akzente/Umlaute. Vault-Namen sind pro Konto eindeutig. Konflikte erhalten
 den eigenen UI-Entwurf und zeigen die Serverfassung zum Vergleichen.
+Vault-Namen bleiben im Papierkorb reserviert. Vollständiges Tag-Löschen
+versioniert betroffene Datensätze und verändert keine historischen Snapshots.
 Inhaltsgrenzen werden an und unmittelbar über den Grenzwerten geprüft,
 einschließlich UTF-8-Bytegröße bei mehrbyteigen Zeichen, maximal 50 Tags und
 Versionslimit 100. Teiländerungen erhalten ausgelassene Felder und erlauben
@@ -126,6 +131,8 @@ Tag-Filter mit „alle“ und „mindestens einer“. Leere Suche liefert zuletz
 geänderte Datensätze mit optionalen Tag-Filtern. Historie bleibt ausgeschlossen.
 Rangfolge und Gleichstandsauflösung sowie Ausschnitte beziehungsweise
 Zusammenfassung/Inhaltsanfang entsprechen dem Suchvertrag in allen Adaptern.
+Ein Suchsprachenwechsel indexiert bestehende Inhalte neu; währenddessen bleibt
+die bisherige Suche verfügbar, bis die Umstellung vollständig abgeschlossen ist.
 
 ## 5. Vollständige Agentenanbindung
 
@@ -198,6 +205,10 @@ speichert zusätzliche Importherkunft und zeigt Namenskollisionen vorab an.
 Grenzwerte von 100 MiB ZIP, 500 MiB entpackt und 10.000 Datensätzen werden
 zusammen mit den Einzelgrenzen geprüft. Fehler ergeben eine verständliche
 Fehlerliste ohne stilles Abschneiden. Fremde Archivformate werden abgewiesen.
+Exporte oberhalb der Importgrenzen sind möglich und zeigen einen Hinweis auf
+die eingeschränkte Wiederimportierbarkeit. Fehlt beim Login der letzte Vault,
+wird ein vorhandener eigener Vault gewählt; ohne Vault erscheint der leere
+Zustand mit „Vault anlegen“.
 
 ## 7. Installation, Betrieb und erste Veröffentlichung
 

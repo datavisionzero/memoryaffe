@@ -100,6 +100,7 @@ Vault-Namen sind innerhalb eines Kontos ohne Unterscheidung der Groß- und
 Kleinschreibung eindeutig. Auch der letzte Vault darf gelöscht werden; danach
 zeigt die Webapp einen leeren Zustand mit der Aktion „Vault anlegen“ und
 erzeugt keinen automatischen Ersatz.
+Vault-Namen bleiben im Papierkorb bis zur endgültigen Löschung reserviert.
 
 Jeder Vault gehört genau einem Nutzerkonto. Nutzer haben ausschließlich eigene
 Vaults; gemeinsame Vaults und Freigaben zwischen Konten sind nicht vorgesehen.
@@ -122,6 +123,7 @@ nach Namen zugeordnet oder dort angelegt.
 Tags gehören jeweils zu einem Vault und unterstützen das Wiederfinden von
 Inhalten. Nutzer entscheiden einmal kontoweit, ob Agenten neue Tags anlegen
 dürfen oder ob ausschließlich Nutzer dies über die Webapp tun dürfen.
+Standardmäßig dürfen Agenten keine neuen Tags anlegen.
 
 Agenten mit Schreibrechten dürfen vorhandene Tags an einzelnen Datensätzen
 hinzufügen oder entfernen. Neue Tags dürfen sie nur mit Schreibrechten im
@@ -137,6 +139,8 @@ bei betroffenen Datensätzen eine neue Revision und einen Versionsstand nach
 dem Vault-Limit. Historische Fassungen bleiben unverändert. Beim Wiederherstellen
 einer Version werden historische Tag-Namen aktuellen Tags zugeordnet; fehlende
 Tags werden neu angelegt. Die Vorschau zeigt, welche Tags zurückkommen.
+Vollständiges Löschen eines Tags entfernt aktuelle Zuordnungen und versioniert
+betroffene Datensätze nach denselben Regeln; historische Fassungen bleiben erhalten.
 
 ### Löschen und Papierkorb
 
@@ -163,6 +167,8 @@ Vaults durchsuchen. Semantische Suche ist eine spätere Erweiterung.
 
 Die Suchsprache ist pro Vault als Deutsch, Englisch oder sprachneutral wählbar;
 Standard ist sprachneutral. Sie ist unabhängig von der Oberflächensprache.
+Bei Änderung der Suchsprache werden bestehende Inhalte neu indexiert. Die
+bisherige Suche bleibt bis zum vollständigen Abschluss der Umstellung verfügbar.
 Mehrere Suchbegriffe müssen standardmäßig alle vorkommen, dürfen aber über
 Titel, Zusammenfassung und Inhalt verteilt sein. Anführungszeichen suchen
 Wortgruppen, `OR` verbindet Alternativen und Minuszeichen schließen Begriffe
@@ -206,6 +212,10 @@ Abschneiden oder Teilimport. Grenzen sind 100 MiB ZIP-Datei, 500 MiB entpackt
 und 10.000 Datensätze; zusätzlich gelten die Grenzen pro Datensatz. Im MVP
 wird nur das dokumentierte memoryaffe-ZIP-Format unterstützt, kein allgemeiner
 Import beliebiger Markdown-Ordner.
+Exporte sind auch oberhalb dieser Importgrenzen möglich. Die UI weist bei
+solchen Archiven darauf hin, dass sie die Grenzen des normalen Imports
+überschreiten. Die vollständige Installationswiederherstellung erfolgt über
+ein separat erstelltes Installationsbackup, nicht über einen Vault-Export.
 
 Zusätzlich wird ein Weg zur Sicherung und Wiederherstellung der gesamten
 Installation dokumentiert. Diese Sicherung umfasst auch Konten, Einstellungen
@@ -226,6 +236,10 @@ aufbauenden Berechtigungsstufen:
 3. Zusätzlich Löschen.
 
 Vault-Verwaltung bleibt unabhängig von diesen Stufen ausschließlich beim Nutzer.
+Bei neuen Agentenzugängen sind keine Vaults automatisch ausgewählt; die
+angebotene Berechtigungsstufe ist zunächst Lesen/Suchen. Reduzierte Rechte
+wirken sofort auch für bereits ausgegebene Tokens. Zusätzliche Rechte werden
+weiterhin ausdrücklich vom Nutzer vergeben.
 
 memoryaffe bietet zwei gleichwertig gedachte Zugangswege für die Arbeit mit
 Erinnerungen: eine CLI und eine MCP-Schnittstelle. Über beide sollen Agenten
@@ -309,6 +323,8 @@ Jeder Datensatz hat eine eigene verlinkbare Seite mit Leseansicht und der
 Aktion „Bearbeiten“. Die Rückkehr zur Suche erhält Suchtext, Filter und Position.
 Nach Anmeldung öffnet sich die Suche im zuletzt verwendeten, noch vorhandenen
 Vault. Ohne Suchtext erscheinen zuletzt geänderte Datensätze.
+Ist der zuletzt verwendete Vault nicht verfügbar, wird ein vorhandener eigener
+Vault gewählt. Ohne vorhandenen Vault erscheint „Vault anlegen“ im leeren Zustand.
 
 Die Historie zeigt Zeitpunkt und Verursacher. Historische Versionen lassen
 sich ansehen und als Textvergleich der Änderungen mit der aktuellen Fassung
