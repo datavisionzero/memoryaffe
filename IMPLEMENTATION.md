@@ -8,7 +8,10 @@ bereits umgesetzt. Der MVP ist erst nach Etappe 7 vollständig.
 
 Architektur/Toolchains sowie die Regeln zu Anmeldung und Sicherheit sind
 bestätigt, ebenso Kontowiederherstellung, Datenregeln, Suchverhalten,
-Datenmitnahme und zentrale UI-Abläufe. Weitere Vertragsdetails und Randfälle
+Datenmitnahme und zentrale UI-Abläufe. Der [Datenvertrag](DATA_CONTRACT.md)
+ist ebenfalls bestätigt. Seine maschinenlesbaren Schemas und die konkrete
+Unicode-Version werden noch vor dem Grundgerüst festgelegt.
+Weitere Vertragsdetails und Randfälle
 sowie technische Betriebs- und Lieferdetails werden noch gemeinsam entschieden.
 Der grundsätzliche Betriebs- und Veröffentlichungsumfang ist bestätigt.
 Beschlossen ist eine begrenzte OAuth-
@@ -105,8 +108,12 @@ Verschieben bauen. Schema und Migrationen gegen echte PostgreSQL testen.
 
 **Abnahme:** Zwei konkurrierende Änderungen derselben Revision ergeben genau
 einen erfolgreichen Schreibvorgang. Keine Teiländerungen oder zusätzliche
-Version bei Fehlern beziehungsweise unveränderten Daten. Limit 0, Standard 20,
-Limitsenkung und Wiederherstellung funktionieren. Snapshots enthalten alle
+Version bei Fehlern beziehungsweise unveränderten Daten.
+UUIDv4-Identitäten, als Zeichenfolge übertragene Revisionen und UTC-Zeitpunkte
+entsprechen dem Datenvertrag. Lifecycle-Änderungen erhöhen die Revision ohne
+unnötige identische Inhaltssnapshots. Unicode-Codepunktzählung, NFC/Casefolding,
+Null-/Leerwertregeln und unveränderte Markdown-Zeilenumbrüche werden geprüft.
+Limit 0, Standard 20, Limitsenkung und Wiederherstellung funktionieren. Snapshots enthalten alle
 vier Inhaltsbestandteile und Verursacher. Verschieben prüft Quell-/Zielrechte
 und Ziel-Limit. Tag-Regeln gelten identisch über alle Zugangswege.
 Tag-Umbenennung und Zusammenführung erzeugen Revisionen und Snapshots der

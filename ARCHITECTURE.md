@@ -46,6 +46,9 @@ Die übergreifenden Randfälle sind bestätigt: reservierte Vault-Namen im
 Papierkorb, versionierte Tag-Löschung, Suchsprachenwechsel mit verfügbarer
 bisheriger Suche, sofortige Rechtereduktion, Export oberhalb der Importgrenzen,
 restriktive Startwerte für Agenten und Einstieg bei fehlendem letztem Vault.
+Der [Datenvertrag](DATA_CONTRACT.md) ist bestätigt: UUIDv4-IDs,
+Revisionsregeln, Unicode-Codepunktlimits und Namensvergleich, leere Werte und
+Teiländerungen, UTC-Zeitformat sowie die Regeln für Vault-Archive in Format 1.
 Die übrigen technischen Konkretisierungen dieses Dokuments bleiben Entwurf,
 soweit sie nicht bereits ausdrücklich in der Produktvision beschlossen sind.
 Vor dem Grundgerüst werden alle weiteren Entscheidungsblöcke gemeinsam geklärt.
@@ -135,8 +138,9 @@ keine alten Versionen verändern. Wiederherstellung löst Namen im aktuellen
 Vault auf und legt fehlende Tags an; die UI zeigt diese vorab in der Vorschau.
 Tag-Vergleiche ignorieren Groß-/Kleinschreibung und Rand-Leerzeichen und
 verwenden Unicode-Normalisierung. Anzeigenamen erhalten ihre Schreibweise;
-Akzente und Umlaute werden nicht entfernt. Die genaue Unicode-Normalform und
-Vergleichsabbildung werden vor dem Grundgerüst im Datenvertrag festgeschrieben.
+Akzente und Umlaute werden nicht entfernt. Der Datenvertrag legt NFC und
+sprachunabhängiges Unicode-Casefolding fest; Unicode-Version und technische
+Abbildung werden vor dem Grundgerüst fixiert.
 Umbenennen und Zusammenführen von Tags ändern aktuelle Zuordnungen und erzeugen
 für betroffene Datensätze neue Revisionen und historische Snapshots gemäß
 Vault-Limit. Alte Snapshots werden dabei nicht geändert.
@@ -508,7 +512,8 @@ Logs vermeiden Inhalte und Geheimnisse; Telemetrie wird nicht eingebaut.
 - OAuth-/CIMD-Protokollvertrag und isolierter ChatGPT-Kompatibilitätsnachweis.
 - Genaue Request-Schemas, Fehlercodes, technische Abbildung der beschlossenen
   Limits/Wiederholungsregeln sowie verbleibende Betriebslimits.
-- Tag-Normalisierung, Volltext-Sprachkonfiguration und ZIP-Manifest.
+- Unicode-Version und technische Vergleichsabbildung, Volltext-Sprachkonfiguration
+  und maschinenlesbares ZIP-Manifest-Schema gemäß [Datenvertrag](DATA_CONTRACT.md).
 - Runtime-/Paketversionen und konkrete Build-/Testmatrix für die beschlossenen
   Server- und CLI-Zielplattformen.
 
