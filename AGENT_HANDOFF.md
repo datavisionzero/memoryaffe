@@ -1,9 +1,10 @@
 # Auftrag für den autonomen Umsetzungsagenten
 
-Stand: 13. November 2026. **Planung für den ersten guten Prototypen ist übergabefähig.**
-Hier liegt noch keine lauffähige Anwendung. Verträge/Schemas sind Planungsartefakte;
-Runtime-Kompatibilität, echte Datenbankabläufe und Browserfunktionen müssen gebaut
-und getestet werden. Nicht bereits erledigte Implementierung aus Dokumenten ableiten.
+Stand: 13. November 2026. **Ein erster funktionsfähiger Prototyp ist implementiert.**
+Aktueller Umfang, tatsächlich ausgeführte Prüfungen und offene externe Abnahmen
+stehen in [docs/IMPLEMENTATION_STATUS.md](docs/IMPLEMENTATION_STATUS.md).
+Die folgenden Pakete und Verträge bleiben die Arbeitsgrundlage; aus einer
+beschriebenen Funktion allein niemals erfolgreiche Prüfung ableiten.
 
 ## Ziel und Freigabe
 

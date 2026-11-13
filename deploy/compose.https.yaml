@@ -1,0 +1,27 @@
+# Optional: docker compose -f deploy/compose.yaml -f deploy/compose.https.yaml --env-file deploy/.env up -d
+services:
+  app:
+    environment:
+      Memoryaffe__KnownProxies__0: ${MEMORYAFFE_PROXY_IP:-172.29.87.2}
+  proxy:
+    image: caddy:2.10.2-alpine@sha256:4c6e91c6ed0e2fa03efd5b44747b625fec79bc9cd06ac5235a779726618e530d
+    restart: unless-stopped
+    environment:
+      MEMORYAFFE_HOST: ${MEMORYAFFE_HOST:?MEMORYAFFE_HOST fehlt}
+    ports: ['80:80', '443:443', '443:443/udp']
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - tls:/data
+      - proxy-config:/config
+    networks:
+      frontend:
+        ipv4_address: ${MEMORYAFFE_PROXY_IP:-172.29.87.2}
+volumes:
+  tls:
+  proxy-config:
+
+networks:
+  frontend:
+    ipam:
+      config:
+        - subnet: ${MEMORYAFFE_PROXY_SUBNET:-172.29.87.0/24}

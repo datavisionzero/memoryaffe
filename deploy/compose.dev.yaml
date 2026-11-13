@@ -1,0 +1,17 @@
+name: memoryaffe-local
+services:
+  db:
+    image: postgres:18.7-bookworm@sha256:ece55f7868da684e400f82f1030a050718adbdd65c23aa500c486f6e2950dc0f
+    environment:
+      POSTGRES_DB: memoryaffe
+      POSTGRES_USER: memoryaffe
+      POSTGRES_PASSWORD: ${DEV_DATABASE_PASSWORD:?Devstart setzt ein zufälliges Passwort}
+    ports: ['127.0.0.1:${DEV_DATABASE_PORT:-55432}:5432']
+    volumes: ['postgres:/var/lib/postgresql']
+    healthcheck:
+      test: [CMD-SHELL, 'pg_isready -U memoryaffe -d memoryaffe']
+      interval: 3s
+      timeout: 3s
+      retries: 30
+volumes:
+  postgres:

@@ -1,0 +1,9 @@
+{$MEMORYAFFE_HOST} {
+    request_body {
+        max_size 106MB
+    }
+    reverse_proxy app:8080 {
+        # Keine Accesslogs: URLs können OAuth-Code/State tragen.
+        flush_interval -1
+    }
+}

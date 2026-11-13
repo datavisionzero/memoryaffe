@@ -138,7 +138,7 @@ route('patch', '/agent-accesses/{id}', 'web_update_agent_access', 'AgentPatch', 
 route('delete', '/agent-accesses/{id}', 'web_delete_agent_access', null, ref('Ok'), revisionQuery);
 route('get', '/agent-accesses/{id}/tokens', 'web_list_tokens', null, list(ref('Credential')), { query: page });
 route('post', '/agent-accesses/{id}/tokens', 'web_issue_token', 'TokenCreate', ref('TokenIssued'), { status: '201', proof: true });
-route('delete', '/agent-accesses/{id}/tokens/{tokenId}', 'web_revoke_token', null);
+route('delete', '/agent-accesses/{id}/tokens/{tokenId}', 'web_revoke_token', null, ref('Ok'), revisionQuery);
 route('get', '/vaults/{id}/export', 'web_export_vault', null, null, { zip: true });
 route('post', '/imports/validate', 'web_prepare_import', obj({ archive: { type: 'string', format: 'binary', description: 'ZIP, max 100 MiB compressed and 500 MiB expanded, 10000 records.' } }), ref('ImportPreparation'), { multipart: true, status: '201' });
 route('get', '/imports/{id}', 'web_get_import', null, ref('ImportPreparation'));

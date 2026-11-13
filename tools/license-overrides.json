@@ -1,0 +1,8 @@
+{
+  "nuget:xunit.abstractions@2.0.3": {
+    "license": "Apache-2.0",
+    "licenseText": "licenses/nuget_xunit.abstractions_2.0.3.txt",
+    "metadataSource": "Legacy package declares licenseUrl; manually checked official abstractions repository license on 2026-11-13",
+    "source": "https://github.com/xunit/abstractions.xunit/blob/main/license.txt"
+  }
+}

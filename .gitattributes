@@ -1,0 +1,5 @@
+scripts/*.sh text eol=lf
+tests/integration/*.sh text eol=lf
+src/web/src/generated/*.d.ts text eol=lf
+src/Memoryaffe.Infrastructure/Unicode/*.txt -text -whitespace
+docs/licenses/*.txt -text -whitespace

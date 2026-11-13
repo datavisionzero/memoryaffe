@@ -1,0 +1,17 @@
+{
+  "recordedFrom": "observed successful native container command output on 2026-11-13",
+  "platform": "linux/amd64",
+  "host": "Windows Docker Desktop",
+  "go": "go1.27.4",
+  "image": "golang@sha256:4fa7c968ba93f1635670522dbb01a2c78150443e1385746924566079f36570ea",
+  "checks": {
+    "go test -race -count=1 ./...": "passed",
+    "go vet ./...": "passed",
+    "native Go CLI build": "passed",
+    "all eight CLI operations against real HTTP/PostgreSQL": "passed",
+    "doctor and Unicode/CRLF file preservation": "passed",
+    "empty stdin, clear fields and deleted-memory exit5": "passed",
+    "temporary agent token revoked after smoke": "passed"
+  },
+  "nativeMacOS": "not executed; crossbuild only"
+}

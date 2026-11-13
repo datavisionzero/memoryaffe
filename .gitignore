@@ -1,0 +1,14 @@
+**/bin/
+**/obj/
+**/node_modules/
+**/dist/
+**/test-results/
+**/playwright-report/
+.tools/
+.env
+*.user
+*.log
+artifacts/
+**/keys/
+**/private-imports/
+!artifacts/.gitkeep

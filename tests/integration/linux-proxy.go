@@ -1,0 +1,3 @@
+package main
+import("net/http";"net/http/httputil";"net/url";"os";"time")
+func main(){target,e:=url.Parse(os.Getenv("MEMORYAFFE_PROXY_TARGET"));if e!=nil{os.Exit(2)};proxy:=httputil.NewSingleHostReverseProxy(target);proxy.ErrorHandler=func(w http.ResponseWriter,r *http.Request,e error){w.Header().Set("Content-Type","application/json");w.WriteHeader(503);w.Write([]byte(`{"code":"temporarily_unavailable","message":"Linux test proxy cannot reach backend","requestId":"linux-proxy"}`))};server:=&http.Server{Addr:"127.0.0.1:15080",Handler:proxy,ReadHeaderTimeout:5*time.Second};if server.ListenAndServe()!=nil{os.Exit(1)}}

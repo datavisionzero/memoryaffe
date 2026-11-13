@@ -1,0 +1,86 @@
+{
+  "images": [
+    {
+      "image": "node:24.22.3-bookworm-slim",
+      "digest": "sha256:dc26ae92c9fb15cf6b1d63e20f0944b2efe0f115b20e00be48fb23fceb061c54",
+      "platforms": [
+        {
+          "digest": "sha256:0e2646ab57e77b7a384a0cb59b6815b182c77e1f9c3ba36bd8435bd9c4e6680e",
+          "os": "linux",
+          "architecture": "amd64"
+        },
+        {
+          "digest": "sha256:5f8fabfed57b75127de2f584593d67a9e8c90e6b0f65652871f9ef0f759c0299",
+          "os": "linux",
+          "architecture": "arm64"
+        }
+      ]
+    },
+    {
+      "image": "mcr.microsoft.com/dotnet/sdk:10.0.404-noble",
+      "digest": "sha256:fe0fd4e93bd2fbb47c883b7a6369e5c8d3db8bf01cdc5981f6ee35fbdf3ff4fb",
+      "platforms": [
+        {
+          "digest": "sha256:ddbaedfc8b774389d91a511af08b77296f2c7a8d15d86f6214d2a87166933625",
+          "os": "linux",
+          "architecture": "amd64"
+        },
+        {
+          "digest": "sha256:35c2411e519ef047d430b7237234ff56d1f6e1dfde49320c7583d2e970942cf6",
+          "os": "linux",
+          "architecture": "arm64"
+        }
+      ]
+    },
+    {
+      "image": "mcr.microsoft.com/dotnet/aspnet:10.0.15-noble",
+      "digest": "sha256:bfd912c83295ce66d4b706ebb8541b9f14259b0e76fbb88b2751f58ce2399d2e",
+      "platforms": [
+        {
+          "digest": "sha256:05acd0ca475e2130832bab441d28a7dd31041129bad28eac7928151fd73cd2c5",
+          "os": "linux",
+          "architecture": "amd64"
+        },
+        {
+          "digest": "sha256:bff89e48a4c3fa96948b683cf504f1dd2854c299eb4e8d70287500f2fb17fceb",
+          "os": "linux",
+          "architecture": "arm64"
+        }
+      ]
+    },
+    {
+      "image": "postgres:18.7-bookworm",
+      "digest": "sha256:ece55f7868da684e400f82f1030a050718adbdd65c23aa500c486f6e2950dc0f",
+      "platforms": [
+        {
+          "digest": "sha256:a197bcc7150b0a7e35796ef0c110693cba6edd41e92b564cc50b976f17532423",
+          "os": "linux",
+          "architecture": "amd64"
+        },
+        {
+          "digest": "sha256:34a90b5d3c95c75a8756202996ae03e73db36ddf9c477a41ddc363cb95327d5a",
+          "os": "linux",
+          "architecture": "arm64"
+        }
+      ]
+    },
+    {
+      "image": "caddy:2.10.2-alpine",
+      "digest": "sha256:4c6e91c6ed0e2fa03efd5b44747b625fec79bc9cd06ac5235a779726618e530d",
+      "platforms": [
+        {
+          "digest": "sha256:d8c17a862962def15cde69863a3a463f25a2664942eafd7bdbf050e9c3116b83",
+          "os": "linux",
+          "architecture": "amd64"
+        },
+        {
+          "digest": "sha256:8dbca3525dd8dce671e495665a0eb297a83ec87ee30f373947d0ea93115949db",
+          "os": "linux",
+          "architecture": "arm64"
+        }
+      ]
+    }
+  ],
+  "source": "docker buildx imagetools inspect Registrymanifeste",
+  "checkedAt": "2026-11-13"
+}

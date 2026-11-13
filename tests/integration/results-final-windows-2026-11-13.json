@@ -1,0 +1,29 @@
+{
+  "passed": 14,
+  "checks": [
+    "readiness and empty-database guard",
+    "anonymous CSRF, setup and single-use setup",
+    "manual invitation, redemption and account isolation",
+    "strict input, unchanged Markdown and foreign memory IDs",
+    "concurrent revision conflict, noop and historical snapshot",
+    "idempotent concurrent create and mismatched key rejection",
+    "action proof binding, explicit agent creation and token metadata",
+    "all eight Go CLI operations against real HTTP/PostgreSQL",
+    "Version retention, trash tags, moves, grant lifecycle, sessions and isolated recovery",
+    "Last-active-admin race in isolated database and API process",
+    "PostgreSQL search corpus, Unicode names, 1MiB, distant phrases and language switch",
+    "ZIP roundtrip, concurrent import, cancellation and malicious archives",
+    "OAuth discovery, MCP challenge and unsafe-client rejection",
+    "TOTP activation, replay rejection and atomic recovery-code race"
+  ],
+  "base": "http://127.0.0.1:5080",
+  "reusedExistingTestAccount": false,
+  "searchEvidence": {
+    "fixtures": "API-generated IDs, two controlled equal timestamps",
+    "fixedTimestampUuidTie": "executed against dedicated PostgreSQL fixture"
+  },
+  "platform": "win32",
+  "node": "v24.22.3",
+  "totp": "executed",
+  "oauth": "discovery and negative protocol only; controlled CIMD/code/refresh success not covered"
+}

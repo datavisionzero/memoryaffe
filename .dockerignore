@@ -1,0 +1,15 @@
+**/bin
+**/obj
+**/node_modules
+**/dist
+**/test-results
+**/playwright-report
+**/*.tsbuildinfo
+.git
+.tools
+artifacts
+.env
+**/.env
+**/keys
+**/data
+**/*.log

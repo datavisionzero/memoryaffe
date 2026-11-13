@@ -5,9 +5,10 @@
 Lies zuerst [AGENT_HANDOFF.md](AGENT_HANDOFF.md). Es beschreibt den autonomen
 Auftrag bis zum ersten guten Prototypen, die verbindlichen Verträge und die
 Abnahmegrenzen. Produktdokumentation deutsch, Code-/API-Bezeichner englisch.
-Der aktuelle Repositorystand enthält Planung und Vertragswerkzeuge, noch keine
-lauffähige Anwendung. Nicht aus einer beschriebenen Funktion ihre Umsetzung
-oder erfolgreiche Prüfung ableiten.
+Der Repositorystand enthält inzwischen den ersten funktionsfähigen Prototypen.
+Tatsächliche Nachweise und verbleibende Grenzen stehen in
+docs/IMPLEMENTATION_STATUS.md. Nicht aus einer beschriebenen Funktion ihre
+Umsetzung oder erfolgreiche Prüfung ableiten.
 
 Die jüngste Nutzerentscheidung erlaubt Grundgerüst und Prototyp vor dem echten
 ChatGPT-Test. Dieser Test bleibt offen, blockiert den Bau aber nicht. Bereits

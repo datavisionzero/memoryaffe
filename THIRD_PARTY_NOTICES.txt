@@ -1,0 +1,809 @@
+memoryaffe dependency notices
+
+Project code: MIT. Dependency licenses remain applicable.
+This inventory includes build/test packages. Base container OS/runtime notices remain in their images.
+Unicode 17 data: src/Memoryaffe.Infrastructure/Unicode/LICENSE.txt
+
+Go golang.org/x/sys@v0.40.0: BSD-3-Clause
+  license text: docs/licenses/go_golang.org_x_sys_v0.40.0.txt
+
+Go golang.org/x/term@v0.39.0: BSD-3-Clause
+  license text: docs/licenses/go_golang.org_x_term_v0.39.0.txt
+
+npm @babel/code-frame@7.29.7: MIT
+  license text: docs/licenses/npm__babel_code-frame_7.29.7.txt
+
+npm @babel/helper-validator-identifier@7.29.7: MIT
+  license text: docs/licenses/npm__babel_helper-validator-identifier_7.29.7.txt
+
+npm @babel/runtime@7.29.14: MIT
+  license text: docs/licenses/npm__babel_runtime_7.29.14.txt
+
+npm @base-ui/react@1.9.0: MIT
+  license text: docs/licenses/npm__base-ui_react_1.9.0.txt
+
+npm @base-ui/utils@0.5.0: MIT
+  license text: docs/licenses/npm__base-ui_utils_0.5.0.txt
+
+npm @codemirror/autocomplete@6.20.4: MIT
+  license text: docs/licenses/npm__codemirror_autocomplete_6.20.4.txt
+
+npm @codemirror/commands@6.11.1: MIT
+  license text: docs/licenses/npm__codemirror_commands_6.11.1.txt
+
+npm @codemirror/lang-css@6.3.1: MIT
+  license text: docs/licenses/npm__codemirror_lang-css_6.3.1.txt
+
+npm @codemirror/lang-html@6.4.12: MIT
+  license text: docs/licenses/npm__codemirror_lang-html_6.4.12.txt
+
+npm @codemirror/lang-javascript@6.2.5: MIT
+  license text: docs/licenses/npm__codemirror_lang-javascript_6.2.5.txt
+
+npm @codemirror/lang-markdown@6.5.2: MIT
+  license text: docs/licenses/npm__codemirror_lang-markdown_6.5.2.txt
+
+npm @codemirror/language@6.13.1: MIT
+  license text: docs/licenses/npm__codemirror_language_6.13.1.txt
+
+npm @codemirror/lint@6.9.8: MIT
+  license text: docs/licenses/npm__codemirror_lint_6.9.8.txt
+
+npm @codemirror/search@6.7.2: MIT
+  license text: docs/licenses/npm__codemirror_search_6.7.2.txt
+
+npm @codemirror/state@6.7.6: MIT
+  license text: docs/licenses/npm__codemirror_state_6.7.6.txt
+
+npm @codemirror/streamparser@6.0.0: MIT
+  license text: docs/licenses/npm__codemirror_streamparser_6.0.0.txt
+
+npm @codemirror/theme-one-dark@6.1.3: MIT
+  license text: docs/licenses/npm__codemirror_theme-one-dark_6.1.3.txt
+
+npm @codemirror/view@6.43.15: MIT
+  license text: docs/licenses/npm__codemirror_view_6.43.15.txt
+
+npm @emnapi/core@1.11.3: MIT
+  license text: docs/licenses/npm__emnapi_core_1.11.3.txt
+
+npm @emnapi/core@2.0.0-beta.2: MIT
+  license text: docs/licenses/npm__emnapi_core_2.0.0-beta.2.txt
+
+npm @emnapi/runtime@1.11.3: MIT
+  license text: docs/licenses/npm__emnapi_runtime_1.11.3.txt
+
+npm @emnapi/runtime@2.0.0-beta.2: MIT
+  license text: docs/licenses/npm__emnapi_runtime_2.0.0-beta.2.txt
+
+npm @emnapi/wasi-threads@1.2.3: MIT
+  license text: docs/licenses/npm__emnapi_wasi-threads_1.2.3.txt
+
+npm @emnapi/wasi-threads@2.2.0: MIT
+  license text: docs/licenses/npm__emnapi_wasi-threads_2.2.0.txt
+
+npm @floating-ui/core@1.8.0: MIT
+  license text: docs/licenses/npm__floating-ui_core_1.8.0.txt
+
+npm @floating-ui/dom@1.8.0: MIT
+  license text: docs/licenses/npm__floating-ui_dom_1.8.0.txt
+
+npm @floating-ui/react-dom@2.1.9: MIT
+  license text: docs/licenses/npm__floating-ui_react-dom_2.1.9.txt
+
+npm @floating-ui/utils@0.2.12: MIT
+  license text: docs/licenses/npm__floating-ui_utils_0.2.12.txt
+
+npm @jridgewell/gen-mapping@0.3.13: MIT
+  license text: docs/licenses/npm__jridgewell_gen-mapping_0.3.13.txt
+
+npm @jridgewell/remapping@2.3.5: MIT
+  license text: docs/licenses/npm__jridgewell_remapping_2.3.5.txt
+
+npm @jridgewell/resolve-uri@3.1.3: MIT
+  license text: docs/licenses/npm__jridgewell_resolve-uri_3.1.3.txt
+
+npm @jridgewell/sourcemap-codec@1.6.0: MIT
+  license text: docs/licenses/npm__jridgewell_sourcemap-codec_1.6.0.txt
+
+npm @jridgewell/trace-mapping@0.3.31: MIT
+  license text: docs/licenses/npm__jridgewell_trace-mapping_0.3.31.txt
+
+npm @lezer/common@1.5.5: MIT
+  license text: docs/licenses/npm__lezer_common_1.5.5.txt
+
+npm @lezer/css@1.3.9: MIT
+  license text: docs/licenses/npm__lezer_css_1.3.9.txt
+
+npm @lezer/highlight@1.2.5: MIT
+  license text: docs/licenses/npm__lezer_highlight_1.2.5.txt
+
+npm @lezer/html@1.3.13: MIT
+  license text: docs/licenses/npm__lezer_html_1.3.13.txt
+
+npm @lezer/javascript@1.5.6: MIT
+  license text: docs/licenses/npm__lezer_javascript_1.5.6.txt
+
+npm @lezer/lr@1.4.12: MIT
+  license text: docs/licenses/npm__lezer_lr_1.4.12.txt
+
+npm @lezer/markdown@1.8.1: MIT
+  license text: docs/licenses/npm__lezer_markdown_1.8.1.txt
+
+npm @marijn/find-cluster-break@1.0.4: MIT
+  license text: docs/licenses/npm__marijn_find-cluster-break_1.0.4.txt
+
+npm @napi-rs/wasm-runtime@1.2.2: MIT
+
+npm @napi-rs/wasm-runtime@1.2.6: MIT
+
+npm @oxc-project/types@0.156.0: MIT
+  license text: docs/licenses/npm__oxc-project_types_0.156.0.txt
+
+npm @playwright/test@1.65.0: Apache-2.0
+  license text: docs/licenses/npm__playwright_test_1.65.0.txt
+
+npm @redocly/ajv@8.11.2: MIT
+  license text: docs/licenses/npm__redocly_ajv_8.11.2.txt
+
+npm @redocly/config@0.22.0: MIT
+  license text: docs/licenses/npm__redocly_config_0.22.0.txt
+
+npm @redocly/openapi-core@1.34.24: MIT
+
+npm @remix-run/route-pattern@0.22.1: MIT
+  license text: docs/licenses/npm__remix-run_route-pattern_0.22.1.txt
+
+npm @rolldown/binding-win32-x64-msvc@1.2.19: MIT
+
+npm @rolldown/pluginutils@1.1.1: MIT
+  license text: docs/licenses/npm__rolldown_pluginutils_1.1.1.txt
+
+npm @tailwindcss/node@4.3.5: MIT
+  license text: docs/licenses/npm__tailwindcss_node_4.3.5.txt
+
+npm @tailwindcss/oxide-wasm32-wasi@4.3.5: MIT
+
+npm @tailwindcss/oxide-win32-x64-msvc@4.3.5: MIT
+  license text: docs/licenses/npm__tailwindcss_oxide-win32-x64-msvc_4.3.5.txt
+
+npm @tailwindcss/oxide@4.3.5: MIT
+  license text: docs/licenses/npm__tailwindcss_oxide_4.3.5.txt
+
+npm @tailwindcss/vite@4.3.5: MIT
+  license text: docs/licenses/npm__tailwindcss_vite_4.3.5.txt
+
+npm @tybys/wasm-util@0.10.3: MIT
+
+npm @tybys/wasm-util@0.10.4: MIT
+  license text: docs/licenses/npm__tybys_wasm-util_0.10.4.txt
+
+npm @types/debug@4.1.13: MIT
+  license text: docs/licenses/npm__types_debug_4.1.13.txt
+
+npm @types/estree-jsx@1.0.5: MIT
+  license text: docs/licenses/npm__types_estree-jsx_1.0.5.txt
+
+npm @types/estree@1.0.10: MIT
+  license text: docs/licenses/npm__types_estree_1.0.10.txt
+
+npm @types/hast@3.0.5: MIT
+  license text: docs/licenses/npm__types_hast_3.0.5.txt
+
+npm @types/mdast@4.0.4: MIT
+  license text: docs/licenses/npm__types_mdast_4.0.4.txt
+
+npm @types/ms@2.1.0: MIT
+  license text: docs/licenses/npm__types_ms_2.1.0.txt
+
+npm @types/react-dom@19.3.0: MIT
+  license text: docs/licenses/npm__types_react-dom_19.3.0.txt
+
+npm @types/react@19.3.0: MIT
+  license text: docs/licenses/npm__types_react_19.3.0.txt
+
+npm @types/unist@2.0.11: MIT
+  license text: docs/licenses/npm__types_unist_2.0.11.txt
+
+npm @types/unist@3.0.3: MIT
+  license text: docs/licenses/npm__types_unist_3.0.3.txt
+
+npm @uiw/codemirror-extensions-basic-setup@4.25.3: MIT
+
+npm @uiw/react-codemirror@4.25.3: MIT
+
+npm @ungap/structured-clone@1.4.0: ISC
+  license text: docs/licenses/npm__ungap_structured-clone_1.4.0.txt
+
+npm @vitejs/plugin-react@6.3.0: MIT
+  license text: docs/licenses/npm__vitejs_plugin-react_6.3.0.txt
+
+npm agent-base@7.1.4: MIT
+  license text: docs/licenses/npm_agent-base_7.1.4.txt
+
+npm ansi-colors@4.1.3: MIT
+  license text: docs/licenses/npm_ansi-colors_4.1.3.txt
+
+npm argparse@2.0.1: Python-2.0
+  license text: docs/licenses/npm_argparse_2.0.1.txt
+
+npm bail@2.0.2: MIT
+  license text: docs/licenses/npm_bail_2.0.2.txt
+
+npm balanced-match@1.0.2: MIT
+  license text: docs/licenses/npm_balanced-match_1.0.2.txt
+
+npm brace-expansion@2.1.8: MIT
+  license text: docs/licenses/npm_brace-expansion_2.1.8.txt
+
+npm ccount@2.0.1: MIT
+  license text: docs/licenses/npm_ccount_2.0.1.txt
+
+npm change-case@5.4.4: MIT
+
+npm character-entities-html4@2.1.0: MIT
+  license text: docs/licenses/npm_character-entities-html4_2.1.0.txt
+
+npm character-entities-legacy@3.0.0: MIT
+  license text: docs/licenses/npm_character-entities-legacy_3.0.0.txt
+
+npm character-entities@2.0.2: MIT
+  license text: docs/licenses/npm_character-entities_2.0.2.txt
+
+npm character-reference-invalid@2.0.1: MIT
+  license text: docs/licenses/npm_character-reference-invalid_2.0.1.txt
+
+npm codemirror@6.0.2: MIT
+  license text: docs/licenses/npm_codemirror_6.0.2.txt
+
+npm colorette@1.4.0: MIT
+  license text: docs/licenses/npm_colorette_1.4.0.txt
+
+npm comma-separated-tokens@2.0.3: MIT
+  license text: docs/licenses/npm_comma-separated-tokens_2.0.3.txt
+
+npm cookie-es@3.1.1: MIT
+  license text: docs/licenses/npm_cookie-es_3.1.1.txt
+
+npm crelt@1.0.7: MIT
+  license text: docs/licenses/npm_crelt_1.0.7.txt
+
+npm csstype@3.2.3: MIT
+  license text: docs/licenses/npm_csstype_3.2.3.txt
+
+npm debug@4.4.3: MIT
+  license text: docs/licenses/npm_debug_4.4.3.txt
+
+npm decode-named-character-reference@1.3.0: MIT
+  license text: docs/licenses/npm_decode-named-character-reference_1.3.0.txt
+
+npm dequal@2.0.3: MIT
+  license text: docs/licenses/npm_dequal_2.0.3.txt
+
+npm detect-libc@2.1.2: Apache-2.0
+  license text: docs/licenses/npm_detect-libc_2.1.2.txt
+
+npm devlop@1.1.0: MIT
+  license text: docs/licenses/npm_devlop_1.1.0.txt
+
+npm enhanced-resolve@5.27.0: MIT
+  license text: docs/licenses/npm_enhanced-resolve_5.27.0.txt
+
+npm escape-string-regexp@5.0.0: MIT
+  license text: docs/licenses/npm_escape-string-regexp_5.0.0.txt
+
+npm estree-util-is-identifier-name@3.0.0: MIT
+  license text: docs/licenses/npm_estree-util-is-identifier-name_3.0.0.txt
+
+npm extend@3.0.2: MIT
+  license text: docs/licenses/npm_extend_3.0.2.txt
+
+npm fast-deep-equal@3.1.3: MIT
+  license text: docs/licenses/npm_fast-deep-equal_3.1.3.txt
+
+npm fdir@6.5.0: MIT
+  license text: docs/licenses/npm_fdir_6.5.0.txt
+
+npm graceful-fs@4.2.12: BlueOak-1.0.0
+  license text: docs/licenses/npm_graceful-fs_4.2.12.txt
+
+npm hast-util-to-jsx-runtime@2.3.7: MIT
+  license text: docs/licenses/npm_hast-util-to-jsx-runtime_2.3.7.txt
+
+npm hast-util-whitespace@3.0.0: MIT
+  license text: docs/licenses/npm_hast-util-whitespace_3.0.0.txt
+
+npm html-url-attributes@3.0.1: MIT
+  license text: docs/licenses/npm_html-url-attributes_3.0.1.txt
+
+npm https-proxy-agent@7.0.6: MIT
+  license text: docs/licenses/npm_https-proxy-agent_7.0.6.txt
+
+npm index-to-position@1.2.0: MIT
+  license text: docs/licenses/npm_index-to-position_1.2.0.txt
+
+npm inline-style-parser@0.2.9: MIT
+  license text: docs/licenses/npm_inline-style-parser_0.2.9.txt
+
+npm is-alphabetical@2.0.1: MIT
+  license text: docs/licenses/npm_is-alphabetical_2.0.1.txt
+
+npm is-alphanumerical@2.0.1: MIT
+  license text: docs/licenses/npm_is-alphanumerical_2.0.1.txt
+
+npm is-decimal@2.0.1: MIT
+  license text: docs/licenses/npm_is-decimal_2.0.1.txt
+
+npm is-hexadecimal@2.0.1: MIT
+  license text: docs/licenses/npm_is-hexadecimal_2.0.1.txt
+
+npm is-plain-obj@4.1.0: MIT
+  license text: docs/licenses/npm_is-plain-obj_4.1.0.txt
+
+npm jiti@2.7.0: MIT
+  license text: docs/licenses/npm_jiti_2.7.0.txt
+
+npm js-levenshtein@1.1.6: MIT
+  license text: docs/licenses/npm_js-levenshtein_1.1.6.txt
+
+npm js-tokens@4.0.0: MIT
+  license text: docs/licenses/npm_js-tokens_4.0.0.txt
+
+npm js-yaml@4.3.2: MIT
+  license text: docs/licenses/npm_js-yaml_4.3.2.txt
+
+npm json-schema-traverse@1.0.0: MIT
+  license text: docs/licenses/npm_json-schema-traverse_1.0.0.txt
+
+npm lightningcss-win32-x64-msvc@1.33.0: MPL-2.0
+  license text: docs/licenses/npm_lightningcss-win32-x64-msvc_1.33.0.txt
+
+npm lightningcss@1.33.0: MPL-2.0
+  license text: docs/licenses/npm_lightningcss_1.33.0.txt
+
+npm longest-streak@3.1.0: MIT
+  license text: docs/licenses/npm_longest-streak_3.1.0.txt
+
+npm lucide-react@0.468.0: ISC
+  license text: docs/licenses/npm_lucide-react_0.468.0.txt
+
+npm magic-string@1.4.5: MIT
+  license text: docs/licenses/npm_magic-string_1.4.5.txt
+
+npm markdown-table@3.1.0: MIT
+  license text: docs/licenses/npm_markdown-table_3.1.0.txt
+
+npm mdast-util-find-and-replace@3.0.4: MIT
+  license text: docs/licenses/npm_mdast-util-find-and-replace_3.0.4.txt
+
+npm mdast-util-from-markdown@2.1.0: MIT
+  license text: docs/licenses/npm_mdast-util-from-markdown_2.1.0.txt
+
+npm mdast-util-gfm-autolink-literal@2.1.0: MIT
+  license text: docs/licenses/npm_mdast-util-gfm-autolink-literal_2.1.0.txt
+
+npm mdast-util-gfm-footnote@2.1.0: MIT
+  license text: docs/licenses/npm_mdast-util-gfm-footnote_2.1.0.txt
+
+npm mdast-util-gfm-strikethrough@2.0.1: MIT
+  license text: docs/licenses/npm_mdast-util-gfm-strikethrough_2.0.1.txt
+
+npm mdast-util-gfm-table@2.0.1: MIT
+  license text: docs/licenses/npm_mdast-util-gfm-table_2.0.1.txt
+
+npm mdast-util-gfm-task-list-item@2.0.1: MIT
+  license text: docs/licenses/npm_mdast-util-gfm-task-list-item_2.0.1.txt
+
+npm mdast-util-gfm@3.1.0: MIT
+  license text: docs/licenses/npm_mdast-util-gfm_3.1.0.txt
+
+npm mdast-util-mdx-expression@2.0.1: MIT
+  license text: docs/licenses/npm_mdast-util-mdx-expression_2.0.1.txt
+
+npm mdast-util-mdx-jsx@3.2.1: MIT
+  license text: docs/licenses/npm_mdast-util-mdx-jsx_3.2.1.txt
+
+npm mdast-util-mdxjs-esm@2.0.1: MIT
+  license text: docs/licenses/npm_mdast-util-mdxjs-esm_2.0.1.txt
+
+npm mdast-util-phrasing@4.1.0: MIT
+  license text: docs/licenses/npm_mdast-util-phrasing_4.1.0.txt
+
+npm mdast-util-to-hast@13.2.2: MIT
+  license text: docs/licenses/npm_mdast-util-to-hast_13.2.2.txt
+
+npm mdast-util-to-markdown@2.2.3: MIT
+  license text: docs/licenses/npm_mdast-util-to-markdown_2.2.3.txt
+
+npm mdast-util-to-string@4.0.0: MIT
+  license text: docs/licenses/npm_mdast-util-to-string_4.0.0.txt
+
+npm micromark-core-commonmark@2.0.4: MIT
+  license text: docs/licenses/npm_micromark-core-commonmark_2.0.4.txt
+
+npm micromark-extension-gfm-autolink-literal@2.1.0: MIT
+  license text: docs/licenses/npm_micromark-extension-gfm-autolink-literal_2.1.0.txt
+
+npm micromark-extension-gfm-footnote@2.1.0: MIT
+  license text: docs/licenses/npm_micromark-extension-gfm-footnote_2.1.0.txt
+
+npm micromark-extension-gfm-strikethrough@2.1.0: MIT
+  license text: docs/licenses/npm_micromark-extension-gfm-strikethrough_2.1.0.txt
+
+npm micromark-extension-gfm-table@2.1.2: MIT
+  license text: docs/licenses/npm_micromark-extension-gfm-table_2.1.2.txt
+
+npm micromark-extension-gfm-tagfilter@2.0.0: MIT
+  license text: docs/licenses/npm_micromark-extension-gfm-tagfilter_2.0.0.txt
+
+npm micromark-extension-gfm-task-list-item@2.1.0: MIT
+  license text: docs/licenses/npm_micromark-extension-gfm-task-list-item_2.1.0.txt
+
+npm micromark-extension-gfm@3.0.0: MIT
+  license text: docs/licenses/npm_micromark-extension-gfm_3.0.0.txt
+
+npm micromark-factory-destination@2.0.1: MIT
+  license text: docs/licenses/npm_micromark-factory-destination_2.0.1.txt
+
+npm micromark-factory-label@2.0.1: MIT
+  license text: docs/licenses/npm_micromark-factory-label_2.0.1.txt
+
+npm micromark-factory-space@2.1.0: MIT
+  license text: docs/licenses/npm_micromark-factory-space_2.1.0.txt
+
+npm micromark-factory-title@2.0.1: MIT
+  license text: docs/licenses/npm_micromark-factory-title_2.0.1.txt
+
+npm micromark-factory-whitespace@2.0.1: MIT
+  license text: docs/licenses/npm_micromark-factory-whitespace_2.0.1.txt
+
+npm micromark-util-character@2.1.1: MIT
+  license text: docs/licenses/npm_micromark-util-character_2.1.1.txt
+
+npm micromark-util-chunked@2.0.1: MIT
+  license text: docs/licenses/npm_micromark-util-chunked_2.0.1.txt
+
+npm micromark-util-classify-character@2.0.1: MIT
+  license text: docs/licenses/npm_micromark-util-classify-character_2.0.1.txt
+
+npm micromark-util-combine-extensions@2.0.1: MIT
+  license text: docs/licenses/npm_micromark-util-combine-extensions_2.0.1.txt
+
+npm micromark-util-decode-numeric-character-reference@2.0.2: MIT
+  license text: docs/licenses/npm_micromark-util-decode-numeric-character-reference_2.0.2.txt
+
+npm micromark-util-decode-string@2.0.1: MIT
+  license text: docs/licenses/npm_micromark-util-decode-string_2.0.1.txt
+
+npm micromark-util-edit-map@1.0.0: MIT
+  license text: docs/licenses/npm_micromark-util-edit-map_1.0.0.txt
+
+npm micromark-util-encode@2.0.1: MIT
+  license text: docs/licenses/npm_micromark-util-encode_2.0.1.txt
+
+npm micromark-util-html-tag-name@2.0.1: MIT
+  license text: docs/licenses/npm_micromark-util-html-tag-name_2.0.1.txt
+
+npm micromark-util-normalize-identifier@2.0.1: MIT
+  license text: docs/licenses/npm_micromark-util-normalize-identifier_2.0.1.txt
+
+npm micromark-util-resolve-all@2.0.1: MIT
+  license text: docs/licenses/npm_micromark-util-resolve-all_2.0.1.txt
+
+npm micromark-util-sanitize-uri@2.0.1: MIT
+  license text: docs/licenses/npm_micromark-util-sanitize-uri_2.0.1.txt
+
+npm micromark-util-subtokenize@2.1.0: MIT
+  license text: docs/licenses/npm_micromark-util-subtokenize_2.1.0.txt
+
+npm micromark-util-symbol@2.0.1: MIT
+  license text: docs/licenses/npm_micromark-util-symbol_2.0.1.txt
+
+npm micromark-util-types@2.0.3: MIT
+  license text: docs/licenses/npm_micromark-util-types_2.0.3.txt
+
+npm micromark@4.0.3: MIT
+  license text: docs/licenses/npm_micromark_4.0.3.txt
+
+npm minimatch@5.1.9: ISC
+  license text: docs/licenses/npm_minimatch_5.1.9.txt
+
+npm ms@2.1.3: MIT
+  license text: docs/licenses/npm_ms_2.1.3.txt
+
+npm nanoid@3.3.20: MIT
+  license text: docs/licenses/npm_nanoid_3.3.20.txt
+
+npm openapi-typescript@7.13.0: MIT
+  license text: docs/licenses/npm_openapi-typescript_7.13.0.txt
+
+npm parse-entities@4.0.2: MIT
+  license text: docs/licenses/npm_parse-entities_4.0.2.txt
+
+npm parse-json@8.3.0: MIT
+  license text: docs/licenses/npm_parse-json_8.3.0.txt
+
+npm picocolors@1.1.1: ISC
+  license text: docs/licenses/npm_picocolors_1.1.1.txt
+
+npm picomatch@4.0.7: MIT
+  license text: docs/licenses/npm_picomatch_4.0.7.txt
+
+npm playwright-core@1.65.0: Apache-2.0
+  license text: docs/licenses/npm_playwright-core_1.65.0.txt
+
+npm playwright@1.65.0: Apache-2.0
+  license text: docs/licenses/npm_playwright_1.65.0.txt
+
+npm pluralize@8.0.0: MIT
+  license text: docs/licenses/npm_pluralize_8.0.0.txt
+
+npm postcss@8.5.32: MIT
+  license text: docs/licenses/npm_postcss_8.5.32.txt
+
+npm property-information@7.2.0: MIT
+  license text: docs/licenses/npm_property-information_7.2.0.txt
+
+npm react-dom@19.3.1: MIT
+  license text: docs/licenses/npm_react-dom_19.3.1.txt
+
+npm react-markdown@10.1.0: MIT
+  license text: docs/licenses/npm_react-markdown_10.1.0.txt
+
+npm react-router@8.5.1: MIT
+  license text: docs/licenses/npm_react-router_8.5.1.txt
+
+npm react@19.3.1: MIT
+  license text: docs/licenses/npm_react_19.3.1.txt
+
+npm remark-gfm@4.0.1: MIT
+  license text: docs/licenses/npm_remark-gfm_4.0.1.txt
+
+npm remark-parse@11.0.0: MIT
+  license text: docs/licenses/npm_remark-parse_11.0.0.txt
+
+npm remark-rehype@11.1.2: MIT
+  license text: docs/licenses/npm_remark-rehype_11.1.2.txt
+
+npm remark-stringify@11.0.0: MIT
+  license text: docs/licenses/npm_remark-stringify_11.0.0.txt
+
+npm require-from-string@2.0.2: MIT
+  license text: docs/licenses/npm_require-from-string_2.0.2.txt
+
+npm reselect@5.3.0: MIT
+  license text: docs/licenses/npm_reselect_5.3.0.txt
+
+npm rolldown@1.2.19: MIT
+  license text: docs/licenses/npm_rolldown_1.2.19.txt
+
+npm scheduler@0.28.0: MIT
+  license text: docs/licenses/npm_scheduler_0.28.0.txt
+
+npm source-map-js@1.2.2: BSD-3-Clause
+  license text: docs/licenses/npm_source-map-js_1.2.2.txt
+
+npm space-separated-tokens@2.0.2: MIT
+  license text: docs/licenses/npm_space-separated-tokens_2.0.2.txt
+
+npm stringify-entities@4.0.4: MIT
+  license text: docs/licenses/npm_stringify-entities_4.0.4.txt
+
+npm style-mod@4.1.4: MIT
+  license text: docs/licenses/npm_style-mod_4.1.4.txt
+
+npm style-to-object@2.0.2: MIT
+  license text: docs/licenses/npm_style-to-object_2.0.2.txt
+
+npm supports-color@10.2.2: MIT
+  license text: docs/licenses/npm_supports-color_10.2.2.txt
+
+npm tailwindcss@4.3.5: MIT
+  license text: docs/licenses/npm_tailwindcss_4.3.5.txt
+
+npm tapable@2.3.4: MIT
+  license text: docs/licenses/npm_tapable_2.3.4.txt
+
+npm tinyglobby@0.2.17: MIT
+  license text: docs/licenses/npm_tinyglobby_0.2.17.txt
+
+npm trim-lines@3.0.1: MIT
+  license text: docs/licenses/npm_trim-lines_3.0.1.txt
+
+npm trough@2.2.0: MIT
+  license text: docs/licenses/npm_trough_2.2.0.txt
+
+npm tslib@2.8.1: 0BSD
+  license text: docs/licenses/npm_tslib_2.8.1.txt
+
+npm tslib@2.9.1: 0BSD
+  license text: docs/licenses/npm_tslib_2.9.1.txt
+
+npm type-fest@4.41.0: (MIT OR CC0-1.0)
+
+npm typescript@5.9.3: Apache-2.0
+  license text: docs/licenses/npm_typescript_5.9.3.txt
+
+npm unified@11.0.5: MIT
+  license text: docs/licenses/npm_unified_11.0.5.txt
+
+npm unist-util-is@6.0.1: MIT
+  license text: docs/licenses/npm_unist-util-is_6.0.1.txt
+
+npm unist-util-position@5.0.0: MIT
+  license text: docs/licenses/npm_unist-util-position_5.0.0.txt
+
+npm unist-util-stringify-position@4.0.0: MIT
+  license text: docs/licenses/npm_unist-util-stringify-position_4.0.0.txt
+
+npm unist-util-visit-parents@6.1.0: MIT
+  license text: docs/licenses/npm_unist-util-visit-parents_6.1.0.txt
+
+npm unist-util-visit@5.2.0: MIT
+  license text: docs/licenses/npm_unist-util-visit_5.2.0.txt
+
+npm uri-js-replace@1.0.2: MIT
+  license text: docs/licenses/npm_uri-js-replace_1.0.2.txt
+
+npm use-sync-external-store@1.7.0: MIT
+  license text: docs/licenses/npm_use-sync-external-store_1.7.0.txt
+
+npm vfile-message@4.0.4: MIT
+  license text: docs/licenses/npm_vfile-message_4.0.4.txt
+
+npm vfile@6.0.3: MIT
+  license text: docs/licenses/npm_vfile_6.0.3.txt
+
+npm vite@8.3.8: MIT
+  license text: docs/licenses/npm_vite_8.3.8.txt
+
+npm w3c-keyname@2.2.8: MIT
+  license text: docs/licenses/npm_w3c-keyname_2.2.8.txt
+
+npm yaml-ast-parser@0.0.43: Apache-2.0
+  license text: docs/licenses/npm_yaml-ast-parser_0.0.43.txt
+
+npm yargs-parser@21.1.1: ISC
+  license text: docs/licenses/npm_yargs-parser_21.1.1.txt
+
+npm zwitch@2.0.4: MIT
+  license text: docs/licenses/npm_zwitch_2.0.4.txt
+
+NuGet Humanizer.Core@2.14.1: MIT
+
+NuGet Microsoft.AspNetCore.Cryptography.Internal@10.0.15: MIT
+
+NuGet Microsoft.AspNetCore.Cryptography.KeyDerivation@10.0.15: MIT
+
+NuGet Microsoft.AspNetCore.Identity.EntityFrameworkCore@10.0.15: MIT
+
+NuGet Microsoft.Build.Framework@18.0.2: MIT
+
+NuGet Microsoft.CodeAnalysis.Analyzers@3.11.0: MIT
+
+NuGet Microsoft.CodeAnalysis.Common@5.0.0: MIT
+
+NuGet Microsoft.CodeAnalysis.CSharp.Workspaces@5.0.0: MIT
+
+NuGet Microsoft.CodeAnalysis.CSharp@5.0.0: MIT
+
+NuGet Microsoft.CodeAnalysis.Workspaces.Common@5.0.0: MIT
+
+NuGet Microsoft.CodeAnalysis.Workspaces.MSBuild@5.0.0: MIT
+
+NuGet Microsoft.CodeCoverage@18.0.1: MIT
+
+NuGet Microsoft.EntityFrameworkCore.Abstractions@10.0.15: MIT
+
+NuGet Microsoft.EntityFrameworkCore.Analyzers@10.0.15: MIT
+
+NuGet Microsoft.EntityFrameworkCore.Design@10.0.15: MIT
+
+NuGet Microsoft.EntityFrameworkCore.Relational@10.0.15: MIT
+
+NuGet Microsoft.EntityFrameworkCore@10.0.15: MIT
+
+NuGet Microsoft.Extensions.AI.Abstractions@10.11.0: MIT
+
+NuGet Microsoft.Extensions.Caching.Abstractions@10.0.15: MIT
+
+NuGet Microsoft.Extensions.Caching.Memory@10.0.15: MIT
+
+NuGet Microsoft.Extensions.Configuration.Abstractions@10.0.15: MIT
+
+NuGet Microsoft.Extensions.Configuration.Binder@10.0.15: MIT
+
+NuGet Microsoft.Extensions.Configuration@10.0.15: MIT
+
+NuGet Microsoft.Extensions.DependencyInjection.Abstractions@10.0.15: MIT
+
+NuGet Microsoft.Extensions.DependencyInjection@10.0.15: MIT
+
+NuGet Microsoft.Extensions.DependencyModel@10.0.15: MIT
+
+NuGet Microsoft.Extensions.Diagnostics.Abstractions@10.0.15: MIT
+
+NuGet Microsoft.Extensions.Diagnostics@10.0.15: MIT
+
+NuGet Microsoft.Extensions.FileProviders.Abstractions@10.0.14: MIT
+
+NuGet Microsoft.Extensions.Hosting.Abstractions@10.0.14: MIT
+
+NuGet Microsoft.Extensions.Identity.Core@10.0.15: MIT
+
+NuGet Microsoft.Extensions.Identity.Stores@10.0.15: MIT
+
+NuGet Microsoft.Extensions.Logging.Abstractions@10.0.15: MIT
+
+NuGet Microsoft.Extensions.Logging@10.0.15: MIT
+
+NuGet Microsoft.Extensions.Options.ConfigurationExtensions@10.0.15: MIT
+
+NuGet Microsoft.Extensions.Options@10.0.15: MIT
+
+NuGet Microsoft.Extensions.Primitives@10.0.15: MIT
+
+NuGet Microsoft.NET.Test.Sdk@18.0.1: MIT
+
+NuGet Microsoft.TestPlatform.ObjectModel@18.0.1: MIT
+
+NuGet Microsoft.TestPlatform.TestHost@18.0.1: MIT
+
+NuGet Microsoft.VisualStudio.SolutionPersistence@1.0.52: MIT
+  license text: docs/licenses/nuget_Microsoft.VisualStudio.SolutionPersistence_1.0.52.txt
+
+NuGet ModelContextProtocol.AspNetCore@2.4.0: Apache-2.0
+
+NuGet ModelContextProtocol.Core@2.4.0: Apache-2.0
+
+NuGet ModelContextProtocol@2.4.0: Apache-2.0
+
+NuGet Mono.TextTemplating@3.0.0: MIT
+
+NuGet Newtonsoft.Json@13.0.3: MIT
+  license text: docs/licenses/nuget_Newtonsoft.Json_13.0.3.txt
+
+NuGet Newtonsoft.Json@13.0.4: MIT
+  license text: docs/licenses/nuget_Newtonsoft.Json_13.0.4.txt
+
+NuGet Npgsql.EntityFrameworkCore.PostgreSQL@10.0.3: PostgreSQL
+
+NuGet Npgsql@10.0.3: PostgreSQL
+
+NuGet System.CodeDom@6.0.0: MIT
+  license text: docs/licenses/nuget_System.CodeDom_6.0.0.txt
+
+NuGet System.Composition.AttributedModel@9.0.0: MIT
+  license text: docs/licenses/nuget_System.Composition.AttributedModel_9.0.0.txt
+
+NuGet System.Composition.Convention@9.0.0: MIT
+  license text: docs/licenses/nuget_System.Composition.Convention_9.0.0.txt
+
+NuGet System.Composition.Hosting@9.0.0: MIT
+  license text: docs/licenses/nuget_System.Composition.Hosting_9.0.0.txt
+
+NuGet System.Composition.Runtime@9.0.0: MIT
+  license text: docs/licenses/nuget_System.Composition.Runtime_9.0.0.txt
+
+NuGet System.Composition.TypedParts@9.0.0: MIT
+  license text: docs/licenses/nuget_System.Composition.TypedParts_9.0.0.txt
+
+NuGet System.Composition@9.0.0: MIT
+  license text: docs/licenses/nuget_System.Composition_9.0.0.txt
+
+NuGet xunit.abstractions@2.0.3: Apache-2.0
+  license text: docs/licenses/nuget_xunit.abstractions_2.0.3.txt
+
+NuGet xunit.analyzers@1.18.0: Apache-2.0
+
+NuGet xunit.assert@2.9.3: Apache-2.0
+
+NuGet xunit.core@2.9.3: Apache-2.0
+
+NuGet xunit.extensibility.core@2.9.3: Apache-2.0
+
+NuGet xunit.extensibility.execution@2.9.3: Apache-2.0
+
+NuGet xunit.runner.visualstudio@3.1.5: Apache-2.0
+
+NuGet xunit@2.9.3: Apache-2.0

@@ -1,0 +1,2943 @@
+{
+  "scope": "Restored managed, Go and current-platform npm packages including build/test dependencies; OS/base-image packages and uninstalled optional platform binaries are not covered.",
+  "packages": [
+    {
+      "ecosystem": "Go",
+      "name": "golang.org/x/sys",
+      "version": "v0.40.0",
+      "license": "BSD-3-Clause",
+      "licenseText": "licenses/go_golang.org_x_sys_v0.40.0.txt",
+      "sha256": "911f8f5782931320f5b8d1160a76365b83aea6447ee6c04fa6d5591467db9dad",
+      "metadataSource": "go.mod and restored module LICENSE"
+    },
+    {
+      "ecosystem": "Go",
+      "name": "golang.org/x/term",
+      "version": "v0.39.0",
+      "license": "BSD-3-Clause",
+      "licenseText": "licenses/go_golang.org_x_term_v0.39.0.txt",
+      "sha256": "911f8f5782931320f5b8d1160a76365b83aea6447ee6c04fa6d5591467db9dad",
+      "metadataSource": "go.mod and restored module LICENSE"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@babel/code-frame",
+      "version": "7.29.7",
+      "license": "MIT",
+      "developmentOnly": true,
+      "licenseText": "licenses/npm__babel_code-frame_7.29.7.txt",
+      "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@babel/helper-validator-identifier",
+      "version": "7.29.7",
+      "license": "MIT",
+      "developmentOnly": true,
+      "licenseText": "licenses/npm__babel_helper-validator-identifier_7.29.7.txt",
+      "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@babel/runtime",
+      "version": "7.29.14",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm__babel_runtime_7.29.14.txt",
+      "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@base-ui/react",
+      "version": "1.9.0",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm__base-ui_react_1.9.0.txt",
+      "sha256": "07fc1b39d69d14bc7d40482a628f47226258eb01265db68ae684944b916beb2a",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@base-ui/utils",
+      "version": "0.5.0",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm__base-ui_utils_0.5.0.txt",
+      "sha256": "07fc1b39d69d14bc7d40482a628f47226258eb01265db68ae684944b916beb2a",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@codemirror/autocomplete",
+      "version": "6.20.4",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm__codemirror_autocomplete_6.20.4.txt",
+      "sha256": "05c6130cda97e7600ca91427a41e8a065efcf82365fc0293e7de80faec494c07",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@codemirror/commands",
+      "version": "6.11.1",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm__codemirror_commands_6.11.1.txt",
+      "sha256": "05c6130cda97e7600ca91427a41e8a065efcf82365fc0293e7de80faec494c07",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@codemirror/lang-css",
+      "version": "6.3.1",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm__codemirror_lang-css_6.3.1.txt",
+      "sha256": "05c6130cda97e7600ca91427a41e8a065efcf82365fc0293e7de80faec494c07",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@codemirror/lang-html",
+      "version": "6.4.12",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm__codemirror_lang-html_6.4.12.txt",
+      "sha256": "05c6130cda97e7600ca91427a41e8a065efcf82365fc0293e7de80faec494c07",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@codemirror/lang-javascript",
+      "version": "6.2.5",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm__codemirror_lang-javascript_6.2.5.txt",
+      "sha256": "05c6130cda97e7600ca91427a41e8a065efcf82365fc0293e7de80faec494c07",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@codemirror/lang-markdown",
+      "version": "6.5.2",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm__codemirror_lang-markdown_6.5.2.txt",
+      "sha256": "05c6130cda97e7600ca91427a41e8a065efcf82365fc0293e7de80faec494c07",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@codemirror/language",
+      "version": "6.13.1",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm__codemirror_language_6.13.1.txt",
+      "sha256": "05c6130cda97e7600ca91427a41e8a065efcf82365fc0293e7de80faec494c07",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@codemirror/lint",
+      "version": "6.9.8",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm__codemirror_lint_6.9.8.txt",
+      "sha256": "05c6130cda97e7600ca91427a41e8a065efcf82365fc0293e7de80faec494c07",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@codemirror/search",
+      "version": "6.7.2",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm__codemirror_search_6.7.2.txt",
+      "sha256": "05c6130cda97e7600ca91427a41e8a065efcf82365fc0293e7de80faec494c07",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@codemirror/state",
+      "version": "6.7.6",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm__codemirror_state_6.7.6.txt",
+      "sha256": "05c6130cda97e7600ca91427a41e8a065efcf82365fc0293e7de80faec494c07",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@codemirror/streamparser",
+      "version": "6.0.0",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm__codemirror_streamparser_6.0.0.txt",
+      "sha256": "05c6130cda97e7600ca91427a41e8a065efcf82365fc0293e7de80faec494c07",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@codemirror/theme-one-dark",
+      "version": "6.1.3",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm__codemirror_theme-one-dark_6.1.3.txt",
+      "sha256": "05c6130cda97e7600ca91427a41e8a065efcf82365fc0293e7de80faec494c07",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@codemirror/view",
+      "version": "6.43.15",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm__codemirror_view_6.43.15.txt",
+      "sha256": "05c6130cda97e7600ca91427a41e8a065efcf82365fc0293e7de80faec494c07",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@emnapi/core",
+      "version": "1.11.3",
+      "license": "MIT",
+      "developmentOnly": true,
+      "licenseText": "licenses/npm__emnapi_core_1.11.3.txt",
+      "sha256": "2088f55c6731498410b20c95ebd345ed4a4a800bf74c0fba4d282fd2a021daaa",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@emnapi/core",
+      "version": "2.0.0-beta.2",
+      "license": "MIT",
+      "developmentOnly": true,
+      "licenseText": "licenses/npm__emnapi_core_2.0.0-beta.2.txt",
+      "sha256": "2088f55c6731498410b20c95ebd345ed4a4a800bf74c0fba4d282fd2a021daaa",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@emnapi/runtime",
+      "version": "1.11.3",
+      "license": "MIT",
+      "developmentOnly": true,
+      "licenseText": "licenses/npm__emnapi_runtime_1.11.3.txt",
+      "sha256": "2088f55c6731498410b20c95ebd345ed4a4a800bf74c0fba4d282fd2a021daaa",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@emnapi/runtime",
+      "version": "2.0.0-beta.2",
+      "license": "MIT",
+      "developmentOnly": true,
+      "licenseText": "licenses/npm__emnapi_runtime_2.0.0-beta.2.txt",
+      "sha256": "2088f55c6731498410b20c95ebd345ed4a4a800bf74c0fba4d282fd2a021daaa",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@emnapi/wasi-threads",
+      "version": "1.2.3",
+      "license": "MIT",
+      "developmentOnly": true,
+      "licenseText": "licenses/npm__emnapi_wasi-threads_1.2.3.txt",
+      "sha256": "2088f55c6731498410b20c95ebd345ed4a4a800bf74c0fba4d282fd2a021daaa",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@emnapi/wasi-threads",
+      "version": "2.2.0",
+      "license": "MIT",
+      "developmentOnly": true,
+      "licenseText": "licenses/npm__emnapi_wasi-threads_2.2.0.txt",
+      "sha256": "2088f55c6731498410b20c95ebd345ed4a4a800bf74c0fba4d282fd2a021daaa",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@floating-ui/core",
+      "version": "1.8.0",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm__floating-ui_core_1.8.0.txt",
+      "sha256": "0e4c9a9b6c71019cbbea3bdc20b01223110a9035700f9c960c8fcbf78c2325ce",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@floating-ui/dom",
+      "version": "1.8.0",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm__floating-ui_dom_1.8.0.txt",
+      "sha256": "0e4c9a9b6c71019cbbea3bdc20b01223110a9035700f9c960c8fcbf78c2325ce",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@floating-ui/react-dom",
+      "version": "2.1.9",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm__floating-ui_react-dom_2.1.9.txt",
+      "sha256": "0e4c9a9b6c71019cbbea3bdc20b01223110a9035700f9c960c8fcbf78c2325ce",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@floating-ui/utils",
+      "version": "0.2.12",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm__floating-ui_utils_0.2.12.txt",
+      "sha256": "0e4c9a9b6c71019cbbea3bdc20b01223110a9035700f9c960c8fcbf78c2325ce",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@jridgewell/gen-mapping",
+      "version": "0.3.13",
+      "license": "MIT",
+      "developmentOnly": true,
+      "licenseText": "licenses/npm__jridgewell_gen-mapping_0.3.13.txt",
+      "sha256": "769d154fbde32a915af110b1123650bc79f4cbe675acc66e005265bf069c6c6c",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@jridgewell/remapping",
+      "version": "2.3.5",
+      "license": "MIT",
+      "developmentOnly": true,
+      "licenseText": "licenses/npm__jridgewell_remapping_2.3.5.txt",
+      "sha256": "769d154fbde32a915af110b1123650bc79f4cbe675acc66e005265bf069c6c6c",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@jridgewell/resolve-uri",
+      "version": "3.1.3",
+      "license": "MIT",
+      "developmentOnly": true,
+      "licenseText": "licenses/npm__jridgewell_resolve-uri_3.1.3.txt",
+      "sha256": "b8778b155bfde5a28b023a558753c0fa058a52bb9de35c343c250be1bbcdedab",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@jridgewell/sourcemap-codec",
+      "version": "1.6.0",
+      "license": "MIT",
+      "developmentOnly": true,
+      "licenseText": "licenses/npm__jridgewell_sourcemap-codec_1.6.0.txt",
+      "sha256": "769d154fbde32a915af110b1123650bc79f4cbe675acc66e005265bf069c6c6c",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@jridgewell/trace-mapping",
+      "version": "0.3.31",
+      "license": "MIT",
+      "developmentOnly": true,
+      "licenseText": "licenses/npm__jridgewell_trace-mapping_0.3.31.txt",
+      "sha256": "769d154fbde32a915af110b1123650bc79f4cbe675acc66e005265bf069c6c6c",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@lezer/common",
+      "version": "1.5.5",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm__lezer_common_1.5.5.txt",
+      "sha256": "568902fb66eaf1f11750e966b33fd7b5d7c618e65af09f35ef843635bcf5f1ba",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@lezer/css",
+      "version": "1.3.9",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm__lezer_css_1.3.9.txt",
+      "sha256": "568902fb66eaf1f11750e966b33fd7b5d7c618e65af09f35ef843635bcf5f1ba",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@lezer/highlight",
+      "version": "1.2.5",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm__lezer_highlight_1.2.5.txt",
+      "sha256": "568902fb66eaf1f11750e966b33fd7b5d7c618e65af09f35ef843635bcf5f1ba",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@lezer/html",
+      "version": "1.3.13",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm__lezer_html_1.3.13.txt",
+      "sha256": "568902fb66eaf1f11750e966b33fd7b5d7c618e65af09f35ef843635bcf5f1ba",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@lezer/javascript",
+      "version": "1.5.6",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm__lezer_javascript_1.5.6.txt",
+      "sha256": "568902fb66eaf1f11750e966b33fd7b5d7c618e65af09f35ef843635bcf5f1ba",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@lezer/lr",
+      "version": "1.4.12",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm__lezer_lr_1.4.12.txt",
+      "sha256": "568902fb66eaf1f11750e966b33fd7b5d7c618e65af09f35ef843635bcf5f1ba",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@lezer/markdown",
+      "version": "1.8.1",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm__lezer_markdown_1.8.1.txt",
+      "sha256": "54bd812a6d334e0c438b78a43cea74b67e882739fd3450115ddc7c52be5706c1",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@marijn/find-cluster-break",
+      "version": "1.0.4",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm__marijn_find-cluster-break_1.0.4.txt",
+      "sha256": "9360b00fdd091f05c783b568bdd46c679c41b72415599252de98949462ea1acb",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@napi-rs/wasm-runtime",
+      "version": "1.2.2",
+      "license": "MIT",
+      "developmentOnly": true,
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@napi-rs/wasm-runtime",
+      "version": "1.2.6",
+      "license": "MIT",
+      "developmentOnly": true,
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@oxc-project/types",
+      "version": "0.156.0",
+      "license": "MIT",
+      "developmentOnly": true,
+      "licenseText": "licenses/npm__oxc-project_types_0.156.0.txt",
+      "sha256": "95ced5ecf1133fbf41d409b5555c86c344f83f3b019926057ddbc07cfdcc27b3",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@playwright/test",
+      "version": "1.65.0",
+      "license": "Apache-2.0",
+      "developmentOnly": true,
+      "licenseText": "licenses/npm__playwright_test_1.65.0.txt",
+      "sha256": "45873d00a0dd243596deb4aa23b2493b3d1f0671921bf2538ea431d7380220eb",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@redocly/ajv",
+      "version": "8.11.2",
+      "license": "MIT",
+      "developmentOnly": true,
+      "licenseText": "licenses/npm__redocly_ajv_8.11.2.txt",
+      "sha256": "a05350a88e318e4f5f2c2a1ff1e2e88daa4dd38e6e78b71cccae422bdc762cc3",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@redocly/config",
+      "version": "0.22.0",
+      "license": "MIT",
+      "developmentOnly": true,
+      "licenseText": "licenses/npm__redocly_config_0.22.0.txt",
+      "sha256": "92bb818822d131f7c4987ee5c4191eb3d73ea831b1f40904ea4f028b3cde1d64",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@redocly/openapi-core",
+      "version": "1.34.24",
+      "license": "MIT",
+      "developmentOnly": true,
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@remix-run/route-pattern",
+      "version": "0.22.1",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm__remix-run_route-pattern_0.22.1.txt",
+      "sha256": "d6baf87f30d13d2d7770c18c858e7a31fa7ceede4bc9469a50f03dbafe455cb4",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@rolldown/binding-win32-x64-msvc",
+      "version": "1.2.19",
+      "license": "MIT",
+      "developmentOnly": true,
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@rolldown/pluginutils",
+      "version": "1.1.1",
+      "license": "MIT",
+      "developmentOnly": true,
+      "licenseText": "licenses/npm__rolldown_pluginutils_1.1.1.txt",
+      "sha256": "e1919b3b98b8bf6c1b99fcc60a0ed46027c97ac947432e1278446c9606f50161",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@tailwindcss/node",
+      "version": "4.3.5",
+      "license": "MIT",
+      "developmentOnly": true,
+      "licenseText": "licenses/npm__tailwindcss_node_4.3.5.txt",
+      "sha256": "60e0b68c0f35c078eef3a5d29419d0b03ff84ec1df9c3f9d6e39a519a5ae7985",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@tailwindcss/oxide-wasm32-wasi",
+      "version": "4.3.5",
+      "license": "MIT",
+      "developmentOnly": true,
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@tailwindcss/oxide-win32-x64-msvc",
+      "version": "4.3.5",
+      "license": "MIT",
+      "developmentOnly": true,
+      "licenseText": "licenses/npm__tailwindcss_oxide-win32-x64-msvc_4.3.5.txt",
+      "sha256": "60e0b68c0f35c078eef3a5d29419d0b03ff84ec1df9c3f9d6e39a519a5ae7985",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@tailwindcss/oxide",
+      "version": "4.3.5",
+      "license": "MIT",
+      "developmentOnly": true,
+      "licenseText": "licenses/npm__tailwindcss_oxide_4.3.5.txt",
+      "sha256": "60e0b68c0f35c078eef3a5d29419d0b03ff84ec1df9c3f9d6e39a519a5ae7985",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@tailwindcss/vite",
+      "version": "4.3.5",
+      "license": "MIT",
+      "developmentOnly": true,
+      "licenseText": "licenses/npm__tailwindcss_vite_4.3.5.txt",
+      "sha256": "60e0b68c0f35c078eef3a5d29419d0b03ff84ec1df9c3f9d6e39a519a5ae7985",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@tybys/wasm-util",
+      "version": "0.10.3",
+      "license": "MIT",
+      "developmentOnly": true,
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@tybys/wasm-util",
+      "version": "0.10.4",
+      "license": "MIT",
+      "developmentOnly": true,
+      "licenseText": "licenses/npm__tybys_wasm-util_0.10.4.txt",
+      "sha256": "09e436100bf926e78df875ec80cf3d0c643dfec779b52cfe2aa96afa0de714cb",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@types/debug",
+      "version": "4.1.13",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm__types_debug_4.1.13.txt",
+      "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@types/estree-jsx",
+      "version": "1.0.5",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm__types_estree-jsx_1.0.5.txt",
+      "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@types/estree",
+      "version": "1.0.10",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm__types_estree_1.0.10.txt",
+      "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@types/hast",
+      "version": "3.0.5",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm__types_hast_3.0.5.txt",
+      "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@types/mdast",
+      "version": "4.0.4",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm__types_mdast_4.0.4.txt",
+      "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@types/ms",
+      "version": "2.1.0",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm__types_ms_2.1.0.txt",
+      "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@types/react-dom",
+      "version": "19.3.0",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm__types_react-dom_19.3.0.txt",
+      "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@types/react",
+      "version": "19.3.0",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm__types_react_19.3.0.txt",
+      "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@types/unist",
+      "version": "2.0.11",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm__types_unist_2.0.11.txt",
+      "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@types/unist",
+      "version": "3.0.3",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm__types_unist_3.0.3.txt",
+      "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@uiw/codemirror-extensions-basic-setup",
+      "version": "4.25.3",
+      "license": "MIT",
+      "developmentOnly": false,
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@uiw/react-codemirror",
+      "version": "4.25.3",
+      "license": "MIT",
+      "developmentOnly": false,
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@ungap/structured-clone",
+      "version": "1.4.0",
+      "license": "ISC",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm__ungap_structured-clone_1.4.0.txt",
+      "sha256": "dc6d4961d8b6ee747231582ae9c53ce1d66bf76bc9f5a28f554c0e97210953bf",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@vitejs/plugin-react",
+      "version": "6.3.0",
+      "license": "MIT",
+      "developmentOnly": true,
+      "licenseText": "licenses/npm__vitejs_plugin-react_6.3.0.txt",
+      "sha256": "29b68325fe026047d13e187b44c33b2acacf7dc647dec4583702e59f235e13b5",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "agent-base",
+      "version": "7.1.4",
+      "license": "MIT",
+      "developmentOnly": true,
+      "licenseText": "licenses/npm_agent-base_7.1.4.txt",
+      "sha256": "8d8c55319c7729d57be811c747452636688d54f19701ee0752b6b15ad3771d9a",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "ansi-colors",
+      "version": "4.1.3",
+      "license": "MIT",
+      "developmentOnly": true,
+      "licenseText": "licenses/npm_ansi-colors_4.1.3.txt",
+      "sha256": "94e1923e52409cfd50e97988d9772c0de15f65700097e3227fec367a39e82b94",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "argparse",
+      "version": "2.0.1",
+      "license": "Python-2.0",
+      "developmentOnly": true,
+      "licenseText": "licenses/npm_argparse_2.0.1.txt",
+      "sha256": "de4d1f2d2ad5ad0cfd1657a106476b31cb5db5ef9d1ff842b237c0c81f0c8a23",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "bail",
+      "version": "2.0.2",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_bail_2.0.2.txt",
+      "sha256": "63cb98b3f6abfb3c3592c16f88253c1bdc834087bf52671e8ce5609e4eb693cf",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "balanced-match",
+      "version": "1.0.2",
+      "license": "MIT",
+      "developmentOnly": true,
+      "licenseText": "licenses/npm_balanced-match_1.0.2.txt",
+      "sha256": "a1bd5deadb6a06dd74efa852c1b8b23f63b67f2214fbe9c8bd591da51da69268",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "brace-expansion",
+      "version": "2.1.8",
+      "license": "MIT",
+      "developmentOnly": true,
+      "licenseText": "licenses/npm_brace-expansion_2.1.8.txt",
+      "sha256": "68f12f6e2c33688699249c01d8f9623c534da20aa71989c57b061b7bc1676d14",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "ccount",
+      "version": "2.0.1",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_ccount_2.0.1.txt",
+      "sha256": "63cb98b3f6abfb3c3592c16f88253c1bdc834087bf52671e8ce5609e4eb693cf",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "change-case",
+      "version": "5.4.4",
+      "license": "MIT",
+      "developmentOnly": true,
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "character-entities-html4",
+      "version": "2.1.0",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_character-entities-html4_2.1.0.txt",
+      "sha256": "63cb98b3f6abfb3c3592c16f88253c1bdc834087bf52671e8ce5609e4eb693cf",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "character-entities-legacy",
+      "version": "3.0.0",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_character-entities-legacy_3.0.0.txt",
+      "sha256": "63cb98b3f6abfb3c3592c16f88253c1bdc834087bf52671e8ce5609e4eb693cf",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "character-entities",
+      "version": "2.0.2",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_character-entities_2.0.2.txt",
+      "sha256": "63cb98b3f6abfb3c3592c16f88253c1bdc834087bf52671e8ce5609e4eb693cf",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "character-reference-invalid",
+      "version": "2.0.1",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_character-reference-invalid_2.0.1.txt",
+      "sha256": "63cb98b3f6abfb3c3592c16f88253c1bdc834087bf52671e8ce5609e4eb693cf",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "codemirror",
+      "version": "6.0.2",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_codemirror_6.0.2.txt",
+      "sha256": "05c6130cda97e7600ca91427a41e8a065efcf82365fc0293e7de80faec494c07",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "colorette",
+      "version": "1.4.0",
+      "license": "MIT",
+      "developmentOnly": true,
+      "licenseText": "licenses/npm_colorette_1.4.0.txt",
+      "sha256": "f101c761d255d0dddc77dd8a9327733b03d381798ec54a1bb718367207b48a8e",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "comma-separated-tokens",
+      "version": "2.0.3",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_comma-separated-tokens_2.0.3.txt",
+      "sha256": "ca4662cb5d1b738fbe5350c0d5485ba11773b4b7208974082ae6e129a52d631d",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "cookie-es",
+      "version": "3.1.1",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_cookie-es_3.1.1.txt",
+      "sha256": "f57270b85c3922414c061e36b93f7c74420b8facf5ccf729202d5ff5b7cd7608",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "crelt",
+      "version": "1.0.7",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_crelt_1.0.7.txt",
+      "sha256": "23852ebf6aef7fadffc92514b3c5df163a8651f2c3ed0dbb494cb49d93bd5de5",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "csstype",
+      "version": "3.2.3",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_csstype_3.2.3.txt",
+      "sha256": "11d55bd4541c75ee7879547ac49089c489163dae49551389713c3d026cab383e",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "debug",
+      "version": "4.4.3",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_debug_4.4.3.txt",
+      "sha256": "3a61c6c96caf5c1d9b623fb9b04c822b783dfcb78aa7e49c76a3f643e6ed7f95",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "decode-named-character-reference",
+      "version": "1.3.0",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_decode-named-character-reference_1.3.0.txt",
+      "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "dequal",
+      "version": "2.0.3",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_dequal_2.0.3.txt",
+      "sha256": "306fa513e39b23a6e8747520de761809d206b99800ef41907b530226574c59ae",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "detect-libc",
+      "version": "2.1.2",
+      "license": "Apache-2.0",
+      "developmentOnly": true,
+      "licenseText": "licenses/npm_detect-libc_2.1.2.txt",
+      "sha256": "b40930bbcf80744c86c46a12bc9da056641d722716c378f5659b9e555ef833e1",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "devlop",
+      "version": "1.1.0",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_devlop_1.1.0.txt",
+      "sha256": "6f296a5eccc1dc96714bb94ebaa9cac25b0a1467d74cc5263ac4d0646ab01f62",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "enhanced-resolve",
+      "version": "5.27.0",
+      "license": "MIT",
+      "developmentOnly": true,
+      "licenseText": "licenses/npm_enhanced-resolve_5.27.0.txt",
+      "sha256": "9068a8782d2fb4c6e432cfa25334efa56f722822180570802bf86e71b6003b1e",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "escape-string-regexp",
+      "version": "5.0.0",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_escape-string-regexp_5.0.0.txt",
+      "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "estree-util-is-identifier-name",
+      "version": "3.0.0",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_estree-util-is-identifier-name_3.0.0.txt",
+      "sha256": "536804b3adbff17dbbb9ed0d2bf9655b78f07640278581e37e3d7475282d5e61",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "extend",
+      "version": "3.0.2",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_extend_3.0.2.txt",
+      "sha256": "97af7428f93afbab9bf79cd09254da1357161794f4255eb1b4599f04dd2d2e7c",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "fast-deep-equal",
+      "version": "3.1.3",
+      "license": "MIT",
+      "developmentOnly": true,
+      "licenseText": "licenses/npm_fast-deep-equal_3.1.3.txt",
+      "sha256": "7bf9b2de73a6b356761c948d0e9eeb4be6c1270bd04c79cd489c1e400ffdfc1a",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "fdir",
+      "version": "6.5.0",
+      "license": "MIT",
+      "developmentOnly": true,
+      "licenseText": "licenses/npm_fdir_6.5.0.txt",
+      "sha256": "9a39f2aadab11a3697edd668ff2d8ad885b649737b7ab4d3bf12b34e5ada0c86",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "graceful-fs",
+      "version": "4.2.12",
+      "license": "BlueOak-1.0.0",
+      "developmentOnly": true,
+      "licenseText": "licenses/npm_graceful-fs_4.2.12.txt",
+      "sha256": "8a1af140fdfbf5afd3df27f7e662f989c5b963a300020dfafce42033cae9e004",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "hast-util-to-jsx-runtime",
+      "version": "2.3.7",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_hast-util-to-jsx-runtime_2.3.7.txt",
+      "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "hast-util-whitespace",
+      "version": "3.0.0",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_hast-util-whitespace_3.0.0.txt",
+      "sha256": "ca4662cb5d1b738fbe5350c0d5485ba11773b4b7208974082ae6e129a52d631d",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "html-url-attributes",
+      "version": "3.0.1",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_html-url-attributes_3.0.1.txt",
+      "sha256": "e18cf5173e928f808f0cd208097fee8fbec9d28fc0255213938e4c559e29ff58",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "https-proxy-agent",
+      "version": "7.0.6",
+      "license": "MIT",
+      "developmentOnly": true,
+      "licenseText": "licenses/npm_https-proxy-agent_7.0.6.txt",
+      "sha256": "8d8c55319c7729d57be811c747452636688d54f19701ee0752b6b15ad3771d9a",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "index-to-position",
+      "version": "1.2.0",
+      "license": "MIT",
+      "developmentOnly": true,
+      "licenseText": "licenses/npm_index-to-position_1.2.0.txt",
+      "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "inline-style-parser",
+      "version": "0.2.9",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_inline-style-parser_0.2.9.txt",
+      "sha256": "395c95f20598da653ff1eb1cb9d74947c7fac689697147f1d192fd0242a0e635",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "is-alphabetical",
+      "version": "2.0.1",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_is-alphabetical_2.0.1.txt",
+      "sha256": "ca4662cb5d1b738fbe5350c0d5485ba11773b4b7208974082ae6e129a52d631d",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "is-alphanumerical",
+      "version": "2.0.1",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_is-alphanumerical_2.0.1.txt",
+      "sha256": "ca4662cb5d1b738fbe5350c0d5485ba11773b4b7208974082ae6e129a52d631d",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "is-decimal",
+      "version": "2.0.1",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_is-decimal_2.0.1.txt",
+      "sha256": "ca4662cb5d1b738fbe5350c0d5485ba11773b4b7208974082ae6e129a52d631d",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "is-hexadecimal",
+      "version": "2.0.1",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_is-hexadecimal_2.0.1.txt",
+      "sha256": "ca4662cb5d1b738fbe5350c0d5485ba11773b4b7208974082ae6e129a52d631d",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "is-plain-obj",
+      "version": "4.1.0",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_is-plain-obj_4.1.0.txt",
+      "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "jiti",
+      "version": "2.7.0",
+      "license": "MIT",
+      "developmentOnly": true,
+      "licenseText": "licenses/npm_jiti_2.7.0.txt",
+      "sha256": "46231df5a7733c3f52f11b71f3df61813007745b62b09031acfb45fb42d75082",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "js-levenshtein",
+      "version": "1.1.6",
+      "license": "MIT",
+      "developmentOnly": true,
+      "licenseText": "licenses/npm_js-levenshtein_1.1.6.txt",
+      "sha256": "0f57363c43caf754cf943327878c910ce1386c82c029462cf7274c4a50b5961f",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "js-tokens",
+      "version": "4.0.0",
+      "license": "MIT",
+      "developmentOnly": true,
+      "licenseText": "licenses/npm_js-tokens_4.0.0.txt",
+      "sha256": "2213d91c606205c71eb051a199478cdc2adde945893404d7f1421436dd6d5cc1",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "js-yaml",
+      "version": "4.3.2",
+      "license": "MIT",
+      "developmentOnly": true,
+      "licenseText": "licenses/npm_js-yaml_4.3.2.txt",
+      "sha256": "a07bc24468b9654ce76a547d47a2db282d07733b715db4c73a98bd63961f9550",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "json-schema-traverse",
+      "version": "1.0.0",
+      "license": "MIT",
+      "developmentOnly": true,
+      "licenseText": "licenses/npm_json-schema-traverse_1.0.0.txt",
+      "sha256": "7bf9b2de73a6b356761c948d0e9eeb4be6c1270bd04c79cd489c1e400ffdfc1a",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "lightningcss-win32-x64-msvc",
+      "version": "1.33.0",
+      "license": "MPL-2.0",
+      "developmentOnly": true,
+      "licenseText": "licenses/npm_lightningcss-win32-x64-msvc_1.33.0.txt",
+      "sha256": "5eba353fe5076ac3432177f8ab1cf75e3afcd0584251e37c3bfead5f447d040e",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "lightningcss",
+      "version": "1.33.0",
+      "license": "MPL-2.0",
+      "developmentOnly": true,
+      "licenseText": "licenses/npm_lightningcss_1.33.0.txt",
+      "sha256": "5eba353fe5076ac3432177f8ab1cf75e3afcd0584251e37c3bfead5f447d040e",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "longest-streak",
+      "version": "3.1.0",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_longest-streak_3.1.0.txt",
+      "sha256": "9f084fac69d8cf1e6ce983ba5a3499c7695ed74a26ec625c38f0fd19fddd5e10",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "lucide-react",
+      "version": "0.468.0",
+      "license": "ISC",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_lucide-react_0.468.0.txt",
+      "sha256": "1e7290b35280a048667bbf0ebabac1c7fd52a75300e8b2946ac165715997f2bc",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "magic-string",
+      "version": "1.4.5",
+      "license": "MIT",
+      "developmentOnly": true,
+      "licenseText": "licenses/npm_magic-string_1.4.5.txt",
+      "sha256": "1cbe51b907662f6cb1492b16c359384a595180bf0e4d101603ed525e75c4e484",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "markdown-table",
+      "version": "3.1.0",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_markdown-table_3.1.0.txt",
+      "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "mdast-util-find-and-replace",
+      "version": "3.0.4",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_mdast-util-find-and-replace_3.0.4.txt",
+      "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "mdast-util-from-markdown",
+      "version": "2.1.0",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_mdast-util-from-markdown_2.1.0.txt",
+      "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "mdast-util-gfm-autolink-literal",
+      "version": "2.1.0",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_mdast-util-gfm-autolink-literal_2.1.0.txt",
+      "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "mdast-util-gfm-footnote",
+      "version": "2.1.0",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_mdast-util-gfm-footnote_2.1.0.txt",
+      "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "mdast-util-gfm-strikethrough",
+      "version": "2.0.1",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_mdast-util-gfm-strikethrough_2.0.1.txt",
+      "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "mdast-util-gfm-table",
+      "version": "2.0.1",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_mdast-util-gfm-table_2.0.1.txt",
+      "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "mdast-util-gfm-task-list-item",
+      "version": "2.0.1",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_mdast-util-gfm-task-list-item_2.0.1.txt",
+      "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "mdast-util-gfm",
+      "version": "3.1.0",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_mdast-util-gfm_3.1.0.txt",
+      "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "mdast-util-mdx-expression",
+      "version": "2.0.1",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_mdast-util-mdx-expression_2.0.1.txt",
+      "sha256": "536804b3adbff17dbbb9ed0d2bf9655b78f07640278581e37e3d7475282d5e61",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "mdast-util-mdx-jsx",
+      "version": "3.2.1",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_mdast-util-mdx-jsx_3.2.1.txt",
+      "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "mdast-util-mdxjs-esm",
+      "version": "2.0.1",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_mdast-util-mdxjs-esm_2.0.1.txt",
+      "sha256": "536804b3adbff17dbbb9ed0d2bf9655b78f07640278581e37e3d7475282d5e61",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "mdast-util-phrasing",
+      "version": "4.1.0",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_mdast-util-phrasing_4.1.0.txt",
+      "sha256": "b6d1a4e1831b177acc96f22a817d4f0f4c18419355badc3125754445fc69e3a7",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "mdast-util-to-hast",
+      "version": "13.2.2",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_mdast-util-to-hast_13.2.2.txt",
+      "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "mdast-util-to-markdown",
+      "version": "2.2.3",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_mdast-util-to-markdown_2.2.3.txt",
+      "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "mdast-util-to-string",
+      "version": "4.0.0",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_mdast-util-to-string_4.0.0.txt",
+      "sha256": "63cb98b3f6abfb3c3592c16f88253c1bdc834087bf52671e8ce5609e4eb693cf",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "micromark-core-commonmark",
+      "version": "2.0.4",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_micromark-core-commonmark_2.0.4.txt",
+      "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "micromark-extension-gfm-autolink-literal",
+      "version": "2.1.0",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_micromark-extension-gfm-autolink-literal_2.1.0.txt",
+      "sha256": "536804b3adbff17dbbb9ed0d2bf9655b78f07640278581e37e3d7475282d5e61",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "micromark-extension-gfm-footnote",
+      "version": "2.1.0",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_micromark-extension-gfm-footnote_2.1.0.txt",
+      "sha256": "807a88522a850092aece49486207c17c313c4d5708ac276524840fe1caa0b0fa",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "micromark-extension-gfm-strikethrough",
+      "version": "2.1.0",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_micromark-extension-gfm-strikethrough_2.1.0.txt",
+      "sha256": "536804b3adbff17dbbb9ed0d2bf9655b78f07640278581e37e3d7475282d5e61",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "micromark-extension-gfm-table",
+      "version": "2.1.2",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_micromark-extension-gfm-table_2.1.2.txt",
+      "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "micromark-extension-gfm-tagfilter",
+      "version": "2.0.0",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_micromark-extension-gfm-tagfilter_2.0.0.txt",
+      "sha256": "536804b3adbff17dbbb9ed0d2bf9655b78f07640278581e37e3d7475282d5e61",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "micromark-extension-gfm-task-list-item",
+      "version": "2.1.0",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_micromark-extension-gfm-task-list-item_2.1.0.txt",
+      "sha256": "536804b3adbff17dbbb9ed0d2bf9655b78f07640278581e37e3d7475282d5e61",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "micromark-extension-gfm",
+      "version": "3.0.0",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_micromark-extension-gfm_3.0.0.txt",
+      "sha256": "536804b3adbff17dbbb9ed0d2bf9655b78f07640278581e37e3d7475282d5e61",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "micromark-factory-destination",
+      "version": "2.0.1",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_micromark-factory-destination_2.0.1.txt",
+      "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "micromark-factory-label",
+      "version": "2.0.1",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_micromark-factory-label_2.0.1.txt",
+      "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "micromark-factory-space",
+      "version": "2.1.0",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_micromark-factory-space_2.1.0.txt",
+      "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "micromark-factory-title",
+      "version": "2.0.1",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_micromark-factory-title_2.0.1.txt",
+      "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "micromark-factory-whitespace",
+      "version": "2.0.1",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_micromark-factory-whitespace_2.0.1.txt",
+      "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "micromark-util-character",
+      "version": "2.1.1",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_micromark-util-character_2.1.1.txt",
+      "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "micromark-util-chunked",
+      "version": "2.0.1",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_micromark-util-chunked_2.0.1.txt",
+      "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "micromark-util-classify-character",
+      "version": "2.0.1",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_micromark-util-classify-character_2.0.1.txt",
+      "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "micromark-util-combine-extensions",
+      "version": "2.0.1",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_micromark-util-combine-extensions_2.0.1.txt",
+      "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "micromark-util-decode-numeric-character-reference",
+      "version": "2.0.2",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_micromark-util-decode-numeric-character-reference_2.0.2.txt",
+      "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "micromark-util-decode-string",
+      "version": "2.0.1",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_micromark-util-decode-string_2.0.1.txt",
+      "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "micromark-util-edit-map",
+      "version": "1.0.0",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_micromark-util-edit-map_1.0.0.txt",
+      "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "micromark-util-encode",
+      "version": "2.0.1",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_micromark-util-encode_2.0.1.txt",
+      "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "micromark-util-html-tag-name",
+      "version": "2.0.1",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_micromark-util-html-tag-name_2.0.1.txt",
+      "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "micromark-util-normalize-identifier",
+      "version": "2.0.1",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_micromark-util-normalize-identifier_2.0.1.txt",
+      "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "micromark-util-resolve-all",
+      "version": "2.0.1",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_micromark-util-resolve-all_2.0.1.txt",
+      "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "micromark-util-sanitize-uri",
+      "version": "2.0.1",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_micromark-util-sanitize-uri_2.0.1.txt",
+      "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "micromark-util-subtokenize",
+      "version": "2.1.0",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_micromark-util-subtokenize_2.1.0.txt",
+      "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "micromark-util-symbol",
+      "version": "2.0.1",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_micromark-util-symbol_2.0.1.txt",
+      "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "micromark-util-types",
+      "version": "2.0.3",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_micromark-util-types_2.0.3.txt",
+      "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "micromark",
+      "version": "4.0.3",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_micromark_4.0.3.txt",
+      "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "minimatch",
+      "version": "5.1.9",
+      "license": "ISC",
+      "developmentOnly": true,
+      "licenseText": "licenses/npm_minimatch_5.1.9.txt",
+      "sha256": "d11323827fa4edeaafc437cc5b91b6971b335f0127efeeb42bf5122fe8657e8f",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "ms",
+      "version": "2.1.3",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_ms_2.1.3.txt",
+      "sha256": "1662fae9b5314d11cf51284e2dcd1f006a354f7343f08712a730fcff9a359801",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "nanoid",
+      "version": "3.3.20",
+      "license": "MIT",
+      "developmentOnly": true,
+      "licenseText": "licenses/npm_nanoid_3.3.20.txt",
+      "sha256": "da4db1480d9beea3483a2eda5c53b22238d0827d57da162b48f122e04d2d9987",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "openapi-typescript",
+      "version": "7.13.0",
+      "license": "MIT",
+      "developmentOnly": true,
+      "licenseText": "licenses/npm_openapi-typescript_7.13.0.txt",
+      "sha256": "ed4b2c8f3a9aad2bd9fb8088d3e2a142116a13627c7223c28315c65e3ab9bd41",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "parse-entities",
+      "version": "4.0.2",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_parse-entities_4.0.2.txt",
+      "sha256": "5d0698266086f217bb11ea0499d33453e401fe479fb9126ad04e625e63d3557b",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "parse-json",
+      "version": "8.3.0",
+      "license": "MIT",
+      "developmentOnly": true,
+      "licenseText": "licenses/npm_parse-json_8.3.0.txt",
+      "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "picocolors",
+      "version": "1.1.1",
+      "license": "ISC",
+      "developmentOnly": true,
+      "licenseText": "licenses/npm_picocolors_1.1.1.txt",
+      "sha256": "6582629e2979466878f6014313dcc2f3756c9616148682227ce3063dde310750",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "picomatch",
+      "version": "4.0.7",
+      "license": "MIT",
+      "developmentOnly": true,
+      "licenseText": "licenses/npm_picomatch_4.0.7.txt",
+      "sha256": "d0cd141b0c322fded5dfad1d4645bb2fedfc05b7321fe1009469638190d59ef9",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "playwright-core",
+      "version": "1.65.0",
+      "license": "Apache-2.0",
+      "developmentOnly": true,
+      "licenseText": "licenses/npm_playwright-core_1.65.0.txt",
+      "sha256": "45873d00a0dd243596deb4aa23b2493b3d1f0671921bf2538ea431d7380220eb",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "playwright",
+      "version": "1.65.0",
+      "license": "Apache-2.0",
+      "developmentOnly": true,
+      "licenseText": "licenses/npm_playwright_1.65.0.txt",
+      "sha256": "45873d00a0dd243596deb4aa23b2493b3d1f0671921bf2538ea431d7380220eb",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "pluralize",
+      "version": "8.0.0",
+      "license": "MIT",
+      "developmentOnly": true,
+      "licenseText": "licenses/npm_pluralize_8.0.0.txt",
+      "sha256": "5822e0d816e53e3537b306a4132cb7a70881897cf51bf483282148a602979076",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "postcss",
+      "version": "8.5.32",
+      "license": "MIT",
+      "developmentOnly": true,
+      "licenseText": "licenses/npm_postcss_8.5.32.txt",
+      "sha256": "5be1f3465bba68a626777f984878814aaf35e7ef8e9fd314d469bcf887050fb8",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "property-information",
+      "version": "7.2.0",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_property-information_7.2.0.txt",
+      "sha256": "5d0698266086f217bb11ea0499d33453e401fe479fb9126ad04e625e63d3557b",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "react-dom",
+      "version": "19.3.1",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_react-dom_19.3.1.txt",
+      "sha256": "da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "react-markdown",
+      "version": "10.1.0",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_react-markdown_10.1.0.txt",
+      "sha256": "f6196c64e144f9a6fa9154c3a80bc8b89615a9567934b83a8951879f06ba2aef",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "react-router",
+      "version": "8.5.1",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_react-router_8.5.1.txt",
+      "sha256": "77c9ee6a9c5d5782fb0c50b50d101189116314c14f7df0a1b0d385fc96a7ba49",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "react",
+      "version": "19.3.1",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_react_19.3.1.txt",
+      "sha256": "da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "remark-gfm",
+      "version": "4.0.1",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_remark-gfm_4.0.1.txt",
+      "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "remark-parse",
+      "version": "11.0.0",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_remark-parse_11.0.0.txt",
+      "sha256": "413654b0a78b98661dce96d2aff2e4d075603d220b8483e28b1aa010ccc138b4",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "remark-rehype",
+      "version": "11.1.2",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_remark-rehype_11.1.2.txt",
+      "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "remark-stringify",
+      "version": "11.0.0",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_remark-stringify_11.0.0.txt",
+      "sha256": "413654b0a78b98661dce96d2aff2e4d075603d220b8483e28b1aa010ccc138b4",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "require-from-string",
+      "version": "2.0.2",
+      "license": "MIT",
+      "developmentOnly": true,
+      "licenseText": "licenses/npm_require-from-string_2.0.2.txt",
+      "sha256": "6ee0feb1f6ef996ff5a68600f8cf98909cf412d39ef3cdceaefd87d636fa1b7f",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "reselect",
+      "version": "5.3.0",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_reselect_5.3.0.txt",
+      "sha256": "e98047a5dee068b33f82e8c4b7a63037b5108c93393198efd4097753004af5dd",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "rolldown",
+      "version": "1.2.19",
+      "license": "MIT",
+      "developmentOnly": true,
+      "licenseText": "licenses/npm_rolldown_1.2.19.txt",
+      "sha256": "23ecfff35a5a2e80d92142f75228912c3b1abc4b5a8337a821ff4397e2f9f734",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "scheduler",
+      "version": "0.28.0",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_scheduler_0.28.0.txt",
+      "sha256": "da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "source-map-js",
+      "version": "1.2.2",
+      "license": "BSD-3-Clause",
+      "developmentOnly": true,
+      "licenseText": "licenses/npm_source-map-js_1.2.2.txt",
+      "sha256": "6cb0631f71c7749763fd3dd1d5bee52dd1070ec17f2edc1710079ad070bd2fbd",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "space-separated-tokens",
+      "version": "2.0.2",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_space-separated-tokens_2.0.2.txt",
+      "sha256": "ca4662cb5d1b738fbe5350c0d5485ba11773b4b7208974082ae6e129a52d631d",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "stringify-entities",
+      "version": "4.0.4",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_stringify-entities_4.0.4.txt",
+      "sha256": "9f084fac69d8cf1e6ce983ba5a3499c7695ed74a26ec625c38f0fd19fddd5e10",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "style-mod",
+      "version": "4.1.4",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_style-mod_4.1.4.txt",
+      "sha256": "cb4474e26547397169061d3586c00022cda5330a1b64fa13e872319f3b63aff1",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "style-to-object",
+      "version": "2.0.2",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_style-to-object_2.0.2.txt",
+      "sha256": "896c9fd6b5fc48ac31800b9d29a6e3ffcb0c2d534ed077ebfa5c2fa388cc38b7",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "supports-color",
+      "version": "10.2.2",
+      "license": "MIT",
+      "developmentOnly": true,
+      "licenseText": "licenses/npm_supports-color_10.2.2.txt",
+      "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "tailwindcss",
+      "version": "4.3.5",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_tailwindcss_4.3.5.txt",
+      "sha256": "60e0b68c0f35c078eef3a5d29419d0b03ff84ec1df9c3f9d6e39a519a5ae7985",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "tapable",
+      "version": "2.3.4",
+      "license": "MIT",
+      "developmentOnly": true,
+      "licenseText": "licenses/npm_tapable_2.3.4.txt",
+      "sha256": "824ef6c33ae5ecbbab65d37f2b37da2bfc81d76cf7676ec0f59d00a0a38bdb75",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "tinyglobby",
+      "version": "0.2.17",
+      "license": "MIT",
+      "developmentOnly": true,
+      "licenseText": "licenses/npm_tinyglobby_0.2.17.txt",
+      "sha256": "22c68811e174cbbfb3813d4135918df4f540959c14d872e601d9abe83d3cde8f",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "trim-lines",
+      "version": "3.0.1",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_trim-lines_3.0.1.txt",
+      "sha256": "9f084fac69d8cf1e6ce983ba5a3499c7695ed74a26ec625c38f0fd19fddd5e10",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "trough",
+      "version": "2.2.0",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_trough_2.2.0.txt",
+      "sha256": "6c03fd41cfd7c92d8aa8a2fa521b94b2683f059123281dcf921ddea9216b6254",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "tslib",
+      "version": "2.8.1",
+      "license": "0BSD",
+      "developmentOnly": true,
+      "licenseText": "licenses/npm_tslib_2.8.1.txt",
+      "sha256": "210b19e543130388c68654b7497e967119ce17145f66ab7d85688fbd70f08751",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "tslib",
+      "version": "2.9.1",
+      "license": "0BSD",
+      "developmentOnly": true,
+      "licenseText": "licenses/npm_tslib_2.9.1.txt",
+      "sha256": "210b19e543130388c68654b7497e967119ce17145f66ab7d85688fbd70f08751",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "type-fest",
+      "version": "4.41.0",
+      "license": "(MIT OR CC0-1.0)",
+      "developmentOnly": true,
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "typescript",
+      "version": "5.9.3",
+      "license": "Apache-2.0",
+      "developmentOnly": true,
+      "licenseText": "licenses/npm_typescript_5.9.3.txt",
+      "sha256": "a7d00bfd54525bc694b6e32f64c7ebcf5e6b7ae3657be5cc12767bce74654a47",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "unified",
+      "version": "11.0.5",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_unified_11.0.5.txt",
+      "sha256": "05811400116ed61f1a7693b78fe8ca6598c155a12f3978e609db4df648a4cb3d",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "unist-util-is",
+      "version": "6.0.1",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_unist-util-is_6.0.1.txt",
+      "sha256": "82974dbf2639d13edab95c32ed9cb6c0867ede272cd2e07ce47ce8548fe55c05",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "unist-util-position",
+      "version": "5.0.0",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_unist-util-position_5.0.0.txt",
+      "sha256": "63cb98b3f6abfb3c3592c16f88253c1bdc834087bf52671e8ce5609e4eb693cf",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "unist-util-stringify-position",
+      "version": "4.0.0",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_unist-util-stringify-position_4.0.0.txt",
+      "sha256": "ca4662cb5d1b738fbe5350c0d5485ba11773b4b7208974082ae6e129a52d631d",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "unist-util-visit-parents",
+      "version": "6.1.0",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_unist-util-visit-parents_6.1.0.txt",
+      "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "unist-util-visit",
+      "version": "5.2.0",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_unist-util-visit_5.2.0.txt",
+      "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "uri-js-replace",
+      "version": "1.0.2",
+      "license": "MIT",
+      "developmentOnly": true,
+      "licenseText": "licenses/npm_uri-js-replace_1.0.2.txt",
+      "sha256": "5caace045044f8e3dd302d2a6789b9824c1dec992a3e94cc8f75f5c81bad699e",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "use-sync-external-store",
+      "version": "1.7.0",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_use-sync-external-store_1.7.0.txt",
+      "sha256": "da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "vfile-message",
+      "version": "4.0.4",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_vfile-message_4.0.4.txt",
+      "sha256": "dd1081884a92952802f4803110a6bb543acea9a814c786d58605b4c1219b5ebb",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "vfile",
+      "version": "6.0.3",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_vfile_6.0.3.txt",
+      "sha256": "05811400116ed61f1a7693b78fe8ca6598c155a12f3978e609db4df648a4cb3d",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "vite",
+      "version": "8.3.8",
+      "license": "MIT",
+      "developmentOnly": true,
+      "licenseText": "licenses/npm_vite_8.3.8.txt",
+      "sha256": "a22152baa1aef74402443008e767e7c689a524c0909d19b0431d97f5ab066a13",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "w3c-keyname",
+      "version": "2.2.8",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_w3c-keyname_2.2.8.txt",
+      "sha256": "869c30f368eb08735e779027b9f4bc9fea2f39624351856aebe42741f0bc0884",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "yaml-ast-parser",
+      "version": "0.0.43",
+      "license": "Apache-2.0",
+      "developmentOnly": true,
+      "licenseText": "licenses/npm_yaml-ast-parser_0.0.43.txt",
+      "sha256": "bf602897f63ff2706e3059fd60321ab5273a691833c98820433ef1d18abed6a2",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "yargs-parser",
+      "version": "21.1.1",
+      "license": "ISC",
+      "developmentOnly": true,
+      "licenseText": "licenses/npm_yargs-parser_21.1.1.txt",
+      "sha256": "365496ca1f56da40b23c9815fc40fa9005847b2f8f8fd1c1a4929ef25ec8cd1d",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "zwitch",
+      "version": "2.0.4",
+      "license": "MIT",
+      "developmentOnly": false,
+      "licenseText": "licenses/npm_zwitch_2.0.4.txt",
+      "sha256": "ca4662cb5d1b738fbe5350c0d5485ba11773b4b7208974082ae6e129a52d631d",
+      "metadataSource": "npm lock and restored package.json"
+    },
+    {
+      "ecosystem": "NuGet",
+      "name": "Humanizer.Core",
+      "version": "2.14.1",
+      "license": "MIT",
+      "projects": [
+        "src/Memoryaffe.Infrastructure"
+      ],
+      "metadataSource": "restored .nuspec"
+    },
+    {
+      "ecosystem": "NuGet",
+      "name": "Microsoft.AspNetCore.Cryptography.Internal",
+      "version": "10.0.15",
+      "license": "MIT",
+      "projects": [
+        "tests/Memoryaffe.Tests",
+        "tests/Memoryaffe.ProtocolTests"
+      ],
+      "metadataSource": "restored .nuspec"
+    },
+    {
+      "ecosystem": "NuGet",
+      "name": "Microsoft.AspNetCore.Cryptography.KeyDerivation",
+      "version": "10.0.15",
+      "license": "MIT",
+      "projects": [
+        "tests/Memoryaffe.Tests",
+        "tests/Memoryaffe.ProtocolTests"
+      ],
+      "metadataSource": "restored .nuspec"
+    },
+    {
+      "ecosystem": "NuGet",
+      "name": "Microsoft.AspNetCore.Identity.EntityFrameworkCore",
+      "version": "10.0.15",
+      "license": "MIT",
+      "projects": [
+        "src/Memoryaffe.Infrastructure",
+        "src/Memoryaffe.Api",
+        "tests/Memoryaffe.Tests",
+        "tests/Memoryaffe.ProtocolTests"
+      ],
+      "metadataSource": "restored .nuspec"
+    },
+    {
+      "ecosystem": "NuGet",
+      "name": "Microsoft.Build.Framework",
+      "version": "18.0.2",
+      "license": "MIT",
+      "projects": [
+        "src/Memoryaffe.Infrastructure"
+      ],
+      "metadataSource": "restored .nuspec"
+    },
+    {
+      "ecosystem": "NuGet",
+      "name": "Microsoft.CodeAnalysis.Analyzers",
+      "version": "3.11.0",
+      "license": "MIT",
+      "projects": [
+        "src/Memoryaffe.Infrastructure"
+      ],
+      "metadataSource": "restored .nuspec"
+    },
+    {
+      "ecosystem": "NuGet",
+      "name": "Microsoft.CodeAnalysis.Common",
+      "version": "5.0.0",
+      "license": "MIT",
+      "projects": [
+        "src/Memoryaffe.Infrastructure"
+      ],
+      "metadataSource": "restored .nuspec"
+    },
+    {
+      "ecosystem": "NuGet",
+      "name": "Microsoft.CodeAnalysis.CSharp.Workspaces",
+      "version": "5.0.0",
+      "license": "MIT",
+      "projects": [
+        "src/Memoryaffe.Infrastructure"
+      ],
+      "metadataSource": "restored .nuspec"
+    },
+    {
+      "ecosystem": "NuGet",
+      "name": "Microsoft.CodeAnalysis.CSharp",
+      "version": "5.0.0",
+      "license": "MIT",
+      "projects": [
+        "src/Memoryaffe.Infrastructure"
+      ],
+      "metadataSource": "restored .nuspec"
+    },
+    {
+      "ecosystem": "NuGet",
+      "name": "Microsoft.CodeAnalysis.Workspaces.Common",
+      "version": "5.0.0",
+      "license": "MIT",
+      "projects": [
+        "src/Memoryaffe.Infrastructure"
+      ],
+      "metadataSource": "restored .nuspec"
+    },
+    {
+      "ecosystem": "NuGet",
+      "name": "Microsoft.CodeAnalysis.Workspaces.MSBuild",
+      "version": "5.0.0",
+      "license": "MIT",
+      "projects": [
+        "src/Memoryaffe.Infrastructure"
+      ],
+      "metadataSource": "restored .nuspec"
+    },
+    {
+      "ecosystem": "NuGet",
+      "name": "Microsoft.CodeCoverage",
+      "version": "18.0.1",
+      "license": "MIT",
+      "projects": [
+        "tests/Memoryaffe.Tests"
+      ],
+      "metadataSource": "restored .nuspec"
+    },
+    {
+      "ecosystem": "NuGet",
+      "name": "Microsoft.EntityFrameworkCore.Abstractions",
+      "version": "10.0.15",
+      "license": "MIT",
+      "projects": [
+        "src/Memoryaffe.Infrastructure",
+        "src/Memoryaffe.Api",
+        "tests/Memoryaffe.Tests",
+        "tests/Memoryaffe.ProtocolTests"
+      ],
+      "metadataSource": "restored .nuspec"
+    },
+    {
+      "ecosystem": "NuGet",
+      "name": "Microsoft.EntityFrameworkCore.Analyzers",
+      "version": "10.0.15",
+      "license": "MIT",
+      "projects": [
+        "src/Memoryaffe.Infrastructure",
+        "src/Memoryaffe.Api",
+        "tests/Memoryaffe.Tests",
+        "tests/Memoryaffe.ProtocolTests"
+      ],
+      "metadataSource": "restored .nuspec"
+    },
+    {
+      "ecosystem": "NuGet",
+      "name": "Microsoft.EntityFrameworkCore.Design",
+      "version": "10.0.15",
+      "license": "MIT",
+      "projects": [
+        "src/Memoryaffe.Infrastructure"
+      ],
+      "metadataSource": "restored .nuspec"
+    },
+    {
+      "ecosystem": "NuGet",
+      "name": "Microsoft.EntityFrameworkCore.Relational",
+      "version": "10.0.15",
+      "license": "MIT",
+      "projects": [
+        "src/Memoryaffe.Infrastructure",
+        "src/Memoryaffe.Api",
+        "tests/Memoryaffe.Tests",
+        "tests/Memoryaffe.ProtocolTests"
+      ],
+      "metadataSource": "restored .nuspec"
+    },
+    {
+      "ecosystem": "NuGet",
+      "name": "Microsoft.EntityFrameworkCore",
+      "version": "10.0.15",
+      "license": "MIT",
+      "projects": [
+        "src/Memoryaffe.Infrastructure",
+        "src/Memoryaffe.Api",
+        "tests/Memoryaffe.Tests",
+        "tests/Memoryaffe.ProtocolTests"
+      ],
+      "metadataSource": "restored .nuspec"
+    },
+    {
+      "ecosystem": "NuGet",
+      "name": "Microsoft.Extensions.AI.Abstractions",
+      "version": "10.11.0",
+      "license": "MIT",
+      "projects": [
+        "src/Memoryaffe.Api",
+        "tests/Memoryaffe.Tests",
+        "tests/Memoryaffe.ProtocolTests"
+      ],
+      "metadataSource": "restored .nuspec"
+    },
+    {
+      "ecosystem": "NuGet",
+      "name": "Microsoft.Extensions.Caching.Abstractions",
+      "version": "10.0.15",
+      "license": "MIT",
+      "projects": [
+        "tests/Memoryaffe.Tests",
+        "tests/Memoryaffe.ProtocolTests"
+      ],
+      "metadataSource": "restored .nuspec"
+    },
+    {
+      "ecosystem": "NuGet",
+      "name": "Microsoft.Extensions.Caching.Memory",
+      "version": "10.0.15",
+      "license": "MIT",
+      "projects": [
+        "tests/Memoryaffe.Tests",
+        "tests/Memoryaffe.ProtocolTests"
+      ],
+      "metadataSource": "restored .nuspec"
+    },
+    {
+      "ecosystem": "NuGet",
+      "name": "Microsoft.Extensions.Configuration.Abstractions",
+      "version": "10.0.15",
+      "license": "MIT",
+      "projects": [
+        "tests/Memoryaffe.Tests",
+        "tests/Memoryaffe.ProtocolTests"
+      ],
+      "metadataSource": "restored .nuspec"
+    },
+    {
+      "ecosystem": "NuGet",
+      "name": "Microsoft.Extensions.Configuration.Binder",
+      "version": "10.0.15",
+      "license": "MIT",
+      "projects": [
+        "tests/Memoryaffe.Tests",
+        "tests/Memoryaffe.ProtocolTests"
+      ],
+      "metadataSource": "restored .nuspec"
+    },
+    {
+      "ecosystem": "NuGet",
+      "name": "Microsoft.Extensions.Configuration",
+      "version": "10.0.15",
+      "license": "MIT",
+      "projects": [
+        "tests/Memoryaffe.Tests",
+        "tests/Memoryaffe.ProtocolTests"
+      ],
+      "metadataSource": "restored .nuspec"
+    },
+    {
+      "ecosystem": "NuGet",
+      "name": "Microsoft.Extensions.DependencyInjection.Abstractions",
+      "version": "10.0.15",
+      "license": "MIT",
+      "projects": [
+        "tests/Memoryaffe.Tests",
+        "tests/Memoryaffe.ProtocolTests"
+      ],
+      "metadataSource": "restored .nuspec"
+    },
+    {
+      "ecosystem": "NuGet",
+      "name": "Microsoft.Extensions.DependencyInjection",
+      "version": "10.0.15",
+      "license": "MIT",
+      "projects": [
+        "tests/Memoryaffe.Tests",
+        "tests/Memoryaffe.ProtocolTests"
+      ],
+      "metadataSource": "restored .nuspec"
+    },
+    {
+      "ecosystem": "NuGet",
+      "name": "Microsoft.Extensions.DependencyModel",
+      "version": "10.0.15",
+      "license": "MIT",
+      "projects": [
+        "src/Memoryaffe.Infrastructure"
+      ],
+      "metadataSource": "restored .nuspec"
+    },
+    {
+      "ecosystem": "NuGet",
+      "name": "Microsoft.Extensions.Diagnostics.Abstractions",
+      "version": "10.0.15",
+      "license": "MIT",
+      "projects": [
+        "tests/Memoryaffe.Tests",
+        "tests/Memoryaffe.ProtocolTests"
+      ],
+      "metadataSource": "restored .nuspec"
+    },
+    {
+      "ecosystem": "NuGet",
+      "name": "Microsoft.Extensions.Diagnostics",
+      "version": "10.0.15",
+      "license": "MIT",
+      "projects": [
+        "tests/Memoryaffe.Tests",
+        "tests/Memoryaffe.ProtocolTests"
+      ],
+      "metadataSource": "restored .nuspec"
+    },
+    {
+      "ecosystem": "NuGet",
+      "name": "Microsoft.Extensions.FileProviders.Abstractions",
+      "version": "10.0.14",
+      "license": "MIT",
+      "projects": [
+        "tests/Memoryaffe.Tests",
+        "tests/Memoryaffe.ProtocolTests"
+      ],
+      "metadataSource": "restored .nuspec"
+    },
+    {
+      "ecosystem": "NuGet",
+      "name": "Microsoft.Extensions.Hosting.Abstractions",
+      "version": "10.0.14",
+      "license": "MIT",
+      "projects": [
+        "tests/Memoryaffe.Tests",
+        "tests/Memoryaffe.ProtocolTests"
+      ],
+      "metadataSource": "restored .nuspec"
+    },
+    {
+      "ecosystem": "NuGet",
+      "name": "Microsoft.Extensions.Identity.Core",
+      "version": "10.0.15",
+      "license": "MIT",
+      "projects": [
+        "tests/Memoryaffe.Tests",
+        "tests/Memoryaffe.ProtocolTests"
+      ],
+      "metadataSource": "restored .nuspec"
+    },
+    {
+      "ecosystem": "NuGet",
+      "name": "Microsoft.Extensions.Identity.Stores",
+      "version": "10.0.15",
+      "license": "MIT",
+      "projects": [
+        "tests/Memoryaffe.Tests",
+        "tests/Memoryaffe.ProtocolTests"
+      ],
+      "metadataSource": "restored .nuspec"
+    },
+    {
+      "ecosystem": "NuGet",
+      "name": "Microsoft.Extensions.Logging.Abstractions",
+      "version": "10.0.15",
+      "license": "MIT",
+      "projects": [
+        "tests/Memoryaffe.Tests",
+        "tests/Memoryaffe.ProtocolTests"
+      ],
+      "metadataSource": "restored .nuspec"
+    },
+    {
+      "ecosystem": "NuGet",
+      "name": "Microsoft.Extensions.Logging",
+      "version": "10.0.15",
+      "license": "MIT",
+      "projects": [
+        "tests/Memoryaffe.Tests",
+        "tests/Memoryaffe.ProtocolTests"
+      ],
+      "metadataSource": "restored .nuspec"
+    },
+    {
+      "ecosystem": "NuGet",
+      "name": "Microsoft.Extensions.Options.ConfigurationExtensions",
+      "version": "10.0.15",
+      "license": "MIT",
+      "projects": [
+        "tests/Memoryaffe.Tests",
+        "tests/Memoryaffe.ProtocolTests"
+      ],
+      "metadataSource": "restored .nuspec"
+    },
+    {
+      "ecosystem": "NuGet",
+      "name": "Microsoft.Extensions.Options",
+      "version": "10.0.15",
+      "license": "MIT",
+      "projects": [
+        "tests/Memoryaffe.Tests",
+        "tests/Memoryaffe.ProtocolTests"
+      ],
+      "metadataSource": "restored .nuspec"
+    },
+    {
+      "ecosystem": "NuGet",
+      "name": "Microsoft.Extensions.Primitives",
+      "version": "10.0.15",
+      "license": "MIT",
+      "projects": [
+        "tests/Memoryaffe.Tests",
+        "tests/Memoryaffe.ProtocolTests"
+      ],
+      "metadataSource": "restored .nuspec"
+    },
+    {
+      "ecosystem": "NuGet",
+      "name": "Microsoft.NET.Test.Sdk",
+      "version": "18.0.1",
+      "license": "MIT",
+      "projects": [
+        "tests/Memoryaffe.Tests"
+      ],
+      "metadataSource": "restored .nuspec"
+    },
+    {
+      "ecosystem": "NuGet",
+      "name": "Microsoft.TestPlatform.ObjectModel",
+      "version": "18.0.1",
+      "license": "MIT",
+      "projects": [
+        "tests/Memoryaffe.Tests"
+      ],
+      "metadataSource": "restored .nuspec"
+    },
+    {
+      "ecosystem": "NuGet",
+      "name": "Microsoft.TestPlatform.TestHost",
+      "version": "18.0.1",
+      "license": "MIT",
+      "projects": [
+        "tests/Memoryaffe.Tests"
+      ],
+      "metadataSource": "restored .nuspec"
+    },
+    {
+      "ecosystem": "NuGet",
+      "name": "Microsoft.VisualStudio.SolutionPersistence",
+      "version": "1.0.52",
+      "license": "MIT",
+      "licenseText": "licenses/nuget_Microsoft.VisualStudio.SolutionPersistence_1.0.52.txt",
+      "sha256": "2d56342544395b1cc4bb98192a439031362265125a68b8062942383b8df4309a",
+      "projects": [
+        "src/Memoryaffe.Infrastructure"
+      ],
+      "metadataSource": "restored .nuspec"
+    },
+    {
+      "ecosystem": "NuGet",
+      "name": "ModelContextProtocol.AspNetCore",
+      "version": "2.4.0",
+      "license": "Apache-2.0",
+      "projects": [
+        "src/Memoryaffe.Api"
+      ],
+      "metadataSource": "restored .nuspec"
+    },
+    {
+      "ecosystem": "NuGet",
+      "name": "ModelContextProtocol.Core",
+      "version": "2.4.0",
+      "license": "Apache-2.0",
+      "projects": [
+        "src/Memoryaffe.Api",
+        "tests/Memoryaffe.Tests",
+        "tests/Memoryaffe.ProtocolTests"
+      ],
+      "metadataSource": "restored .nuspec"
+    },
+    {
+      "ecosystem": "NuGet",
+      "name": "ModelContextProtocol",
+      "version": "2.4.0",
+      "license": "Apache-2.0",
+      "projects": [
+        "src/Memoryaffe.Api",
+        "tests/Memoryaffe.Tests",
+        "tests/Memoryaffe.ProtocolTests"
+      ],
+      "metadataSource": "restored .nuspec"
+    },
+    {
+      "ecosystem": "NuGet",
+      "name": "Mono.TextTemplating",
+      "version": "3.0.0",
+      "license": "MIT",
+      "projects": [
+        "src/Memoryaffe.Infrastructure"
+      ],
+      "metadataSource": "restored .nuspec"
+    },
+    {
+      "ecosystem": "NuGet",
+      "name": "Newtonsoft.Json",
+      "version": "13.0.3",
+      "license": "MIT",
+      "licenseText": "licenses/nuget_Newtonsoft.Json_13.0.3.txt",
+      "sha256": "b98a397897ff55f76cddc380041507a95a896b2946e0188703bf0496793d6516",
+      "projects": [
+        "tests/Memoryaffe.Tests"
+      ],
+      "metadataSource": "restored .nuspec"
+    },
+    {
+      "ecosystem": "NuGet",
+      "name": "Newtonsoft.Json",
+      "version": "13.0.4",
+      "license": "MIT",
+      "licenseText": "licenses/nuget_Newtonsoft.Json_13.0.4.txt",
+      "sha256": "b98a397897ff55f76cddc380041507a95a896b2946e0188703bf0496793d6516",
+      "projects": [
+        "src/Memoryaffe.Infrastructure"
+      ],
+      "metadataSource": "restored .nuspec"
+    },
+    {
+      "ecosystem": "NuGet",
+      "name": "Npgsql.EntityFrameworkCore.PostgreSQL",
+      "version": "10.0.3",
+      "license": "PostgreSQL",
+      "projects": [
+        "src/Memoryaffe.Infrastructure",
+        "src/Memoryaffe.Api",
+        "tests/Memoryaffe.Tests",
+        "tests/Memoryaffe.ProtocolTests"
+      ],
+      "metadataSource": "restored .nuspec"
+    },
+    {
+      "ecosystem": "NuGet",
+      "name": "Npgsql",
+      "version": "10.0.3",
+      "license": "PostgreSQL",
+      "projects": [
+        "src/Memoryaffe.Infrastructure",
+        "src/Memoryaffe.Api",
+        "tests/Memoryaffe.Tests",
+        "tests/Memoryaffe.ProtocolTests"
+      ],
+      "metadataSource": "restored .nuspec"
+    },
+    {
+      "ecosystem": "NuGet",
+      "name": "System.CodeDom",
+      "version": "6.0.0",
+      "license": "MIT",
+      "licenseText": "licenses/nuget_System.CodeDom_6.0.0.txt",
+      "sha256": "d7a68596ab69b06f51ca278a6545148e4269a9381c26d597c13df5d88e08cf5b",
+      "projects": [
+        "src/Memoryaffe.Infrastructure"
+      ],
+      "metadataSource": "restored .nuspec"
+    },
+    {
+      "ecosystem": "NuGet",
+      "name": "System.Composition.AttributedModel",
+      "version": "9.0.0",
+      "license": "MIT",
+      "licenseText": "licenses/nuget_System.Composition.AttributedModel_9.0.0.txt",
+      "sha256": "d7a68596ab69b06f51ca278a6545148e4269a9381c26d597c13df5d88e08cf5b",
+      "projects": [
+        "src/Memoryaffe.Infrastructure"
+      ],
+      "metadataSource": "restored .nuspec"
+    },
+    {
+      "ecosystem": "NuGet",
+      "name": "System.Composition.Convention",
+      "version": "9.0.0",
+      "license": "MIT",
+      "licenseText": "licenses/nuget_System.Composition.Convention_9.0.0.txt",
+      "sha256": "d7a68596ab69b06f51ca278a6545148e4269a9381c26d597c13df5d88e08cf5b",
+      "projects": [
+        "src/Memoryaffe.Infrastructure"
+      ],
+      "metadataSource": "restored .nuspec"
+    },
+    {
+      "ecosystem": "NuGet",
+      "name": "System.Composition.Hosting",
+      "version": "9.0.0",
+      "license": "MIT",
+      "licenseText": "licenses/nuget_System.Composition.Hosting_9.0.0.txt",
+      "sha256": "d7a68596ab69b06f51ca278a6545148e4269a9381c26d597c13df5d88e08cf5b",
+      "projects": [
+        "src/Memoryaffe.Infrastructure"
+      ],
+      "metadataSource": "restored .nuspec"
+    },
+    {
+      "ecosystem": "NuGet",
+      "name": "System.Composition.Runtime",
+      "version": "9.0.0",
+      "license": "MIT",
+      "licenseText": "licenses/nuget_System.Composition.Runtime_9.0.0.txt",
+      "sha256": "d7a68596ab69b06f51ca278a6545148e4269a9381c26d597c13df5d88e08cf5b",
+      "projects": [
+        "src/Memoryaffe.Infrastructure"
+      ],
+      "metadataSource": "restored .nuspec"
+    },
+    {
+      "ecosystem": "NuGet",
+      "name": "System.Composition.TypedParts",
+      "version": "9.0.0",
+      "license": "MIT",
+      "licenseText": "licenses/nuget_System.Composition.TypedParts_9.0.0.txt",
+      "sha256": "d7a68596ab69b06f51ca278a6545148e4269a9381c26d597c13df5d88e08cf5b",
+      "projects": [
+        "src/Memoryaffe.Infrastructure"
+      ],
+      "metadataSource": "restored .nuspec"
+    },
+    {
+      "ecosystem": "NuGet",
+      "name": "System.Composition",
+      "version": "9.0.0",
+      "license": "MIT",
+      "licenseText": "licenses/nuget_System.Composition_9.0.0.txt",
+      "sha256": "d7a68596ab69b06f51ca278a6545148e4269a9381c26d597c13df5d88e08cf5b",
+      "projects": [
+        "src/Memoryaffe.Infrastructure"
+      ],
+      "metadataSource": "restored .nuspec"
+    },
+    {
+      "ecosystem": "NuGet",
+      "name": "xunit.abstractions",
+      "version": "2.0.3",
+      "license": "Apache-2.0",
+      "projects": [
+        "tests/Memoryaffe.Tests"
+      ],
+      "metadataSource": "Legacy package declares licenseUrl; manually checked official abstractions repository license on 2026-11-13",
+      "licenseText": "licenses/nuget_xunit.abstractions_2.0.3.txt",
+      "source": "https://github.com/xunit/abstractions.xunit/blob/main/license.txt",
+      "sha256": "165b8b82cd9dd1076df2720c5cb60659da48efacfe944872e7b0f3b041ebd4c4"
+    },
+    {
+      "ecosystem": "NuGet",
+      "name": "xunit.analyzers",
+      "version": "1.18.0",
+      "license": "Apache-2.0",
+      "projects": [
+        "tests/Memoryaffe.Tests"
+      ],
+      "metadataSource": "restored .nuspec"
+    },
+    {
+      "ecosystem": "NuGet",
+      "name": "xunit.assert",
+      "version": "2.9.3",
+      "license": "Apache-2.0",
+      "projects": [
+        "tests/Memoryaffe.Tests"
+      ],
+      "metadataSource": "restored .nuspec"
+    },
+    {
+      "ecosystem": "NuGet",
+      "name": "xunit.core",
+      "version": "2.9.3",
+      "license": "Apache-2.0",
+      "projects": [
+        "tests/Memoryaffe.Tests"
+      ],
+      "metadataSource": "restored .nuspec"
+    },
+    {
+      "ecosystem": "NuGet",
+      "name": "xunit.extensibility.core",
+      "version": "2.9.3",
+      "license": "Apache-2.0",
+      "projects": [
+        "tests/Memoryaffe.Tests"
+      ],
+      "metadataSource": "restored .nuspec"
+    },
+    {
+      "ecosystem": "NuGet",
+      "name": "xunit.extensibility.execution",
+      "version": "2.9.3",
+      "license": "Apache-2.0",
+      "projects": [
+        "tests/Memoryaffe.Tests"
+      ],
+      "metadataSource": "restored .nuspec"
+    },
+    {
+      "ecosystem": "NuGet",
+      "name": "xunit.runner.visualstudio",
+      "version": "3.1.5",
+      "license": "Apache-2.0",
+      "projects": [
+        "tests/Memoryaffe.Tests"
+      ],
+      "metadataSource": "restored .nuspec"
+    },
+    {
+      "ecosystem": "NuGet",
+      "name": "xunit",
+      "version": "2.9.3",
+      "license": "Apache-2.0",
+      "projects": [
+        "tests/Memoryaffe.Tests"
+      ],
+      "metadataSource": "restored .nuspec"
+    }
+  ]
+}

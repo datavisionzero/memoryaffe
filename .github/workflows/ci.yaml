@@ -1,0 +1,51 @@
+name: Validate prototype
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  integration:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.22.3
+          cache: npm
+          cache-dependency-path: src/web/package-lock.json
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.404
+      - uses: actions/setup-go@v5
+        with:
+          go-version: 1.27.4
+          cache-dependency-path: src/cli/go.sum
+      - name: Deterministic contracts
+        run: |
+          node docs/contracts/build-all.mjs
+          node src/cli/generate.mjs --check
+          git diff --exit-code -- docs/contracts
+          npm install --prefix "$RUNNER_TEMP/memoryaffe-contract-tools" --ignore-scripts --no-audit --no-fund ajv@8.20.0 ajv-formats@3.0.1 @apidevtools/swagger-parser@13.1.0
+          node docs/contracts/check.mjs "$RUNNER_TEMP/memoryaffe-contract-tools"
+      - name: Locked restores and build
+        run: |
+          dotnet restore memoryaffe.sln --locked-mode
+          dotnet build memoryaffe.sln -c Release --no-restore
+          npm ci --prefix src/web --no-audit --no-fund
+          npm run build --prefix src/web
+          cd src/cli
+          go mod download
+          go test ./...
+          go test -race ./...
+          go vet ./...
+      - name: .NET unit tests
+        run: dotnet test tests/Memoryaffe.Tests -c Release --no-restore
+      - name: Chromium
+        run: npx --prefix src/web playwright install --with-deps chromium
+      - name: PostgreSQL, API, CLI, MCP SDK and browser integration
+        run: bash scripts/test-ci.sh
+      - name: Container build
+        run: docker build -f deploy/Dockerfile -t memoryaffe:ci .
