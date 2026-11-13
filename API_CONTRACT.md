@@ -2,8 +2,8 @@
 
 Stand: 13. November 2026. Die folgenden Regeln sind bestätigt. Sie ergänzen
 den [Datenvertrag](DATA_CONTRACT.md) und beschreiben geplantes, noch nicht
-implementiertes Verhalten. Konkrete Schemas und der OAuth-/CIMD-Vertrag werden
-vor dem Grundgerüst vervollständigt.
+implementiertes Verhalten. Konkrete Schemas und der ergänzende
+[OAuth-/CIMD-Vertrag](OAUTH_CONTRACT.md) werden vor dem Grundgerüst vervollständigt.
 
 ## Zugangswege
 
@@ -157,5 +157,6 @@ Skripte keine sprachabhängigen Meldungen auswerten müssen.
 
 Vor dem Grundgerüst folgen vollständige maschinenlesbare Request-/Response-
 Schemas und die technische Umsetzung der festgelegten Cursor- und
-Wiederholungsregeln einschließlich konkreter Wartezeit. OAuth-/CIMD-Endpunkte erhalten einen eigenen
-Protokollvertrag; ihre Protokollfehler folgen nicht pauschal dem Produktformat.
+Wiederholungsregeln einschließlich konkreter Wartezeit. OAuth-/CIMD-Endpunkte
+folgen dem eigenen [Protokollvertrag](OAUTH_CONTRACT.md); ihre Protokollfehler
+folgen nicht pauschal dem Produktformat.

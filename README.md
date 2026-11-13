@@ -9,4 +9,5 @@ ist noch nicht enthalten.
 - [Technischer Architekturentwurf](ARCHITECTURE.md)
 - [Verbindlicher Datenvertrag](DATA_CONTRACT.md)
 - [Schnittstellenvertrag](API_CONTRACT.md)
+- [OAuth- und CIMD-Vertrag](OAUTH_CONTRACT.md)
 - [Umsetzungsplan und Abnahmekriterien](IMPLEMENTATION.md)

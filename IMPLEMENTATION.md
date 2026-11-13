@@ -21,7 +21,9 @@ Der grundsätzliche Betriebs- und Veröffentlichungsumfang ist bestätigt.
 Beschlossen ist eine begrenzte OAuth-
 Eigenimplementierung mit CIMD und einer betreiberverwalteten Liste erlaubter
 Client-URLs, zunächst ChatGPT, ohne DCR. ASP.NET Core Identity bleibt die
-Anmeldebasis. Paketversionen und Lizenzen werden vorab geprüft. Der vollständige
+Anmeldebasis. Die Grundregeln des [OAuth-/CIMD-Vertrags](OAUTH_CONTRACT.md)
+einschließlich Identitäten, Scopes, Fristen, CIMD-Limits und strikter Rotation
+sind bestätigt. Paketversionen und Lizenzen werden vorab geprüft. Der vollständige
 OAuth-/CIMD-Vertrag und ein isolierter ChatGPT-Test mit Fehler- und
 Widerrufsfällen werden vor dem Grundgerüst abgeschlossen; dieser Versuch ist
 kein Beginn des Produktbaus. Externe Testvoraussetzungen aus Etappe 2 gelten
@@ -57,7 +59,17 @@ Testdatensatz und verliert nach Widerruf den Zugriff. Tokenablauf, Refresh,
 falsche Resource/Audience und ungültige Redirects werden geprüft. Ergänzend
 werden PKCE-Fehler, doppelte Codeverwendung, Refresh-Token-Wiederverwendung,
 unerlaubte CIMD-Clients sowie manipulierte Metadaten und interne Abrufziele
-geprüft. Bereits vor dem Grundgerüst geprüfte Abläufe werden als integrierte
+geprüft. Hinzu kommen parallele Refresh-Aufrufe und verlorene Antworten ohne
+Kulanzfrist, Widerruf aller Access-Tokens der betroffenen Familie, Codeablauf
+nach fünf Minuten und Ablauf des Zustimmungsprozesses nach 15 Minuten.
+CIMD-Abrufe prüfen fünf Sekunden/64 KiB, verweigern Weiterleitungen und interne
+Ziele auch beim Verbindungsaufbau. Cache gilt höchstens eine Stunde mit Vorrang
+kürzerer Servervorgaben. Entfernen eines Clients aus der Betreiberfreigabe
+sperrt vorhandene Verbindungen sofort. Issuer-/Resource-Bindung, `iss` in
+Weiterleitungen, lokale Fehler bei ungültigen Redirects, kumulative Scopes und
+mindestens ein ausdrücklich gewählter Vault bei neuer Verbindung werden geprüft.
+Die vorgesehenen ChatGPT-Client-/Redirect-Adressen werden real abgeglichen.
+Bereits vor dem Grundgerüst geprüfte Abläufe werden als integrierte
 Produktfunktionen erneut abgenommen.
 
 **Externe Voraussetzung:** erreichbarer Testendpunkt und Zugriff auf ein

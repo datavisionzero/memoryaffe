@@ -55,6 +55,9 @@ adapterübergreifende atomare Wiederholungen und Ergebnis-/Tool-Grenzen.
 Bestätigt sind außerdem camelCase-Felder, Antwortformen, expliziter Suchumfang,
 Tag-Filter über IDs, HTTP-/Fehlercodes, 30-minütige geschützte Cursor,
 Auftragsvergleich und Verhalten laufender Wiederholungen sowie CLI-Exitcodes.
+Der [OAuth-/CIMD-Vertrag](OAUTH_CONTRACT.md) bestätigt feste Issuer-/Resource-
+Identitäten, ChatGPT-Adressen mit Issuer-Identifikation, drei kumulative Scopes,
+Zustimmung, Code-/Ablauffristen, CIMD-Abruf-/Cache-Limits und strikte Rotation.
 Die übrigen technischen Konkretisierungen dieses Dokuments bleiben Entwurf,
 soweit sie nicht bereits ausdrücklich in der Produktvision beschlossen sind.
 Vor dem Grundgerüst werden alle weiteren Entscheidungsblöcke gemeinsam geklärt.
@@ -303,8 +306,10 @@ DNS-Wechseln. Die erlaubte Client-URL ersetzt diese Prüfungen nicht.
 
 Vor dem Grundgerüst werden der vollständige Protokollvertrag und eine isolierte
 ChatGPT-Kompatibilitätsprüfung einschließlich Fehler- und Widerrufsfällen
-abgeschlossen. Paket-/Protokollversionen, genaue CIMD-URL und Cache-Regeln
-werden dabei festgehalten. Die gemeinsame Kompatibilität ist noch nicht
+abgeschlossen. CIMD-URL und Cache-Regeln sind im
+[OAuth-/CIMD-Vertrag](OAUTH_CONTRACT.md) festgehalten; die ChatGPT-Adressen
+werden im realen Versuch abgeglichen. Paket-/Protokollversionen und vollständige
+Endpunktverträge werden ergänzt. Die gemeinsame Kompatibilität ist noch nicht
 praktisch nachgewiesen. CIMD benötigt zum Metadatenabruf Netzwerkzugriff;
 der rein lokale CLI-Betrieb bleibt davon unabhängig.
 
