@@ -97,6 +97,40 @@ betreffenden Vault und bei entsprechender kontoweiter Erlaubnis anlegen.
 Tags umbenennen, zusammenführen oder vollständig entfernen darf ausschließlich
 der Nutzer. Diese Regeln gelten gleichermaßen für CLI und MCP.
 
+### Löschen und Papierkorb
+
+Gelöschte Datensätze bleiben einschließlich ihrer noch vorhandenen Versionen
+30 Tage im Papierkorb und werden danach endgültig entfernt. Sie erscheinen
+nicht in der Suche und sind über den regulären Agentenzugriff nicht erreichbar.
+Nur der Nutzer darf sie wiederherstellen oder vorzeitig endgültig löschen.
+
+Vaults werden nach ausdrücklicher Bestätigung durch den Nutzer ebenfalls für
+30 Tage in den Papierkorb verschoben, einschließlich ihrer enthaltenen
+Datensätze. Agentenzugriffe sind sofort ausgeschlossen. Nach einer
+Wiederherstellung muss der Nutzer den Vault erneut für Agenten freigeben.
+
+## Suche
+
+Der MVP bietet Volltextsuche über Titel, Zusammenfassung und Markdown-Inhalt
+sowie Tag-Filter. Die Suche erfolgt standardmäßig im aktuellen Vault, optional
+über alle eigenen Vaults. Agenten können ausschließlich ihre freigegebenen
+Vaults durchsuchen. Semantische Suche ist eine spätere Erweiterung.
+
+Suchergebnisse zeigen Titel, Zusammenfassung beziehungsweise Textausschnitt,
+Tags, Vault und Änderungsdatum. Standardmäßig werden sie nach Relevanz
+sortiert, alternativ nach Änderungsdatum.
+
+## Export, Import und Backups
+
+Bereits im MVP können Nutzer einen Vault als ZIP mit Markdown-Dateien und
+strukturierten Metadaten exportieren und wieder importieren. Der Export
+umfasst zunächst die aktuellen Fassungen einschließlich Tags. Der Import
+erstellt einen neuen Vault und überschreibt keine bestehenden Inhalte.
+
+Zusätzlich wird ein Weg zur Sicherung und Wiederherstellung der gesamten
+Installation dokumentiert. Diese Sicherung umfasst auch Konten, Einstellungen
+und die noch aufbewahrten Versionen.
+
 ## Zugriff durch KI-Agenten
 
 Nutzer können beliebig viele benannte Agentenzugänge anlegen, beispielsweise
@@ -146,14 +180,20 @@ Adminbereich, damit sie die alltägliche Nutzung nicht überfrachten.
 
 ## Konten, Anmeldung und Einladungen
 
-Die reguläre Anmeldung erfolgt mit E-Mail-Adresse und Passwort. Zusätzlich
-soll ein Zugang über Einladungslinks möglich sein. Einladungslinks können
-manuell weitergegeben werden; ihr Versand darf keinen Mailserver voraussetzen.
+Es gibt keine öffentliche Registrierung. Der erste Admin richtet die
+Installation ein; weitere Nutzer erhalten ausschließlich Einladungen vom
+Admin. Einladungslinks dienen einmalig zur Kontoeinrichtung mit E-Mail-Adresse
+und Passwort. Sie gelten sieben Tage, sind widerrufbar und können zur manuellen
+Weitergabe kopiert oder optional per SMTP versendet werden. Danach erfolgt
+die reguläre Anmeldung mit E-Mail-Adresse und Passwort.
 
-Die gesamte Anwendung muss ohne SMTP-Server betreibbar sein. Optional kann
-ein SMTP-Server für den E-Mail-Versand konfiguriert werden. Kontoeinrichtung und
-Kontowiederherstellung müssen diesen Betrieb ohne SMTP berücksichtigen; die
-genauen Abläufe werden noch festgelegt.
+Die gesamte Anwendung muss ohne SMTP-Server betreibbar sein. Ohne SMTP erzeugt
+der Admin bei vergessenem Passwort einen einmaligen Reset-Link zur manuellen
+Weitergabe. Mit konfiguriertem SMTP können Nutzer einen Reset-Link selbst
+anfordern und per E-Mail erhalten. Reset-Links gelten jeweils eine Stunde.
+
+Der Admin kann Konten sperren. Dadurch enden bestehende Sitzungen und die
+Agentenzugänge des Kontos werden sofort unbrauchbar. Inhalte bleiben erhalten.
 
 ## Vertrauen und Privatsphäre
 
@@ -206,19 +246,12 @@ der Betrieb ohne SMTP sind dabei grundlegende Anforderungen.
 
 - **Lokales MCP:** Welche Transport- und Betriebsvarianten sind für rein lokale
   Installationen sinnvoll und mit den vorgesehenen Agenten kompatibel?
-- **Suche:** Welche Suchverfahren, Filter und Suchbereiche werden angeboten?
-  Volltextsuche, semantische Suche und deren Kombination sind noch nicht festgelegt.
-- **Einladungslinks:** Dienen sie der erstmaligen Kontoeinrichtung oder auch
-  späteren Anmeldungen? Gültigkeit und Wiederverwendbarkeit sind zu definieren.
-- **Konten ohne SMTP:** Wie funktionieren insbesondere Passwortzurücksetzung
-  und Kontowiederherstellung?
 - **Agentenauthentifizierung:** Wie werden Zugangsdaten technisch ausgegeben
   und der Widerruf umgesetzt? Die benannten Zugänge und Berechtigungsstufen
   pro Vault sind festgelegt.
-- **Löschen von Vaults:** Wie werden enthaltene Datensätze behandelt und
-  unbeabsichtigte Datenverluste vermieden?
-- **Datenkontrolle im Betrieb:** Welche Export-, Backup- und
-  Wiederherstellungswege unterstützen den Anspruch voller Datenkontrolle?
+- **Datenmitnahme und Betriebssicherung:** Das genaue ZIP- und Metadatenformat
+  sowie die technischen Backup- und Wiederherstellungsabläufe sind festzulegen.
+  Der Funktionsumfang von Export, Import und Installationssicherung steht fest.
 
 ## Zielbild
 
