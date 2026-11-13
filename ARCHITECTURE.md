@@ -27,6 +27,9 @@ leerer Suche, Suchumfang und Trefferanzeige sind bestätigt.
 Bestätigt sind außerdem Exportformat und -umfang, konsistenter Export,
 Importziel und Herkunftsdaten, vollständige Importprüfung, Importgrenzen,
 Beschränkung auf memoryaffe-Archive und betreibergeführte Datensicherung.
+Die neun Webapp-Bedienregeln zu Einstieg, Navigation, Datensatzansicht,
+Editor, Entwürfen, Historie, Löschen, externen Bildern und Bedienbarkeit
+sind ebenfalls bestätigt.
 Die übrigen technischen Konkretisierungen dieses Dokuments bleiben Entwurf,
 soweit sie nicht bereits ausdrücklich in der Produktvision beschlossen sind.
 Vor dem Grundgerüst werden alle weiteren Entscheidungsblöcke gemeinsam geklärt.
@@ -338,6 +341,27 @@ Navigation, Vault-Wechsel, Suche, Editor, Historie, Papierkorb und Einstellungen
 bilden den Nutzerbereich; Administration bekommt eigene Routen und Navigation.
 Deutsch/Englisch, Themes, Tastaturbedienung und mobile Darstellung werden von
 Beginn an berücksichtigt. Fonts und Assets werden lokal ausgeliefert.
+
+Nach Anmeldung führt der Einstieg zur Suche im zuletzt verwendeten, noch
+vorhandenen Vault. Die linke Navigation enthält Suche, Datensätze, Tags,
+Papierkorb und Vault-Einstellungen; Agentenzugänge und Profil sind kontoweit.
+Datensätze besitzen eigene verlinkbare Leseseiten mit Bearbeitungsaktion.
+Bei Rückkehr zur Suche bleiben Suchtext, Filter und Position erhalten.
+
+Titel und Zusammenfassung stehen oberhalb des Editors, Tags darunter.
+Markdown und Vorschau stehen auf großen Bildschirmen nebeneinander und sind
+mobil umschaltbar. Button und `Strg/Cmd+S` speichern ausdrücklich. Navigation
+und Vault-Wechsel warnen vor ungespeicherten Änderungen. Private Entwürfe
+werden nicht dauerhaft im Browserspeicher gespeichert; bei Konflikten bleibt
+der Entwurf im geöffneten Editor erhalten.
+
+Historie zeigt Zeitpunkt und Verursacher, Versionsansicht und Textvergleich
+mit der aktuellen Fassung. Wiederherstellung verlangt Bestätigung.
+Datensatzlöschung bietet kurz eine Rückgängig-Aktion; Vault-Löschung verlangt
+Bestätigung mit Inhaltsanzahl, endgültiges Löschen eine gesonderte Bestätigung.
+Externe Markdown-Bilder werden erst nach ausdrücklichem Klick geladen.
+Mobile Navigation ist einklappbar; Kernabläufe sind per Tastatur bedienbar,
+mit nachvollziehbarer Fokusführung nach Dialogen und Aktionen.
 
 ## Betrieb und Datenmitnahme
 

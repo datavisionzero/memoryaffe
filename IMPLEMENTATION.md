@@ -137,6 +137,17 @@ responsive DE/EN-Oberfläche und Themes fertigstellen. Papierkorb, Bereinigung,
 Export und Import integrieren.
 
 **Abnahme:** Kernabläufe funktionieren per Tastatur und auf Smartphonebreite.
+Login führt zur Suche im zuletzt verwendeten vorhandenen Vault. Datensatzseiten
+sind direkt verlinkbar; Rückkehr zur Suche erhält Suchtext, Filter und Position.
+Desktop-Editor zeigt Quelle und Vorschau nebeneinander, mobil sind sie
+umschaltbar. Button und `Strg/Cmd+S` speichern. Vault-Wechsel warnt vor
+ungespeicherten Änderungen; private Entwürfe werden nicht dauerhaft im
+Browserspeicher gespeichert. Konflikte erhalten den geöffneten Entwurf.
+Historie bietet Versionsansicht und Textvergleich mit der aktuellen Fassung;
+Wiederherstellung wird bestätigt. Rückgängig nach Datensatzlöschung,
+Vault-Löschdialog mit Inhaltsanzahl und gesonderte Bestätigung endgültigen
+Löschens werden geprüft. Externe Markdown-Bilder lösen vor ausdrücklichem
+Klick keine Abrufe aus. Fokusführung und einklappbare Navigation werden geprüft.
 Ungespeicherte Änderungen warnen beim Verlassen; Speichern ist ausdrücklich.
 Markdown führt keine eingebetteten Skripte aus. Papierkorb bleibt 30 Tage,
 vorzeitig endgültiges Löschen ist nutzervorbehalten. Vault-Restore aktiviert

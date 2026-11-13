@@ -278,9 +278,30 @@ Ein Markdown-Quelltexteditor mit Vorschau ermöglicht die Bearbeitung.
 Änderungen werden ausdrücklich gespeichert; es gibt zunächst kein Autosave.
 Vor dem Verlassen ungespeicherter Änderungen wird gewarnt. Dadurch erzeugen
 Tipp-Pausen keine historischen Versionen.
+Titel und Zusammenfassung stehen oberhalb des Editors, Tags darunter.
+Auf großen Bildschirmen stehen Markdown und Vorschau nebeneinander, mobil
+sind sie umschaltbar. Speichern ist per Button oder `Strg/Cmd+S` möglich.
+Navigation und Vault-Wechsel warnen bei ungespeicherten Änderungen. Private
+Entwürfe werden im MVP nicht dauerhaft im Browserspeicher abgelegt; bei
+Konflikten bleibt der Entwurf im geöffneten Editor erhalten.
+
+Jeder Datensatz hat eine eigene verlinkbare Seite mit Leseansicht und der
+Aktion „Bearbeiten“. Die Rückkehr zur Suche erhält Suchtext, Filter und Position.
+Nach Anmeldung öffnet sich die Suche im zuletzt verwendeten, noch vorhandenen
+Vault. Ohne Suchtext erscheinen zuletzt geänderte Datensätze.
+
+Die Historie zeigt Zeitpunkt und Verursacher. Historische Versionen lassen
+sich ansehen und als Textvergleich der Änderungen mit der aktuellen Fassung
+vergleichen. Wiederherstellung verlangt eine ausdrückliche Bestätigung.
+Nach Löschen eines Datensatzes wird eine kurze Rückgängig-Aktion angeboten.
+Vault-Löschung verlangt einen Bestätigungsdialog mit Inhaltsanzahl; endgültiges
+Löschen eine gesonderte Bestätigung. Externe Markdown-Bilder werden zunächst
+blockiert und erst auf ausdrücklichen Klick geladen.
 
 Die Webapp ist responsiv: Suche, Lesen und einfache Bearbeitung funktionieren
 auch auf Smartphones. Eine separate native App gehört nicht zum MVP.
+Die mobile Navigation ist einklappbar. Kernabläufe sind vollständig per
+Tastatur bedienbar; der Fokus bleibt nach Dialogen und Aktionen nachvollziehbar.
 
 Die grundlegende Navigation folgt einer vertrauten Anordnung:
 
@@ -293,6 +314,9 @@ Die grundlegende Navigation folgt einer vertrauten Anordnung:
 Die normale Nutzeransicht konzentriert sich auf Suche, Datensätze, Tags und
 Vaults. Adminfunktionen liegen in einem aus Navigationssicht separaten
 Adminbereich, damit sie die alltägliche Nutzung nicht überfrachten.
+Die linke Navigation enthält Suche, Datensätze, Tags, Papierkorb und
+Vault-Einstellungen. Agentenzugänge und Profil sind kontoweit erreichbar;
+der Adminbereich hat einen separaten Einstieg.
 
 ## Konten, Anmeldung und Einladungen
 
