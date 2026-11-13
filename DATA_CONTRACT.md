@@ -95,6 +95,8 @@ Papierkorbinhalte sind nicht enthalten. Export bleibt ein konsistenter Snapshot.
 Import erzeugt einen neuen Vault ohne Agentenrechte und Datensätze mit neuen
 IDs, jeweils Revision 1 und ohne importierte Historie.
 
-Das maschinenlesbare Manifest-Schema mit exakten Feldnamen, Pflichtfeldern und
-Validierungsregeln wird vor dem Grundgerüst aus diesem Vertrag erstellt.
+Das [maschinenlesbare Manifest-Schema](docs/contracts/vault-manifest.schema.json)
+legt Feldnamen und Pflichtfelder fest. Zusätzliche semantische ZIP-, Referenz-
+und Größenprüfungen sind in der [Vertragsausarbeitung](docs/contracts/README.md)
+beschrieben; ihre Implementierung steht noch aus.
 Die bestehenden Importgrenzen und Hinweise für größere Exporte bleiben gültig.

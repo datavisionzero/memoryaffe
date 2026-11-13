@@ -37,6 +37,11 @@ festgelegt. Wesentliche Entscheidungen werden nicht an die Umsetzung delegiert.
 
 ## 1. Grundgerüst und Vertragskonventionen
 
+Vorarbeit: Unter [docs/contracts](docs/contracts/README.md) liegen geprüfte
+Schemas für die acht Agentenoperationen und das Exportmanifest. Diese
+Schema-Prüfung ersetzt keine Anwendungstests. Web-/Admin-/OAuth-Verträge,
+offene Entscheidungen und realer ChatGPT-Nachweis aus Etappe 0 bleiben offen.
+
 Vier .NET-Projekte, React-Webapp, Go-CLI, PostgreSQL-Entwicklungskonfiguration
 und CI nach den Entscheidungen aus Etappe 0 aufbauen. Festgelegte Toolchains
 und Abhängigkeiten pinnen; vereinbarte Vertragskonventionen umsetzen.

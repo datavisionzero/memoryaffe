@@ -1,0 +1,550 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "Id": {
+      "type": "string",
+      "format": "uuid",
+      "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+    },
+    "Timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+    },
+    "Revision": {
+      "type": "string",
+      "pattern": "^[1-9][0-9]*$"
+    },
+    "Tag": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/Id"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 50
+        }
+      },
+      "required": [
+        "id",
+        "name"
+      ],
+      "additionalProperties": false
+    },
+    "Vault": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/Id"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        }
+      },
+      "required": [
+        "id",
+        "name"
+      ],
+      "additionalProperties": false
+    },
+    "WriteResult": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/Id"
+        },
+        "revision": {
+          "$ref": "#/$defs/Revision"
+        },
+        "updatedAt": {
+          "$ref": "#/$defs/Timestamp"
+        }
+      },
+      "required": [
+        "id",
+        "revision",
+        "updatedAt"
+      ],
+      "additionalProperties": false
+    },
+    "Error": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "enum": [
+            "validation_failed",
+            "authentication_required",
+            "permission_denied",
+            "not_found",
+            "revision_conflict",
+            "idempotency_conflict",
+            "name_conflict",
+            "request_in_progress",
+            "cursor_expired",
+            "payload_too_large",
+            "rate_limited",
+            "temporarily_unavailable",
+            "internal_error"
+          ]
+        },
+        "message": {
+          "type": "string"
+        },
+        "requestId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "fields": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "field": {
+                "type": "string"
+              },
+              "message": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "field",
+              "message"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "code",
+        "message",
+        "requestId"
+      ],
+      "additionalProperties": false
+    },
+    "ListVaultsInput": {
+      "type": "object",
+      "properties": {
+        "pageSize": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100,
+          "default": 20
+        },
+        "cursor": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "ListTagsInput": {
+      "type": "object",
+      "properties": {
+        "vaultId": {
+          "$ref": "#/$defs/Id"
+        },
+        "pageSize": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100,
+          "default": 20
+        },
+        "cursor": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "vaultId"
+      ],
+      "additionalProperties": false
+    },
+    "GetMemoryInput": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/Id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "CreateMemoryInput": {
+      "type": "object",
+      "properties": {
+        "vaultId": {
+          "$ref": "#/$defs/Id"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200,
+          "description": "Validate after outer trimming; must not be empty."
+        },
+        "markdown": {
+          "type": "string",
+          "description": "Preserve text including line endings; at most 1048576 UTF-8 bytes. Byte limit requires application validation."
+        },
+        "summary": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 1000,
+          "description": "Empty string is normalized to null on input."
+        },
+        "tagIds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Id"
+          },
+          "uniqueItems": true,
+          "maxItems": 50
+        }
+      },
+      "required": [
+        "vaultId",
+        "title",
+        "markdown"
+      ],
+      "additionalProperties": false
+    },
+    "UpdateMemoryInput": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/Id"
+        },
+        "expectedRevision": {
+          "$ref": "#/$defs/Revision"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200,
+          "description": "Validate after outer trimming; must not be empty."
+        },
+        "markdown": {
+          "type": "string",
+          "description": "Preserve text including line endings; at most 1048576 UTF-8 bytes. Byte limit requires application validation."
+        },
+        "summary": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 1000,
+          "description": "Empty string is normalized to null on input."
+        },
+        "tagIds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Id"
+          },
+          "uniqueItems": true,
+          "maxItems": 50
+        }
+      },
+      "required": [
+        "id",
+        "expectedRevision"
+      ],
+      "additionalProperties": false
+    },
+    "DeleteMemoryInput": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/Id"
+        },
+        "expectedRevision": {
+          "$ref": "#/$defs/Revision"
+        }
+      },
+      "required": [
+        "id",
+        "expectedRevision"
+      ],
+      "additionalProperties": false
+    },
+    "CreateTagInput": {
+      "type": "object",
+      "properties": {
+        "vaultId": {
+          "$ref": "#/$defs/Id"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 50
+        }
+      },
+      "required": [
+        "vaultId",
+        "name"
+      ],
+      "additionalProperties": false
+    },
+    "SearchInput": {
+      "type": "object",
+      "properties": {
+        "vaultId": {
+          "$ref": "#/$defs/Id"
+        },
+        "allVaults": {
+          "const": true
+        },
+        "query": {
+          "type": "string",
+          "default": ""
+        },
+        "tagIds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Id"
+          },
+          "uniqueItems": true
+        },
+        "tagMatch": {
+          "type": "string",
+          "enum": [
+            "all",
+            "any"
+          ],
+          "default": "all"
+        },
+        "sort": {
+          "type": "string",
+          "enum": [
+            "relevance",
+            "updatedAt"
+          ]
+        },
+        "pageSize": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100,
+          "default": 20
+        },
+        "cursor": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [],
+      "additionalProperties": false,
+      "oneOf": [
+        {
+          "required": [
+            "vaultId"
+          ],
+          "not": {
+            "required": [
+              "allVaults"
+            ]
+          }
+        },
+        {
+          "required": [
+            "allVaults"
+          ],
+          "not": {
+            "required": [
+              "vaultId"
+            ]
+          }
+        }
+      ]
+    },
+    "Memory": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/Id"
+        },
+        "vaultId": {
+          "$ref": "#/$defs/Id"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200,
+          "description": "Validate after outer trimming; must not be empty."
+        },
+        "summary": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 1000,
+          "description": "Empty string is normalized to null on input."
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Tag"
+          },
+          "maxItems": 50
+        },
+        "revision": {
+          "$ref": "#/$defs/Revision"
+        },
+        "createdAt": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "updatedAt": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "markdown": {
+          "type": "string",
+          "description": "Preserve text including line endings; at most 1048576 UTF-8 bytes. Byte limit requires application validation."
+        }
+      },
+      "required": [
+        "id",
+        "vaultId",
+        "title",
+        "summary",
+        "tags",
+        "revision",
+        "createdAt",
+        "updatedAt",
+        "markdown"
+      ],
+      "additionalProperties": false
+    },
+    "SearchHit": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/Id"
+        },
+        "vaultId": {
+          "$ref": "#/$defs/Id"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200,
+          "description": "Validate after outer trimming; must not be empty."
+        },
+        "summary": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 1000,
+          "description": "Empty string is normalized to null on input."
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Tag"
+          },
+          "maxItems": 50
+        },
+        "revision": {
+          "$ref": "#/$defs/Revision"
+        },
+        "createdAt": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "updatedAt": {
+          "$ref": "#/$defs/Timestamp"
+        },
+        "snippet": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "vaultId",
+        "title",
+        "summary",
+        "tags",
+        "revision",
+        "createdAt",
+        "updatedAt",
+        "snippet"
+      ],
+      "additionalProperties": false
+    },
+    "VaultPage": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Vault"
+          }
+        },
+        "nextCursor": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        }
+      },
+      "required": [
+        "items",
+        "nextCursor"
+      ],
+      "additionalProperties": false
+    },
+    "TagPage": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Tag"
+          }
+        },
+        "nextCursor": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        }
+      },
+      "required": [
+        "items",
+        "nextCursor"
+      ],
+      "additionalProperties": false
+    },
+    "SearchPage": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/SearchHit"
+          }
+        },
+        "nextCursor": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        }
+      },
+      "required": [
+        "items",
+        "nextCursor"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

@@ -155,6 +155,11 @@ Skripte keine sprachabhängigen Meldungen auswerten müssen.
 
 ## Noch zu vervollständigen
 
+Die [maschinelle Vertragsausarbeitung](docs/contracts/README.md) enthält
+OpenAPI für die acht Agentenoperationen, MCP-Ein-/Ausgabeschemas und gemeinsame
+Datentypen. Das Web-/Admin-Inventar ist angelegt; vollständige Schemas dafür
+stehen noch aus. Neue Entscheidungsvorschläge sind dort ausdrücklich getrennt.
+
 Vor dem Grundgerüst folgen vollständige maschinenlesbare Request-/Response-
 Schemas und die technische Umsetzung der festgelegten Cursor- und
 Wiederholungsregeln einschließlich konkreter Wartezeit. OAuth-/CIMD-Endpunkte

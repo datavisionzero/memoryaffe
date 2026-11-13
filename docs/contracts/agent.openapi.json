@@ -1,0 +1,1119 @@
+{
+  "openapi": "3.1.1",
+  "info": {
+    "title": "memoryaffe agent data API — planning contract",
+    "version": "0.1.0",
+    "description": "Agent data surface only. Web account/admin/lifecycle and OAuth contracts are tracked separately; no running implementation."
+  },
+  "security": [
+    {
+      "agentToken": []
+    }
+  ],
+  "paths": {
+    "/api/v1/vaults": {
+      "get": {
+        "operationId": "list_vaults",
+        "description": "List active vaults accessible to this agent.",
+        "parameters": [
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VaultPage"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Product error; see API_CONTRACT.md for status/code mapping.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/vaults/{vaultId}/tags": {
+      "get": {
+        "operationId": "list_tags",
+        "description": "List existing tags in an accessible vault.",
+        "parameters": [
+          {
+            "name": "vaultId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Id"
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TagPage"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Product error; see API_CONTRACT.md for status/code mapping.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "create_tag",
+        "description": "Create a vault-local tag. Requires write access and the account permission to create tags.",
+        "parameters": [
+          {
+            "name": "vaultId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Id"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Tag"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Product error; see API_CONTRACT.md for status/code mapping.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 50
+                  }
+                },
+                "required": [
+                  "name"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/memories/search": {
+      "post": {
+        "operationId": "search_memories",
+        "description": "Search active current records in one explicit vault or all accessible vaults. Returns snippets, not full Markdown.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchPage"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Product error; see API_CONTRACT.md for status/code mapping.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "vaultId": {
+                    "$ref": "#/components/schemas/Id"
+                  },
+                  "allVaults": {
+                    "const": true
+                  },
+                  "query": {
+                    "type": "string",
+                    "default": ""
+                  },
+                  "tagIds": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Id"
+                    },
+                    "uniqueItems": true
+                  },
+                  "tagMatch": {
+                    "type": "string",
+                    "enum": [
+                      "all",
+                      "any"
+                    ],
+                    "default": "all"
+                  },
+                  "sort": {
+                    "type": "string",
+                    "enum": [
+                      "relevance",
+                      "updatedAt"
+                    ]
+                  },
+                  "pageSize": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 100,
+                    "default": 20
+                  },
+                  "cursor": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [],
+                "additionalProperties": false,
+                "oneOf": [
+                  {
+                    "required": [
+                      "vaultId"
+                    ],
+                    "not": {
+                      "required": [
+                        "allVaults"
+                      ]
+                    }
+                  },
+                  {
+                    "required": [
+                      "allVaults"
+                    ],
+                    "not": {
+                      "required": [
+                        "vaultId"
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/memories/{id}": {
+      "get": {
+        "operationId": "get_memory",
+        "description": "Read the current complete record, including Markdown and revision.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Memory"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Product error; see API_CONTRACT.md for status/code mapping.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "update_memory",
+        "description": "Update specified fields only. Requires the revision last read; conflicts must be resolved by reading again.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Id"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WriteResult"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Product error; see API_CONTRACT.md for status/code mapping.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "expectedRevision": {
+                    "$ref": "#/components/schemas/Revision"
+                  },
+                  "title": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200,
+                    "description": "Validate after outer trimming; must not be empty."
+                  },
+                  "markdown": {
+                    "type": "string",
+                    "description": "Preserve text including line endings; at most 1048576 UTF-8 bytes. Byte limit requires application validation."
+                  },
+                  "summary": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "maxLength": 1000,
+                    "description": "Empty string is normalized to null on input."
+                  },
+                  "tagIds": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Id"
+                    },
+                    "uniqueItems": true,
+                    "maxItems": 50
+                  }
+                },
+                "required": [
+                  "expectedRevision"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "delete_memory",
+        "description": "Move a record to trash using the revision last read. Permanent deletion is not available to agents.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Id"
+            }
+          },
+          {
+            "name": "expectedRevision",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Revision"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WriteResult"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Product error; see API_CONTRACT.md for status/code mapping.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/memories": {
+      "post": {
+        "operationId": "create_memory",
+        "description": "Create a record in an explicitly authorized vault. Tags must already exist in that vault.",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WriteResult"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Product error; see API_CONTRACT.md for status/code mapping.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "vaultId": {
+                    "$ref": "#/components/schemas/Id"
+                  },
+                  "title": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200,
+                    "description": "Validate after outer trimming; must not be empty."
+                  },
+                  "markdown": {
+                    "type": "string",
+                    "description": "Preserve text including line endings; at most 1048576 UTF-8 bytes. Byte limit requires application validation."
+                  },
+                  "summary": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "maxLength": 1000,
+                    "description": "Empty string is normalized to null on input."
+                  },
+                  "tagIds": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Id"
+                    },
+                    "uniqueItems": true,
+                    "maxItems": 50
+                  }
+                },
+                "required": [
+                  "vaultId",
+                  "title",
+                  "markdown"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "agentToken": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "Revocable CLI agent token. OAuth tokens for the MCP resource are not implicitly valid here."
+      }
+    },
+    "schemas": {
+      "Id": {
+        "type": "string",
+        "format": "uuid",
+        "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+      },
+      "Timestamp": {
+        "type": "string",
+        "format": "date-time",
+        "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+      },
+      "Revision": {
+        "type": "string",
+        "pattern": "^[1-9][0-9]*$"
+      },
+      "Tag": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 50
+          }
+        },
+        "required": [
+          "id",
+          "name"
+        ],
+        "additionalProperties": false
+      },
+      "Vault": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          }
+        },
+        "required": [
+          "id",
+          "name"
+        ],
+        "additionalProperties": false
+      },
+      "WriteResult": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "revision": {
+            "$ref": "#/components/schemas/Revision"
+          },
+          "updatedAt": {
+            "$ref": "#/components/schemas/Timestamp"
+          }
+        },
+        "required": [
+          "id",
+          "revision",
+          "updatedAt"
+        ],
+        "additionalProperties": false
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "enum": [
+              "validation_failed",
+              "authentication_required",
+              "permission_denied",
+              "not_found",
+              "revision_conflict",
+              "idempotency_conflict",
+              "name_conflict",
+              "request_in_progress",
+              "cursor_expired",
+              "payload_too_large",
+              "rate_limited",
+              "temporarily_unavailable",
+              "internal_error"
+            ]
+          },
+          "message": {
+            "type": "string"
+          },
+          "requestId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "fields": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "field": {
+                  "type": "string"
+                },
+                "message": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "field",
+                "message"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "requestId"
+        ],
+        "additionalProperties": false
+      },
+      "ListVaultsInput": {
+        "type": "object",
+        "properties": {
+          "pageSize": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100,
+            "default": 20
+          },
+          "cursor": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [],
+        "additionalProperties": false
+      },
+      "ListTagsInput": {
+        "type": "object",
+        "properties": {
+          "vaultId": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "pageSize": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100,
+            "default": 20
+          },
+          "cursor": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "vaultId"
+        ],
+        "additionalProperties": false
+      },
+      "GetMemoryInput": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/Id"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "additionalProperties": false
+      },
+      "CreateMemoryInput": {
+        "type": "object",
+        "properties": {
+          "vaultId": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200,
+            "description": "Validate after outer trimming; must not be empty."
+          },
+          "markdown": {
+            "type": "string",
+            "description": "Preserve text including line endings; at most 1048576 UTF-8 bytes. Byte limit requires application validation."
+          },
+          "summary": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 1000,
+            "description": "Empty string is normalized to null on input."
+          },
+          "tagIds": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Id"
+            },
+            "uniqueItems": true,
+            "maxItems": 50
+          }
+        },
+        "required": [
+          "vaultId",
+          "title",
+          "markdown"
+        ],
+        "additionalProperties": false
+      },
+      "UpdateMemoryInput": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "expectedRevision": {
+            "$ref": "#/components/schemas/Revision"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200,
+            "description": "Validate after outer trimming; must not be empty."
+          },
+          "markdown": {
+            "type": "string",
+            "description": "Preserve text including line endings; at most 1048576 UTF-8 bytes. Byte limit requires application validation."
+          },
+          "summary": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 1000,
+            "description": "Empty string is normalized to null on input."
+          },
+          "tagIds": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Id"
+            },
+            "uniqueItems": true,
+            "maxItems": 50
+          }
+        },
+        "required": [
+          "id",
+          "expectedRevision"
+        ],
+        "additionalProperties": false
+      },
+      "DeleteMemoryInput": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "expectedRevision": {
+            "$ref": "#/components/schemas/Revision"
+          }
+        },
+        "required": [
+          "id",
+          "expectedRevision"
+        ],
+        "additionalProperties": false
+      },
+      "CreateTagInput": {
+        "type": "object",
+        "properties": {
+          "vaultId": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 50
+          }
+        },
+        "required": [
+          "vaultId",
+          "name"
+        ],
+        "additionalProperties": false
+      },
+      "SearchInput": {
+        "type": "object",
+        "properties": {
+          "vaultId": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "allVaults": {
+            "const": true
+          },
+          "query": {
+            "type": "string",
+            "default": ""
+          },
+          "tagIds": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Id"
+            },
+            "uniqueItems": true
+          },
+          "tagMatch": {
+            "type": "string",
+            "enum": [
+              "all",
+              "any"
+            ],
+            "default": "all"
+          },
+          "sort": {
+            "type": "string",
+            "enum": [
+              "relevance",
+              "updatedAt"
+            ]
+          },
+          "pageSize": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100,
+            "default": 20
+          },
+          "cursor": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [],
+        "additionalProperties": false,
+        "oneOf": [
+          {
+            "required": [
+              "vaultId"
+            ],
+            "not": {
+              "required": [
+                "allVaults"
+              ]
+            }
+          },
+          {
+            "required": [
+              "allVaults"
+            ],
+            "not": {
+              "required": [
+                "vaultId"
+              ]
+            }
+          }
+        ]
+      },
+      "Memory": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "vaultId": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200,
+            "description": "Validate after outer trimming; must not be empty."
+          },
+          "summary": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 1000,
+            "description": "Empty string is normalized to null on input."
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Tag"
+            },
+            "maxItems": 50
+          },
+          "revision": {
+            "$ref": "#/components/schemas/Revision"
+          },
+          "createdAt": {
+            "$ref": "#/components/schemas/Timestamp"
+          },
+          "updatedAt": {
+            "$ref": "#/components/schemas/Timestamp"
+          },
+          "markdown": {
+            "type": "string",
+            "description": "Preserve text including line endings; at most 1048576 UTF-8 bytes. Byte limit requires application validation."
+          }
+        },
+        "required": [
+          "id",
+          "vaultId",
+          "title",
+          "summary",
+          "tags",
+          "revision",
+          "createdAt",
+          "updatedAt",
+          "markdown"
+        ],
+        "additionalProperties": false
+      },
+      "SearchHit": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "vaultId": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200,
+            "description": "Validate after outer trimming; must not be empty."
+          },
+          "summary": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 1000,
+            "description": "Empty string is normalized to null on input."
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Tag"
+            },
+            "maxItems": 50
+          },
+          "revision": {
+            "$ref": "#/components/schemas/Revision"
+          },
+          "createdAt": {
+            "$ref": "#/components/schemas/Timestamp"
+          },
+          "updatedAt": {
+            "$ref": "#/components/schemas/Timestamp"
+          },
+          "snippet": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "vaultId",
+          "title",
+          "summary",
+          "tags",
+          "revision",
+          "createdAt",
+          "updatedAt",
+          "snippet"
+        ],
+        "additionalProperties": false
+      },
+      "VaultPage": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Vault"
+            }
+          },
+          "nextCursor": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "minLength": 1
+          }
+        },
+        "required": [
+          "items",
+          "nextCursor"
+        ],
+        "additionalProperties": false
+      },
+      "TagPage": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Tag"
+            }
+          },
+          "nextCursor": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "minLength": 1
+          }
+        },
+        "required": [
+          "items",
+          "nextCursor"
+        ],
+        "additionalProperties": false
+      },
+      "SearchPage": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SearchHit"
+            }
+          },
+          "nextCursor": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "minLength": 1
+          }
+        },
+        "required": [
+          "items",
+          "nextCursor"
+        ],
+        "additionalProperties": false
+      }
+    }
+  }
+}

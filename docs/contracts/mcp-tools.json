@@ -1,0 +1,849 @@
+{
+  "tools": [
+    {
+      "name": "list_vaults",
+      "description": "List active vaults accessible to this agent.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "pageSize": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100,
+            "default": 20
+          },
+          "cursor": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [],
+        "additionalProperties": false,
+        "$defs": {}
+      },
+      "outputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/Vault"
+            }
+          },
+          "nextCursor": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "minLength": 1
+          }
+        },
+        "required": [
+          "items",
+          "nextCursor"
+        ],
+        "additionalProperties": false,
+        "$defs": {
+          "Vault": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "$ref": "#/$defs/Id"
+              },
+              "name": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "additionalProperties": false
+          },
+          "Id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+          }
+        }
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "list_tags",
+      "description": "List existing tags in an accessible vault.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "vaultId": {
+            "$ref": "#/$defs/Id"
+          },
+          "pageSize": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100,
+            "default": 20
+          },
+          "cursor": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "vaultId"
+        ],
+        "additionalProperties": false,
+        "$defs": {
+          "Id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+          }
+        }
+      },
+      "outputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/Tag"
+            }
+          },
+          "nextCursor": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "minLength": 1
+          }
+        },
+        "required": [
+          "items",
+          "nextCursor"
+        ],
+        "additionalProperties": false,
+        "$defs": {
+          "Tag": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "$ref": "#/$defs/Id"
+              },
+              "name": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 50
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "additionalProperties": false
+          },
+          "Id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+          }
+        }
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "search_memories",
+      "description": "Search active current records in one explicit vault or all accessible vaults. Returns snippets, not full Markdown.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "vaultId": {
+            "$ref": "#/$defs/Id"
+          },
+          "allVaults": {
+            "const": true
+          },
+          "query": {
+            "type": "string",
+            "default": ""
+          },
+          "tagIds": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/Id"
+            },
+            "uniqueItems": true
+          },
+          "tagMatch": {
+            "type": "string",
+            "enum": [
+              "all",
+              "any"
+            ],
+            "default": "all"
+          },
+          "sort": {
+            "type": "string",
+            "enum": [
+              "relevance",
+              "updatedAt"
+            ]
+          },
+          "pageSize": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100,
+            "default": 20
+          },
+          "cursor": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [],
+        "additionalProperties": false,
+        "oneOf": [
+          {
+            "required": [
+              "vaultId"
+            ],
+            "not": {
+              "required": [
+                "allVaults"
+              ]
+            }
+          },
+          {
+            "required": [
+              "allVaults"
+            ],
+            "not": {
+              "required": [
+                "vaultId"
+              ]
+            }
+          }
+        ],
+        "$defs": {
+          "Id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+          }
+        }
+      },
+      "outputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/SearchHit"
+            }
+          },
+          "nextCursor": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "minLength": 1
+          }
+        },
+        "required": [
+          "items",
+          "nextCursor"
+        ],
+        "additionalProperties": false,
+        "$defs": {
+          "SearchHit": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "$ref": "#/$defs/Id"
+              },
+              "vaultId": {
+                "$ref": "#/$defs/Id"
+              },
+              "title": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200,
+                "description": "Validate after outer trimming; must not be empty."
+              },
+              "summary": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "maxLength": 1000,
+                "description": "Empty string is normalized to null on input."
+              },
+              "tags": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/Tag"
+                },
+                "maxItems": 50
+              },
+              "revision": {
+                "$ref": "#/$defs/Revision"
+              },
+              "createdAt": {
+                "$ref": "#/$defs/Timestamp"
+              },
+              "updatedAt": {
+                "$ref": "#/$defs/Timestamp"
+              },
+              "snippet": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "vaultId",
+              "title",
+              "summary",
+              "tags",
+              "revision",
+              "createdAt",
+              "updatedAt",
+              "snippet"
+            ],
+            "additionalProperties": false
+          },
+          "Id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+          },
+          "Tag": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "$ref": "#/$defs/Id"
+              },
+              "name": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 50
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "additionalProperties": false
+          },
+          "Revision": {
+            "type": "string",
+            "pattern": "^[1-9][0-9]*$"
+          },
+          "Timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+          }
+        }
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "get_memory",
+      "description": "Read the current complete record, including Markdown and revision.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/$defs/Id"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "additionalProperties": false,
+        "$defs": {
+          "Id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+          }
+        }
+      },
+      "outputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/$defs/Id"
+          },
+          "vaultId": {
+            "$ref": "#/$defs/Id"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200,
+            "description": "Validate after outer trimming; must not be empty."
+          },
+          "summary": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 1000,
+            "description": "Empty string is normalized to null on input."
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/Tag"
+            },
+            "maxItems": 50
+          },
+          "revision": {
+            "$ref": "#/$defs/Revision"
+          },
+          "createdAt": {
+            "$ref": "#/$defs/Timestamp"
+          },
+          "updatedAt": {
+            "$ref": "#/$defs/Timestamp"
+          },
+          "markdown": {
+            "type": "string",
+            "description": "Preserve text including line endings; at most 1048576 UTF-8 bytes. Byte limit requires application validation."
+          }
+        },
+        "required": [
+          "id",
+          "vaultId",
+          "title",
+          "summary",
+          "tags",
+          "revision",
+          "createdAt",
+          "updatedAt",
+          "markdown"
+        ],
+        "additionalProperties": false,
+        "$defs": {
+          "Id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+          },
+          "Tag": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "$ref": "#/$defs/Id"
+              },
+              "name": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 50
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "additionalProperties": false
+          },
+          "Revision": {
+            "type": "string",
+            "pattern": "^[1-9][0-9]*$"
+          },
+          "Timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+          }
+        }
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "create_memory",
+      "description": "Create a record in an explicitly authorized vault. Tags must already exist in that vault.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "vaultId": {
+            "$ref": "#/$defs/Id"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200,
+            "description": "Validate after outer trimming; must not be empty."
+          },
+          "markdown": {
+            "type": "string",
+            "description": "Preserve text including line endings; at most 1048576 UTF-8 bytes. Byte limit requires application validation."
+          },
+          "summary": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 1000,
+            "description": "Empty string is normalized to null on input."
+          },
+          "tagIds": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/Id"
+            },
+            "uniqueItems": true,
+            "maxItems": 50
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Optional retry key, retained for 24 hours. Same actor and logical request across HTTP/MCP."
+          }
+        },
+        "required": [
+          "vaultId",
+          "title",
+          "markdown"
+        ],
+        "additionalProperties": false,
+        "$defs": {
+          "Id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+          }
+        }
+      },
+      "outputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/$defs/Id"
+          },
+          "revision": {
+            "$ref": "#/$defs/Revision"
+          },
+          "updatedAt": {
+            "$ref": "#/$defs/Timestamp"
+          }
+        },
+        "required": [
+          "id",
+          "revision",
+          "updatedAt"
+        ],
+        "additionalProperties": false,
+        "$defs": {
+          "Id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+          },
+          "Revision": {
+            "type": "string",
+            "pattern": "^[1-9][0-9]*$"
+          },
+          "Timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+          }
+        }
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "update_memory",
+      "description": "Update specified fields only. Requires the revision last read; conflicts must be resolved by reading again.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/$defs/Id"
+          },
+          "expectedRevision": {
+            "$ref": "#/$defs/Revision"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200,
+            "description": "Validate after outer trimming; must not be empty."
+          },
+          "markdown": {
+            "type": "string",
+            "description": "Preserve text including line endings; at most 1048576 UTF-8 bytes. Byte limit requires application validation."
+          },
+          "summary": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 1000,
+            "description": "Empty string is normalized to null on input."
+          },
+          "tagIds": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/Id"
+            },
+            "uniqueItems": true,
+            "maxItems": 50
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Optional retry key, retained for 24 hours. Same actor and logical request across HTTP/MCP."
+          }
+        },
+        "required": [
+          "id",
+          "expectedRevision"
+        ],
+        "additionalProperties": false,
+        "$defs": {
+          "Id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+          },
+          "Revision": {
+            "type": "string",
+            "pattern": "^[1-9][0-9]*$"
+          }
+        }
+      },
+      "outputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/$defs/Id"
+          },
+          "revision": {
+            "$ref": "#/$defs/Revision"
+          },
+          "updatedAt": {
+            "$ref": "#/$defs/Timestamp"
+          }
+        },
+        "required": [
+          "id",
+          "revision",
+          "updatedAt"
+        ],
+        "additionalProperties": false,
+        "$defs": {
+          "Id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+          },
+          "Revision": {
+            "type": "string",
+            "pattern": "^[1-9][0-9]*$"
+          },
+          "Timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+          }
+        }
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "delete_memory",
+      "description": "Move a record to trash using the revision last read. Permanent deletion is not available to agents.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/$defs/Id"
+          },
+          "expectedRevision": {
+            "$ref": "#/$defs/Revision"
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Optional retry key, retained for 24 hours. Same actor and logical request across HTTP/MCP."
+          }
+        },
+        "required": [
+          "id",
+          "expectedRevision"
+        ],
+        "additionalProperties": false,
+        "$defs": {
+          "Id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+          },
+          "Revision": {
+            "type": "string",
+            "pattern": "^[1-9][0-9]*$"
+          }
+        }
+      },
+      "outputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/$defs/Id"
+          },
+          "revision": {
+            "$ref": "#/$defs/Revision"
+          },
+          "updatedAt": {
+            "$ref": "#/$defs/Timestamp"
+          }
+        },
+        "required": [
+          "id",
+          "revision",
+          "updatedAt"
+        ],
+        "additionalProperties": false,
+        "$defs": {
+          "Id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+          },
+          "Revision": {
+            "type": "string",
+            "pattern": "^[1-9][0-9]*$"
+          },
+          "Timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+          }
+        }
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "create_tag",
+      "description": "Create a vault-local tag. Requires write access and the account permission to create tags.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "vaultId": {
+            "$ref": "#/$defs/Id"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 50
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Optional retry key, retained for 24 hours. Same actor and logical request across HTTP/MCP."
+          }
+        },
+        "required": [
+          "vaultId",
+          "name"
+        ],
+        "additionalProperties": false,
+        "$defs": {
+          "Id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+          }
+        }
+      },
+      "outputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/$defs/Id"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 50
+          }
+        },
+        "required": [
+          "id",
+          "name"
+        ],
+        "additionalProperties": false,
+        "$defs": {
+          "Id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+          }
+        }
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false
+      }
+    }
+  ]
+}
