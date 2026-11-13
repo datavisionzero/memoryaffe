@@ -12,7 +12,9 @@ Datenmitnahme und zentrale UI-Abläufe. Der [Datenvertrag](DATA_CONTRACT.md)
 ist ebenfalls bestätigt. Seine maschinenlesbaren Schemas und die konkrete
 Unicode-Version werden noch vor dem Grundgerüst festgelegt.
 Die Grundregeln des [Schnittstellenvertrags](API_CONTRACT.md) sind bestätigt;
-konkrete Schemas, Fehlercodes und Wiederholungsdetails folgen vor dem Grundgerüst.
+Feldkonventionen, Fehlercodes, Cursor-Gültigkeit, Wiederholungsvergleich und
+CLI-Exitcodes sind ebenfalls bestätigt. Vollständige maschinenlesbare Schemas
+und verbleibende technische Details folgen vor dem Grundgerüst.
 Weitere Vertragsdetails und Randfälle
 sowie technische Betriebs- und Lieferdetails werden noch gemeinsam entschieden.
 Der grundsätzliche Betriebs- und Veröffentlichungsumfang ist bestätigt.
@@ -168,6 +170,15 @@ Such-Snapshot. Gleichzeitige und adapterübergreifende Wiederholungen im selben
 Schlüsselbereich erzeugen höchstens eine Änderung und speichern das Ergebnis
 atomar. Rechteentzug greift auch bei Wiederholungen. Tag-Zuordnung über IDs
 erstellt keine Tags implizit.
+Zusätzlich werden die Fehler-/Exitcode-Zuordnungen, camelCase-Antwortformen,
+ausdrücklicher Suchumfang und ID-basierte Tag-Filter geprüft. Cursor laufen nach
+30 Minuten ab; Manipulation, fremder Akteur oder abweichende Suchparameter
+werden abgewiesen. Auftragsvergleiche ignorieren JSON-Feld- und Tag-Reihenfolge,
+unterscheiden aber ausgelassene und geleerte Felder. Laufende identische Aufträge
+ergeben nach begrenztem Warten `request_in_progress`. Validierungsfehler und
+Versionskonflikte verbrauchen den Schlüssel nicht; erfolgreiche unveränderte
+Speicherungen werden als Ergebnis festgehalten. CLI-Schreibwiederholungen
+verwenden den automatisch erzeugten ursprünglichen Schlüssel.
 Profile wechseln die Verbindung korrekt. Tokens erscheinen nicht als
 Kommandozeilenargument; lokale Speicherung erfolgt nur ausdrücklich.
 Datei-/stdin-Eingaben erhalten Markdown unverändert. JSON auf stdout bleibt

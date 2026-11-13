@@ -52,6 +52,9 @@ Teiländerungen, UTC-Zeitformat sowie die Regeln für Vault-Archive in Format 1.
 Der [Schnittstellenvertrag](API_CONTRACT.md) bestätigt API-Versionierung,
 PATCH mit erwarteter Revision, gemeinsame fachliche Fehler, Cursor-Pagination,
 adapterübergreifende atomare Wiederholungen und Ergebnis-/Tool-Grenzen.
+Bestätigt sind außerdem camelCase-Felder, Antwortformen, expliziter Suchumfang,
+Tag-Filter über IDs, HTTP-/Fehlercodes, 30-minütige geschützte Cursor,
+Auftragsvergleich und Verhalten laufender Wiederholungen sowie CLI-Exitcodes.
 Die übrigen technischen Konkretisierungen dieses Dokuments bleiben Entwurf,
 soweit sie nicht bereits ausdrücklich in der Produktvision beschlossen sind.
 Vor dem Grundgerüst werden alle weiteren Entscheidungsblöcke gemeinsam geklärt.

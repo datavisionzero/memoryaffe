@@ -31,6 +31,26 @@ Fehlertexten. MCP bildet dieselben fachlichen Fehler in seinem Ergebnisformat ab
 Fremde und unbekannte IDs bleiben ununterscheidbar. Fehlende Schreibrechte auf
 einen lesbaren Datensatz ergeben einen ausdrücklichen Berechtigungsfehler.
 
+| HTTP-Status | Fehlercode | Bedeutung |
+|---|---|---|
+| 400 | `validation_failed` | Ungültige oder fehlende Angaben |
+| 401 | `authentication_required` | Anmeldung fehlt oder ist ungültig |
+| 403 | `permission_denied` | Aktion auf sichtbaren Daten nicht erlaubt |
+| 404 | `not_found` | Unbekannt oder nicht sichtbar |
+| 409 | `revision_conflict` | Datensatz inzwischen geändert |
+| 409 | `idempotency_conflict` | Schlüssel für anderen Auftrag verwendet |
+| 409 | `name_conflict` | Vault- oder Tag-Name bereits vergeben |
+| 409 | `request_in_progress` | Identischer Auftrag läuft noch; Wiederholungshinweis |
+| 410 | `cursor_expired` | Suche muss neu gestartet werden |
+| 413 | `payload_too_large` | Größenlimit überschritten |
+| 429 | `rate_limited` | Zu viele Anfragen |
+| 503 | `temporarily_unavailable` | Dienst vorübergehend nicht verfügbar |
+| 500 | `internal_error` | Unerwarteter Serverfehler |
+
+Unerwartete Serverfehler enthalten eine Anfrage-ID, aber keine internen
+technischen Details. OAuth- und MCP-Protokollfehler behalten ihre eigenen
+vorgeschriebenen Formate.
+
 ## Listen und Suche
 
 Listen und Suche liefern standardmäßig 20, maximal 100 Einträge sowie einen
@@ -41,6 +61,18 @@ Trefferzahlen. Die festgelegten eindeutigen Sortierkriterien gelten weiterhin.
 Ein Suchdurchlauf hält keinen dauerhaften Snapshot des Datenbestands fest.
 Gleichzeitige Änderungen können die Trefferliste zwischen Seiten verändern.
 Die konsistente Snapshot-Regel für ZIP-Exporte bleibt davon unberührt.
+
+Cursor gelten 30 Minuten, sind zusätzlich an den Nutzer beziehungsweise
+Agentenzugang gebunden und gegen Manipulation geschützt. Clients behandeln sie
+als undurchsichtige Zeichenfolge. Ablauf ergibt `cursor_expired`; manipulierte
+Cursor oder Verwendung mit anderen Suchparametern ergeben `validation_failed`.
+
+Die Suche verlangt entweder genau einen Vault oder ausdrücklich alle
+zugänglichen Vaults. Es gibt keinen versteckten Suchumfang aus einer Websitzung;
+die UI überträgt ihre aktuelle Auswahl ausdrücklich.
+Tag-Filter verwenden IDs. Die Modi „alle“ und „mindestens einer“ beziehen sich
+auch bei mehreren Vaults auf diese konkreten Tags. Gleichnamige Tags anderer
+Vaults werden nicht automatisch einbezogen.
 
 ## Wiederholungsschlüssel
 
@@ -55,11 +87,31 @@ abgeschlossen, auch bei konkurrierenden Aufrufen. Wiederholungen prüfen
 weiterhin aktuelle Zugangsrechte. Nach Ablauf der Frist besteht keine
 Wiederholungsgarantie mehr.
 
-Die transportübergreifende Darstellung des Schlüssels, die genaue
-Auftragsvergleichsregel und Antworten bei noch laufenden Aufträgen werden im
-folgenden Schemablock konkretisiert.
+HTTP überträgt den Schlüssel als `Idempotency-Key`, MCP als `idempotencyKey`.
+Die CLI erzeugt ihn für Schreibaufrufe automatisch und verwendet ihn bei
+technischen Wiederholungen erneut.
+
+Der Auftragsvergleich umfasst Aktion, Ziel, erwartete Revision und übergebene
+Felder. JSON-Feldreihenfolge und Tag-Reihenfolge sind irrelevant; ausgelassene
+und ausdrücklich geleerte Felder bleiben unterscheidbar.
+
+Läuft derselbe Auftrag noch, wartet der Server begrenzt auf dessen Ergebnis.
+Danach meldet er `409/request_in_progress` mit Wiederholungshinweis.
+Validierungsfehler und Versionskonflikte verbrauchen den Schlüssel nicht.
+Erfolgreiche Änderungen und erfolgreiche unveränderte Speicherungen erhalten
+ein gespeichertes Ergebnis.
 
 ## Ergebnisse und MCP-Werkzeuge
+
+JSON-Feldnamen verwenden durchgängig `camelCase`, beispielsweise `vaultId`,
+`expectedRevision`, `createdAt` und `updatedAt`. IDs und Revisionen sind
+Zeichenfolgen. Listen enthalten `items` und `nextCursor`; ohne Folgeseite ist
+`nextCursor` gleich `null`.
+
+Ein vollständiger Datensatz enthält ID, Vault-ID, Titel, Zusammenfassung,
+Markdown, Tags, Revision und Zeitpunkte. Suchtreffer verwenden `snippet`
+anstelle vollständigen Markdowns. Kompakte Datensatz-Schreibantworten enthalten
+die Felder `id`, `revision` und `updatedAt`.
 
 Die Suche liefert Metadaten und Ausschnitte. `get_memory` liefert den
 vollständigen aktuellen Datensatz. Schreiboperationen an Datensätzen liefern
@@ -84,9 +136,26 @@ Versionswiederherstellung, Verschieben, Vault-Verwaltung, Papierkorb und
 Administration erhalten keine Agentenwerkzeuge. MCP-Annotationen ersetzen
 keine serverseitige Berechtigungsprüfung.
 
+## CLI-Exitcodes
+
+| Exitcode | Bedeutung |
+|---|---|
+| 0 | Erfolg |
+| 1 | Sonstiger Fehler |
+| 2 | Eingabe |
+| 3 | Anmeldung |
+| 4 | Berechtigung |
+| 5 | Nicht gefunden |
+| 6 | Konflikt |
+| 7 | Rate-Limit |
+| 8 | Netzwerk oder vorübergehende Nichtverfügbarkeit |
+
+Die JSON-Fehlerausgabe enthält zusätzlich den genauen Fehlercode, damit
+Skripte keine sprachabhängigen Meldungen auswerten müssen.
+
 ## Noch zu vervollständigen
 
-Vor dem Grundgerüst folgen konkrete Request-/Response-Schemas, HTTP-Status-
-und Fehlercodes, Cursorformat und -gültigkeit, Wiederholungsdetails sowie die
-Abbildung auf CLI-Exitcodes. OAuth-/CIMD-Endpunkte erhalten einen eigenen
+Vor dem Grundgerüst folgen vollständige maschinenlesbare Request-/Response-
+Schemas und die technische Umsetzung der festgelegten Cursor- und
+Wiederholungsregeln einschließlich konkreter Wartezeit. OAuth-/CIMD-Endpunkte erhalten einen eigenen
 Protokollvertrag; ihre Protokollfehler folgen nicht pauschal dem Produktformat.
