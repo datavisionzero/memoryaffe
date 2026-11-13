@@ -1,0 +1,210 @@
+# Architekturentwurf
+
+Stand: 13. November 2026. Grundlage ist [VISION.md](VISION.md).
+Dieses Dokument legt die technische Arbeitsgrundlage fest; es beschreibt noch
+keine implementierte oder getestete Anwendung. Bibliotheken und genaue Versionen
+werden bei ihrer Einführung auf Kompatibilität und Lizenz geprüft.
+
+## Bezug zu planaffe
+
+Geprüft wurde der lokale, unveränderte planaffe-Stand
+`483f9463095592ea324fd7a614c89233c942d11e`, insbesondere
+[Codeaufbau](https://github.com/datavisionzero/planaffe/blob/483f9463095592ea324fd7a614c89233c942d11e/docs/codebase.md),
+ADRs 0002–0005 und 0017, Projektdateien, Web-Paketmanifest und Compose.
+
+Übernommen werden vier Backend-Schichten, EF Core/PostgreSQL, React mit eigener
+Toolchain, eine Go-CLI, generierte HTTP-Clients und ein gemeinsames Serverimage
+für Backend und gebaute Webapp. Go folgt hier bewusst planaffe und erlaubt eine
+CLI-Auslieferung ohne installierte .NET-Laufzeit. Dies ist eine technische
+Entwurfsentscheidung, keine zusätzliche Produktanforderung.
+
+Nicht übernommen werden Issue-Workflow, Projektrollen, Claims, die dortige
+Token-Anmeldung für die Webapp oder eine allgemeine Gleichstellung von CLI und
+Nutzeroberfläche. memoryaffe hat eigene Konten, Vaults und ausdrücklich
+nutzervorbehaltene Aktionen. planaffes Repository-Regeln gelten nicht automatisch
+für dieses Repository. Bestehende Produktdokumentation bleibt deutsch;
+Codebezeichner und API-Verträge werden englisch.
+
+## Aufbau und Abhängigkeiten
+
+Ein modularer Monolith genügt für kleine Installationen. Es gibt keinen
+zusätzlichen Suchserver, Message-Broker oder Cloud-Dienst.
+
+```text
+Webapp ── HTTP/Cookie ─┐
+CLI ── HTTP/Token ─────┼─ ASP.NET Core Host ─ Application ─ Domain
+ChatGPT ─ MCP/OAuth ───┘          │               │
+                         Infrastructure ─ PostgreSQL
+```
+
+Geplante Struktur:
+
+| Pfad | Verantwortung |
+|---|---|
+| `src/Memoryaffe.Domain` | Fachregeln ohne Infrastrukturabhängigkeiten |
+| `src/Memoryaffe.Application` | Anwendungsfälle, Berechtigungsprüfung, Ports |
+| `src/Memoryaffe.Infrastructure` | Persistenz, Transaktionen, Authentifizierung, SMTP |
+| `src/Memoryaffe.Api` | HTTP, MCP-Adapter, OAuth-Endpunkte, Hintergrundjobs, Komposition |
+| `src/web` | React/TypeScript/Vite, Nutzer- und Adminoberfläche |
+| `src/cli` | Go-Client, lesbare Ausgabe und JSON |
+| `tests` | Fachtests, PostgreSQL-Integration, Vertrags- und Oberflächentests |
+| `deploy` | Dockerfile, Compose, Proxy-Konfiguration, Beispielumgebung |
+| `docs/api` | Versionierter OpenAPI-Vertrag |
+
+Domain hat keine äußeren Abhängigkeiten, Application hängt von Domain ab,
+Infrastructure implementiert Application-Ports. Api verbindet diese Teile.
+HTTP und MCP rufen dieselben Anwendungsfälle auf; die CLI spricht ausschließlich
+HTTP. Kein Adapter führt eigene Datenbankabfragen oder Berechtigungslogik ein.
+
+## Datenmodell
+
+| Entität | Wesentliche Daten und Regeln |
+|---|---|
+| Account | ID, E-Mail, Passwort-Hash, Adminstatus, Sperre, Sprache, Theme, Agenten-Tag-Erlaubnis |
+| Vault | ID, Eigentümerkonto, Name, Versionslimit, Lösch- und Ablaufzeitpunkt |
+| MemoryRecord | Stabile ID, Vault, Titel, Markdown, optionale Zusammenfassung, Revision, Zeitpunkte, Verursacher, Löschstatus |
+| RecordVersion | Historischer Snapshot mit Titel, Markdown, Zusammenfassung und Tag-Namen, Revision und Verursacher |
+| Tag / RecordTag | Vault-lokale Tags und Zuordnungen; definierte Namensnormalisierung |
+| AgentAccess | Konto, Name, Widerrufsstatus; getrennt von technischen Zugangsdaten |
+| VaultGrant | AgentAccess, Vault, eine der drei Berechtigungsstufen |
+| Credential / OAuthGrant | Gehashte Geheimnisse beziehungsweise Tokenreferenzen, Ablauf und Bindung an AgentAccess |
+| Session / Invitation / PasswordReset | Konto beziehungsweise Einladung, Ablauf, Einmalverbrauch, Widerruf |
+
+Eigentümerzugehörigkeit wird bei jeder Operation geprüft und durch passende
+Fremdschlüssel/Constraints abgesichert. Konto-IDs aus Clientdaten begründen
+niemals Rechte. Auch ein Admin erhält über Inhalte-Endpunkte nur eigene Daten.
+Zeitpunkte werden in UTC gespeichert. IDs sind unabhängig von Titeln.
+
+Historische Tag-Namen werden als Snapshot erhalten, damit spätere Umbenennungen
+keine alten Versionen verändern. Wiederherstellung löst Namen im aktuellen
+Vault auf. Die genaue Normalisierung und Behandlung von Namenskollisionen
+wird vor der Tag-Implementierung im Datenvertrag festgeschrieben.
+
+## Transaktionen und Aufbewahrung
+
+Eine Inhaltsänderung prüft die erwartete Revision, legt bei tatsächlicher
+Änderung einen historischen Snapshot an, aktualisiert Inhalt und Tags und
+kürzt die Historie auf das Vault-Limit: alles in einer Transaktion.
+Bei Limit 0 bleibt nur die aktuelle Fassung. Wiederherstellung ist eine neue
+Änderung; ein veralteter Schreibversuch erzeugt weder Version noch Teiländerung.
+
+Beim Verschieben bleiben ID und vorhandene Historie erhalten, soweit das
+Ziel-Limit es zulässt. Tag-Zuordnung, Vault-Wechsel, Revisionserhöhung und
+Historienkürzung sind atomar. Rechte auf Quelle und Ziel werden geprüft.
+
+Datensätze und Vaults verwenden Soft-Delete mit 30 Tagen Aufbewahrung.
+Abgelaufene Objekte sind auch dann nicht verfügbar, wenn der Bereinigungsjob
+verspätet läuft. Ein wiederholbar ausführbarer Job entfernt sie endgültig.
+Beim Wiederherstellen eines Vaults werden vorher bereits einzeln gelöschte
+Datensätze nicht automatisch aktiviert; deren eigene Fristen bleiben bestehen.
+Vault-Freigaben werden beim Löschen entfernt und nicht wiederhergestellt.
+Diese Randfälle sind technische Konkretisierungen der Produktregeln.
+
+## Identitäten und Zugänge
+
+Webanmeldung verwendet sichere HttpOnly-Cookies, CSRF-Schutz für Änderungen und
+serverseitig widerrufbare Sitzungen. Passwörter werden mit einem etablierten
+Passwort-Hasher gespeichert. Einladungs- und Reset-Geheimnisse werden nur
+gehasht gespeichert und atomar einmalig verbraucht. Die erste Einrichtung wird
+durch ein einmaliges Betreibergeheimnis geschützt und nach Abschluss gesperrt.
+
+Für die CLI werden widerrufbare Agententokens vorgesehen, nur bei Ausgabe im
+Klartext sichtbar. Übergabe über geschützte Konfiguration oder Umgebungsvariable,
+nicht als Kommandozeilenargument. Der Server prüft bei jedem Zugriff Konto,
+Agentenzugang und aktuelle Vault-Rechte. Sperren und Widerruf wirken dadurch
+auch auf bereits ausgegebene Zugangsdaten.
+
+ChatGPT erhält einen OAuth-Ablauf statt eines CLI-Tokens. Der Nutzer meldet sich
+bei memoryaffe an und ordnet die Verbindung einem eigenen benannten
+Agentenzugang mit ausgewählten Vault-Rechten zu. OAuth-Scopes können diese
+Rechte begrenzen, aber niemals erweitern. Token und Refresh-Vorgänge prüfen
+weiterhin den aktuellen Sperr- und Widerrufsstatus.
+
+## MCP und ChatGPT
+
+Erster Abnahmeclient ist ChatGPT, danach Claude. Geplant ist Streamable HTTP
+unter `/mcp`, im Internet über HTTPS. Für private Daten beschreibt OpenAI
+OAuth 2.1 mit Authorization Code/PKCE, Discovery-Metadaten und Resource-Bindung.
+Die Auswahl zwischen CIMD, dynamischer Registrierung und einem vorkonfigurierten
+Client wird im frühen Kompatibilitätstest getroffen. Ein einfacher API-Key
+ersetzt diesen Ablauf für ChatGPT nicht.
+[Quelle: OpenAI Authentication](https://developers.openai.com/plugins/build/auth)
+
+MCP wird über eine geeignete .NET-Bibliothek integriert. SDK und OAuth-Server-
+Bibliothek werden zuerst in einem kleinen technischen Durchstich geprüft;
+wir schreiben keinen eigenen OAuth-Protokollstack. Noch ist keine konkrete
+Bibliothek oder Protokollversion als kompatibel nachgewiesen.
+
+Vorgesehene Tools: `list_vaults`, `list_tags`, `search_memories`, `get_memory`,
+`create_memory`, `update_memory`, `delete_memory` und `create_tag`.
+Sie haben explizite Schemas, strukturierte Ergebnisse und passende Lese-/
+Schreibannotationen. Updates und Löschungen tragen die erwartete Revision.
+Vault-Verwaltung, Historie, Verschieben, Papierkorb und Administration werden
+nicht als Agententools angeboten. Annotationen ersetzen keine serverseitigen
+Rechteprüfungen. Eine eigene eingebettete ChatGPT-UI ist nicht nötig.
+[Quelle: OpenAI MCP-Server](https://developers.openai.com/plugins/build/mcp-server)
+
+Der erste reale Test verwendet einen erreichbaren HTTPS-Endpunkt und ein
+ChatGPT-Konto, dessen Einstellungen eigene MCP-Verbindungen erlauben. Die
+Dokumentation nennt auch Tunnel als Testoption; memoryaffe setzt keinen
+solchen Dienst voraus. Cloud-ChatGPT erreicht eine reine LAN-Adresse nicht
+ohne zusätzlichen Verbindungsweg. Lokale MCP-Clients können denselben
+HTTP-Endpunkt im LAN verwenden; stdio bleibt eine spätere Bedarfsprüfung.
+[Quelle: Verbindung und Test](https://developers.openai.com/plugins/deploy/connect-chatgpt)
+
+## HTTP, Suche und Oberfläche
+
+HTTP-Verträge werden aus Endpunkten erzeugt, als OpenAPI eingecheckt und in CI
+auf Drift geprüft. Web- und Go-Client werden daraus generiert. Listen liefern
+kompakte, paginierte Ergebnisse, Einzelabrufe den vollständigen Datensatz.
+Fehler haben stabile Codes, insbesondere für fehlende Rechte, Konflikte und
+Validierungsfehler. Nicht zugängliche IDs verraten keine fremden Inhalte.
+
+PostgreSQL-Volltextsuche mit gewichtetem Titel, Zusammenfassung und Inhalt
+sowie GIN-Index ist der Startpunkt. Sprachbehandlung für deutsche und englische
+Inhalte wird anhand eines Testkorpus festgelegt. Rechte, Tags und Löschstatus
+filtern vor Pagination und Trefferzählung. Sortierung besitzt einen stabilen
+ID-Tiebreaker; kein Treffertext wird als ungeprüftes HTML ausgegeben.
+
+Die React-Webapp orientiert sich an planaffes Designbasis aus Tailwind,
+zugänglichen UI-Primitiven, CodeMirror und Markdown-Rendering. Konkrete Pakete
+werden separat geprüft. Keine ungefilterte HTML-Ausführung im Markdown.
+Navigation, Vault-Wechsel, Suche, Editor, Historie, Papierkorb und Einstellungen
+bilden den Nutzerbereich; Administration bekommt eigene Routen und Navigation.
+Deutsch/Englisch, Themes, Tastaturbedienung und mobile Darstellung werden von
+Beginn an berücksichtigt. Fonts und Assets werden lokal ausgeliefert.
+
+## Betrieb und Datenmitnahme
+
+Compose startet Anwendung und PostgreSQL; ein optionaler Reverse Proxy nach
+planaffe-Vorbild übernimmt HTTPS. PostgreSQL erhält keinen öffentlichen Port.
+LAN-Betrieb dokumentiert lokale Zertifikate und Vertrauensstellung ohne
+öffentlichen Zertifikatsdienst. Secrets liegen außerhalb des Images.
+
+Migrationen laufen vor Annahme von Requests, gegen parallele Ausführung
+gesichert. Ein fehlgeschlagener Start meldet nicht bereit. Upgrades sind
+betreibergeführt; Rückkehr erfolgt über passende Vorversion und vorheriges
+Backup statt über ungeprüfte Rückwärtsmigrationen.
+
+ZIP-Export enthält aktuelle aktive Datensätze als Markdown und ein versioniertes
+Manifest mit Metadaten/Tags. Import validiert Größe, Anzahl, Pfade und Schema,
+erstellt neue IDs in einem neuen Vault und übernimmt keine Agentenrechte.
+Fehler hinterlassen keinen halbfertigen sichtbaren Vault. Historie und Papierkorb
+gehören zur vollständigen Installationssicherung, nicht zum MVP-Vault-Export.
+
+Backups umfassen PostgreSQL, erforderliche Konfiguration und persistente
+Schlüssel. Wiederherstellung wird auf einer frischen Instanz geprobt.
+Bereinigung in der Live-Datenbank entfernt keine externen alten Backups;
+deren Aufbewahrung verantwortet der Betreiber. Diagnose zeigt Version,
+Bereitschaft und Speicherverbrauch, ohne fremde Inhalte offenzulegen.
+Logs vermeiden Inhalte und Geheimnisse; Telemetrie wird nicht eingebaut.
+
+## Noch vor Implementierung zu konkretisieren
+
+- .NET-MCP-SDK und OAuth-Bibliothek samt ChatGPT-Registrierungsverfahren.
+- Genaue Request-Schemas, Fehlercodes, Limits und Wiederholungsbehandlung.
+- Tag-Normalisierung, Volltext-Sprachkonfiguration und ZIP-Manifest.
+- Runtime-/Paketversionen, CLI-Zielarchitekturen und Release-Matrix.
+
+Diese Punkte sind eingegrenzte Implementierungsentscheidungen und werden in
+der jeweils zuständigen Etappe des [Umsetzungsplans](IMPLEMENTATION.md) geprüft.

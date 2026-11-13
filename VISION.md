@@ -309,10 +309,9 @@ Komfortfunktionen folgen später.
 
 ## Offene Produkt- und Architekturentscheidungen
 
-- **MCP-Kompatibilität:** Zwei bis drei konkrete Agenten beziehungsweise
-  Anwendungen für die ersten Kompatibilitätstests sind noch auszuwählen.
-  Anhand dieser Clients wird auch der Bedarf für eine zusätzliche lokale
-  Prozessanbindung geprüft.
+- **MCP-Kompatibilität:** ChatGPT wird als erster Client getestet, Claude
+  anschließend. Anhand dieser Clients wird auch der Bedarf für eine zusätzliche
+  lokale Prozessanbindung geprüft.
 - **Agentenauthentifizierung:** Wie werden Zugangsdaten technisch ausgegeben
   und der Widerruf umgesetzt? Die benannten Zugänge und Berechtigungsstufen
   pro Vault sind festgelegt.
