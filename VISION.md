@@ -161,9 +161,26 @@ sowie Tag-Filter. Die Suche erfolgt standardmäßig im aktuellen Vault, optional
 über alle eigenen Vaults. Agenten können ausschließlich ihre freigegebenen
 Vaults durchsuchen. Semantische Suche ist eine spätere Erweiterung.
 
-Suchergebnisse zeigen Titel, Zusammenfassung beziehungsweise Textausschnitt,
-Tags, Vault und Änderungsdatum. Standardmäßig werden sie nach Relevanz
-sortiert, alternativ nach Änderungsdatum.
+Die Suchsprache ist pro Vault als Deutsch, Englisch oder sprachneutral wählbar;
+Standard ist sprachneutral. Sie ist unabhängig von der Oberflächensprache.
+Mehrere Suchbegriffe müssen standardmäßig alle vorkommen, dürfen aber über
+Titel, Zusammenfassung und Inhalt verteilt sein. Anführungszeichen suchen
+Wortgruppen, `OR` verbindet Alternativen und Minuszeichen schließen Begriffe
+aus. Diese Bedeutung ist in Webapp, CLI und MCP identisch.
+
+Mehrere Tag-Filter verlangen standardmäßig alle ausgewählten Tags; alternativ
+kann auf „mindestens einer“ umgeschaltet werden. Tags bleiben ein eigener
+Filter. Eine leere Suche zeigt zuletzt geänderte Datensätze und unterstützt
+weiterhin Tag-Filter. Durchsucht werden nur aktuelle, aktive Fassungen, weder
+Historie noch Papierkorb. Automatische Tippfehlerkorrektur und automatische
+Wortanfangssuche gehören nicht zum MVP.
+
+Suchergebnisse zeigen Titel, Tags, Vault, Änderungsdatum und einen kurzen
+passenden Textausschnitt. Bei leerer Suche erscheint stattdessen die
+Zusammenfassung oder der Inhaltsanfang. Standardmäßig wird nach Relevanz
+sortiert, alternativ nach Änderungsdatum. Titel zählt stärker als
+Zusammenfassung, diese stärker als Markdown-Inhalt. Bei gleichem Rang
+entscheidet das jüngste Änderungsdatum, danach die ID.
 
 ## Export, Import und Backups
 

@@ -103,6 +103,12 @@ das ausdrückliche Leeren der Zusammenfassung.
 Suche findet deutsche und englische Beispieldatensätze, filtert Tags und
 Vaults, bleibt stabil paginiert und verrät weder fremde noch gelöschte Daten
 in Treffern, Textausschnitten oder Trefferzahlen.
+Geprüft werden alle drei Vault-Suchsprachen unabhängig von der UI-Sprache,
+UND über mehrere Inhaltsfelder, Wortgruppen, OR und Ausschlüsse sowie
+Tag-Filter mit „alle“ und „mindestens einer“. Leere Suche liefert zuletzt
+geänderte Datensätze mit optionalen Tag-Filtern. Historie bleibt ausgeschlossen.
+Rangfolge und Gleichstandsauflösung sowie Ausschnitte beziehungsweise
+Zusammenfassung/Inhaltsanfang entsprechen dem Suchvertrag in allen Adaptern.
 
 ## 5. Vollständige Agentenanbindung
 

@@ -22,6 +22,8 @@ Löschen des letzten Vaults sowie Konfliktbehandlung.
 Die Inhaltsgrenzen und Schnittstellenregeln zu Teiländerungen,
 Wiederholungsschlüsseln, Seitengrößen, einzelnen Schreiboperationen und
 nicht zugänglichen IDs sind ebenfalls bestätigt.
+Die Suchregeln zu Vault-Sprache, Suchsyntax, Gewichtung, Tag-Filtern,
+leerer Suche, Suchumfang und Trefferanzeige sind bestätigt.
 Die übrigen technischen Konkretisierungen dieses Dokuments bleiben Entwurf,
 soweit sie nicht bereits ausdrücklich in der Produktvision beschlossen sind.
 Vor dem Grundgerüst werden alle weiteren Entscheidungsblöcke gemeinsam geklärt.
@@ -299,10 +301,27 @@ Schnittstellenvertrag vor dem Grundgerüst konkretisiert. Wiederholungen dürfen
 keine aktuellen Rechteprüfungen umgehen.
 
 PostgreSQL-Volltextsuche mit gewichtetem Titel, Zusammenfassung und Inhalt
-sowie GIN-Index ist der Startpunkt. Sprachbehandlung für deutsche und englische
-Inhalte wird anhand eines Testkorpus festgelegt. Rechte, Tags und Löschstatus
-filtern vor Pagination und Trefferzählung. Sortierung besitzt einen stabilen
-ID-Tiebreaker; kein Treffertext wird als ungeprüftes HTML ausgegeben.
+sowie GIN-Index ist der Startpunkt. Pro Vault ist die Suchsprache Deutsch,
+Englisch oder sprachneutral wählbar, mit sprachneutral als Standard und
+unabhängig von der Oberflächensprache. Die konkrete Index-/Abfragekonfiguration
+und der Wechsel der Suchsprache werden vor dem Grundgerüst anhand eines
+Testkorpus festgelegt, einschließlich vaultübergreifender Suche.
+
+Mehrere Begriffe werden standardmäßig mit UND verknüpft und dürfen über die
+drei Inhaltsfelder verteilt vorkommen. Anführungszeichen bedeuten Wortgruppen,
+`OR` Alternativen und Minuszeichen Ausschlüsse, identisch in allen Adaptern.
+Tag-Filter sind separat: Standard ist „alle“, alternativ „mindestens einer“.
+Eine leere Suche liefert zuletzt geänderte Datensätze mit optionalen Tag-Filtern.
+Nur aktuelle aktive Fassungen werden durchsucht. Automatische Tippfehlerkorrektur
+und automatische Wortanfangssuche sind nicht Teil des MVP.
+
+Die Gewichtung lautet Titel vor Zusammenfassung vor Markdown. Bei gleichem
+Rang entscheidet das jüngste Änderungsdatum, danach ein stabiler ID-Tiebreaker.
+Alternativ kann nach Änderungsdatum sortiert werden. Rechte, Tags und Löschstatus
+filtern vor Pagination und Trefferzählung. Treffer enthalten Titel, Tags,
+Vault, Änderungsdatum und einen kurzen passenden Textausschnitt; bei leerer
+Suche stattdessen Zusammenfassung oder Inhaltsanfang. Kein Treffertext wird
+als ungeprüftes HTML ausgegeben.
 
 Die bestätigte Frontend-Basis ist eine React-Single-Page-App mit TypeScript und
 Vite. ASP.NET Core liefert die gebauten statischen Dateien aus; Node ist nur
