@@ -16,6 +16,9 @@ Die OAuth-Auswahl ist bestätigt: eine begrenzte Eigenimplementierung mit CIMD
 und einer betreiberverwalteten Liste erlaubter Client-Metadaten-URLs. Diese
 Entscheidung ersetzt die frühere Vorgabe, keinen eigenen OAuth-Stack zu bauen.
 ASP.NET Core Identity bleibt die Basis für Benutzeranmeldung und TOTP.
+Bestätigt sind außerdem die acht Datenregeln zu Vault-Namen, Tag-Normalisierung,
+Tag-Änderungen, Versionswiederherstellung, Vault-Papierkorb und dessen Fristen,
+Löschen des letzten Vaults sowie Konfliktbehandlung.
 Die übrigen technischen Konkretisierungen dieses Dokuments bleiben Entwurf,
 soweit sie nicht bereits ausdrücklich in der Produktvision beschlossen sind.
 Vor dem Grundgerüst werden alle weiteren Entscheidungsblöcke gemeinsam geklärt.
@@ -94,11 +97,20 @@ Eigentümerzugehörigkeit wird bei jeder Operation geprüft und durch passende
 Fremdschlüssel/Constraints abgesichert. Konto-IDs aus Clientdaten begründen
 niemals Rechte. Auch ein Admin erhält über Inhalte-Endpunkte nur eigene Daten.
 Zeitpunkte werden in UTC gespeichert. IDs sind unabhängig von Titeln.
+Vault-Namen sind pro Konto ohne Unterscheidung der Groß-/Kleinschreibung
+eindeutig; Datensatztitel dürfen mehrfach vorkommen. Das Löschen des letzten
+Vaults ist erlaubt und erzeugt keinen automatischen Ersatz.
 
 Historische Tag-Namen werden als Snapshot erhalten, damit spätere Umbenennungen
 keine alten Versionen verändern. Wiederherstellung löst Namen im aktuellen
-Vault auf. Die genaue Normalisierung und Behandlung von Namenskollisionen
-wird vor der Tag-Implementierung im Datenvertrag festgeschrieben.
+Vault auf und legt fehlende Tags an; die UI zeigt diese vorab in der Vorschau.
+Tag-Vergleiche ignorieren Groß-/Kleinschreibung und Rand-Leerzeichen und
+verwenden Unicode-Normalisierung. Anzeigenamen erhalten ihre Schreibweise;
+Akzente und Umlaute werden nicht entfernt. Die genaue Unicode-Normalform und
+Vergleichsabbildung werden vor dem Grundgerüst im Datenvertrag festgeschrieben.
+Umbenennen und Zusammenführen von Tags ändern aktuelle Zuordnungen und erzeugen
+für betroffene Datensätze neue Revisionen und historische Snapshots gemäß
+Vault-Limit. Alte Snapshots werden dabei nicht geändert.
 
 ## Transaktionen und Aufbewahrung
 
@@ -107,6 +119,9 @@ Eine Inhaltsänderung prüft die erwartete Revision, legt bei tatsächlicher
 kürzt die Historie auf das Vault-Limit: alles in einer Transaktion.
 Bei Limit 0 bleibt nur die aktuelle Fassung. Wiederherstellung ist eine neue
 Änderung; ein veralteter Schreibversuch erzeugt weder Version noch Teiländerung.
+Die Webapp behält bei Konflikten den eigenen Entwurf und zeigt die aktuelle
+Serverfassung zum Vergleichen. Agenten erhalten einen eindeutigen Konfliktfehler
+und müssen erneut lesen; es gibt kein stilles Überschreiben.
 
 Beim Verschieben bleiben ID und vorhandene Historie erhalten, soweit das
 Ziel-Limit es zulässt. Tag-Zuordnung, Vault-Wechsel, Revisionserhöhung und
@@ -118,7 +133,9 @@ verspätet läuft. Ein wiederholbar ausführbarer Job entfernt sie endgültig.
 Beim Wiederherstellen eines Vaults werden vorher bereits einzeln gelöschte
 Datensätze nicht automatisch aktiviert; deren eigene Fristen bleiben bestehen.
 Vault-Freigaben werden beim Löschen entfernt und nicht wiederhergestellt.
-Diese Randfälle sind technische Konkretisierungen der Produktregeln.
+Beim Ablauf des gelöschten Vaults werden alle verbliebenen Inhalte endgültig
+entfernt. Verschachteltes Löschen verlängert keine Fristen. Diese Randfälle
+sind ausdrücklich bestätigte Produktregeln.
 
 ## Identitäten und Zugänge
 

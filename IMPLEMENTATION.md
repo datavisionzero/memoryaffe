@@ -8,7 +8,7 @@ bereits umgesetzt. Der MVP ist erst nach Etappe 7 vollständig.
 
 Architektur/Toolchains sowie die Regeln zu Anmeldung und Sicherheit sind
 bestätigt. Sicherheitsdetails wie die Wiederherstellung bei verlorenem zweiten
-Faktor, Datenrandfälle, Schnittstellen, UI-Abläufe sowie Betrieb und Lieferung
+Faktor, weitere Datenrandfälle, Schnittstellen, UI-Abläufe sowie Betrieb und Lieferung
 werden noch gemeinsam entschieden. Beschlossen ist eine begrenzte OAuth-
 Eigenimplementierung mit CIMD und einer betreiberverwalteten Liste erlaubter
 Client-URLs, zunächst ChatGPT, ohne DCR. ASP.NET Core Identity bleibt die
@@ -89,6 +89,12 @@ Version bei Fehlern beziehungsweise unveränderten Daten. Limit 0, Standard 20,
 Limitsenkung und Wiederherstellung funktionieren. Snapshots enthalten alle
 vier Inhaltsbestandteile und Verursacher. Verschieben prüft Quell-/Zielrechte
 und Ziel-Limit. Tag-Regeln gelten identisch über alle Zugangswege.
+Tag-Umbenennung und Zusammenführung erzeugen Revisionen und Snapshots der
+betroffenen Datensätze, ohne alte Snapshots zu verändern. Wiederherstellung
+ordnet historische Tag-Namen zu oder legt fehlende Tags nach Vorschau an.
+Tag-Vergleiche ignorieren Groß-/Kleinschreibung und Rand-Leerzeichen, erhalten
+aber Akzente/Umlaute. Vault-Namen sind pro Konto eindeutig. Konflikte erhalten
+den eigenen UI-Entwurf und zeigen die Serverfassung zum Vergleichen.
 
 Suche findet deutsche und englische Beispieldatensätze, filtert Tags und
 Vaults, bleibt stabil paginiert und verrät weder fremde noch gelöschte Daten
@@ -120,7 +126,11 @@ Ungespeicherte Änderungen warnen beim Verlassen; Speichern ist ausdrücklich.
 Markdown führt keine eingebetteten Skripte aus. Papierkorb bleibt 30 Tage,
 vorzeitig endgültiges Löschen ist nutzervorbehalten. Vault-Restore aktiviert
 keine alten Agentenrechte und keine zuvor einzeln gelöschten Datensätze.
-Bereinigung ist nach Neustart wiederholbar. Export/Import erhält aktuelle
+Bereinigung ist nach Neustart wiederholbar. Bereits einzeln gelöschte Datensätze
+behalten ihre Frist auch in einem
+gelöschten Vault; dessen Ablauf entfernt alle verbliebenen Inhalte. Der letzte
+Vault kann gelöscht werden, ohne automatisch ersetzt zu werden.
+Export/Import erhält aktuelle
 Inhalte und Metadaten, erstellt neue IDs und überschreibt nichts. Ungültige,
 überdimensionierte und pfadmanipulierte ZIPs werden ohne Teilimport abgewiesen.
 

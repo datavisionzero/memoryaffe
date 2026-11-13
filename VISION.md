@@ -80,12 +80,19 @@ Hat sich ein Datensatz seit dem Lesen geändert, wird ein Schreibversuch auf
 Basis der veralteten Fassung abgelehnt. Nutzer oder Agent müssen den aktuellen
 Stand erneut laden, bevor sie ihre Änderung darauf anwenden. Diese Regel gilt
 für Webapp, CLI und MCP und verhindert unbemerktes Überschreiben.
+Bei einem Konflikt behält die Webapp den eigenen Entwurf und zeigt die aktuelle
+Serverfassung zum Vergleichen. Agenten erhalten einen eindeutigen Konfliktfehler
+und müssen den Datensatz erneut lesen.
 
 ### Vaults
 
 Vaults bilden die oberste Ebene der Inhaltshierarchie. Jeder Datensatz gehört
 zu einem Vault. Nutzer entscheiden, ob sie ihr gesamtes Wissen in einem großen
 Vault sammeln oder auf mehrere Vaults verteilen.
+Vault-Namen sind innerhalb eines Kontos ohne Unterscheidung der Groß- und
+Kleinschreibung eindeutig. Auch der letzte Vault darf gelöscht werden; danach
+zeigt die Webapp einen leeren Zustand mit der Aktion „Vault anlegen“ und
+erzeugt keinen automatischen Ersatz.
 
 Jeder Vault gehört genau einem Nutzerkonto. Nutzer haben ausschließlich eigene
 Vaults; gemeinsame Vaults und Freigaben zwischen Konten sind nicht vorgesehen.
@@ -115,6 +122,15 @@ betreffenden Vault und bei entsprechender kontoweiter Erlaubnis anlegen.
 Tags umbenennen, zusammenführen oder vollständig entfernen darf ausschließlich
 der Nutzer. Diese Regeln gelten gleichermaßen für CLI und MCP.
 
+Tag-Namen werden für Vergleiche Unicode-normalisiert, ohne Leerzeichen am Rand
+und ohne Unterscheidung der Groß- und Kleinschreibung behandelt. Die Schreibweise
+bleibt zur Anzeige erhalten; Akzente und Umlaute bleiben unterscheidbar.
+Umbenennen und Zusammenführen aktualisieren aktuelle Zuordnungen und erzeugen
+bei betroffenen Datensätzen eine neue Revision und einen Versionsstand nach
+dem Vault-Limit. Historische Fassungen bleiben unverändert. Beim Wiederherstellen
+einer Version werden historische Tag-Namen aktuellen Tags zugeordnet; fehlende
+Tags werden neu angelegt. Die Vorschau zeigt, welche Tags zurückkommen.
+
 ### Löschen und Papierkorb
 
 Gelöschte Datensätze bleiben einschließlich ihrer noch vorhandenen Versionen
@@ -126,6 +142,10 @@ Vaults werden nach ausdrücklicher Bestätigung durch den Nutzer ebenfalls für
 30 Tage in den Papierkorb verschoben, einschließlich ihrer enthaltenen
 Datensätze. Agentenzugriffe sind sofort ausgeschlossen. Nach einer
 Wiederherstellung muss der Nutzer den Vault erneut für Agenten freigeben.
+Vorher einzeln gelöschte Datensätze bleiben bei einer Vault-Wiederherstellung
+gelöscht und behalten ihre ursprüngliche Papierkorbfrist. Beim Ablauf des
+gelöschten Vaults werden alle verbliebenen Inhalte endgültig entfernt.
+Verschachteltes Löschen verlängert keine Aufbewahrungsfrist.
 
 ## Suche
 
