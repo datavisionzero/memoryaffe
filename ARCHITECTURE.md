@@ -19,6 +19,9 @@ ASP.NET Core Identity bleibt die Basis für Benutzeranmeldung und TOTP.
 Bestätigt sind außerdem die acht Datenregeln zu Vault-Namen, Tag-Normalisierung,
 Tag-Änderungen, Versionswiederherstellung, Vault-Papierkorb und dessen Fristen,
 Löschen des letzten Vaults sowie Konfliktbehandlung.
+Die Inhaltsgrenzen und Schnittstellenregeln zu Teiländerungen,
+Wiederholungsschlüsseln, Seitengrößen, einzelnen Schreiboperationen und
+nicht zugänglichen IDs sind ebenfalls bestätigt.
 Die übrigen technischen Konkretisierungen dieses Dokuments bleiben Entwurf,
 soweit sie nicht bereits ausdrücklich in der Produktvision beschlossen sind.
 Vor dem Grundgerüst werden alle weiteren Entscheidungsblöcke gemeinsam geklärt.
@@ -264,7 +267,36 @@ HTTP-Verträge werden aus Endpunkten erzeugt, als OpenAPI eingecheckt und in CI
 auf Drift geprüft. Web- und Go-Client werden daraus generiert. Listen liefern
 kompakte, paginierte Ergebnisse, Einzelabrufe den vollständigen Datensatz.
 Fehler haben stabile Codes, insbesondere für fehlende Rechte, Konflikte und
-Validierungsfehler. Nicht zugängliche IDs verraten keine fremden Inhalte.
+Validierungsfehler. Fremde und unbekannte IDs liefern dieselbe Antwort
+„nicht gefunden“. Bei sichtbaren Datensätzen ohne erforderliche Schreibrechte
+wird dagegen „keine Berechtigung“ zurückgegeben.
+
+Verbindliche Inhaltsgrenzen für alle Zugangswege:
+
+| Feld | Grenze |
+|---|---|
+| Titel | Verpflichtend, maximal 200 Zeichen |
+| Zusammenfassung | Optional, maximal 1.000 Zeichen |
+| Markdown | Leer erlaubt, maximal 1.048.576 UTF-8-Bytes (1 MiB) |
+| Vault-Name | Nicht leer, maximal 100 Zeichen |
+| Tag-Name | Nicht leer, maximal 50 Zeichen |
+| Tags pro Datensatz | Maximal 50 |
+| Historische Versionen pro Vault | Einstellbar von 0 bis 100, Standard 20 |
+| Listen-/Suchseitengröße | Standard 20, maximal 100 Ergebnisse |
+
+Listen enthalten Metadaten und kurze Ausschnitte, Einzelabrufe vollständiges
+Markdown. Teiländerungen erhalten nicht übergebene Felder; die Zusammenfassung
+kann ausdrücklich geleert werden. Markdown wird vollständig ersetzt, ohne
+zusätzliche Suchen-und-Ersetzen-Operation. Schreibaufrufe bearbeiten jeweils
+einen Datensatz; ZIP-Import ist der Weg für größere Übernahmen.
+
+Anlegen, Ändern und Löschen unterstützen einen optionalen Wiederholungsschlüssel:
+Identische Aufträge mit demselben Schlüssel erzeugen innerhalb von 24 Stunden
+keine zweite Änderung. Abweichende Aufträge mit demselben Schlüssel werden
+abgewiesen. Die genaue Abbildung in HTTP/MCP, Schlüsselbereich, atomare
+Speicherung und Verhalten bei konkurrierenden Wiederholungen werden im
+Schnittstellenvertrag vor dem Grundgerüst konkretisiert. Wiederholungen dürfen
+keine aktuellen Rechteprüfungen umgehen.
 
 PostgreSQL-Volltextsuche mit gewichtetem Titel, Zusammenfassung und Inhalt
 sowie GIN-Index ist der Startpunkt. Sprachbehandlung für deutsche und englische
@@ -313,7 +345,8 @@ Logs vermeiden Inhalte und Geheimnisse; Telemetrie wird nicht eingebaut.
 ## Noch vor Implementierung zu konkretisieren
 
 - OAuth-/CIMD-Protokollvertrag und isolierter ChatGPT-Kompatibilitätsnachweis.
-- Genaue Request-Schemas, Fehlercodes, Limits und Wiederholungsbehandlung.
+- Genaue Request-Schemas, Fehlercodes, technische Abbildung der beschlossenen
+  Limits/Wiederholungsregeln sowie verbleibende Betriebs- und Importlimits.
 - Tag-Normalisierung, Volltext-Sprachkonfiguration und ZIP-Manifest.
 - Runtime-/Paketversionen, CLI-Zielarchitekturen und Release-Matrix.
 

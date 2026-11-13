@@ -95,6 +95,10 @@ ordnet historische Tag-Namen zu oder legt fehlende Tags nach Vorschau an.
 Tag-Vergleiche ignorieren Groß-/Kleinschreibung und Rand-Leerzeichen, erhalten
 aber Akzente/Umlaute. Vault-Namen sind pro Konto eindeutig. Konflikte erhalten
 den eigenen UI-Entwurf und zeigen die Serverfassung zum Vergleichen.
+Inhaltsgrenzen werden an und unmittelbar über den Grenzwerten geprüft,
+einschließlich UTF-8-Bytegröße bei mehrbyteigen Zeichen, maximal 50 Tags und
+Versionslimit 100. Teiländerungen erhalten ausgelassene Felder und erlauben
+das ausdrückliche Leeren der Zusammenfassung.
 
 Suche findet deutsche und englische Beispieldatensätze, filtert Tags und
 Vaults, bleibt stabil paginiert und verrät weder fremde noch gelöschte Daten
@@ -109,6 +113,11 @@ Konfigurationshilfe und kopierbare Verbindungsbeispiele ergänzen.
 **Abnahme:** ChatGPT führt Anlegen, Lesen, Suche, Bearbeiten und Löschen
 erfolgreich durch. Negative Fälle: fremder Vault, Leserechte bei Schreibversuch,
 veraltete Revision, verbotene Tag-Erstellung und widerrufener Zugang.
+Identische Wiederholungen von Anlegen, Ändern und Löschen mit demselben Schlüssel
+erzeugen innerhalb von 24 Stunden keine zweite Änderung; abweichende Aufträge
+werden abgewiesen. Listen-/Suchseitengrößen entsprechen Standard 20 und Maximum
+100. Fremde und unbekannte IDs liefern dieselbe Antwort, fehlende Schreibrechte
+auf sichtbare Datensätze dagegen einen Berechtigungsfehler.
 Protokolliert werden Testdatum, Client/Oberfläche, Tool-Auswahl und Ergebnis,
 ohne Geheimnisse. Keine Agententools für Nutzer-only-Aktionen vorhanden.
 CLI-Smoke-Tests laufen unter Windows, Linux und macOS. Claude folgt als

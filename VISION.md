@@ -54,6 +54,12 @@ KI-Anbieter. Der MVP unterstützt Markdown und Metadaten, jedoch keine
 Dateianhänge wie hochgeladene Bilder oder PDFs. Normale Links im Markdown
 sind möglich.
 
+Titel sind verpflichtend und auf 200 Zeichen begrenzt, optionale
+Zusammenfassungen auf 1.000 Zeichen. Markdown darf leer sein und umfasst
+höchstens 1 MiB (1.048.576 Bytes) in UTF-8 pro Datensatz. Pro Datensatz sind
+maximal 50 Tags erlaubt. Vault-Namen haben maximal 100, Tag-Namen maximal
+50 Zeichen; beide dürfen nicht leer sein.
+
 ### Versionierung und Aufbewahrung
 
 Eine Version umfasst Markdown-Inhalt, Titel, Zusammenfassung und zugewiesene
@@ -64,7 +70,8 @@ Zu jeder Änderung werden Zeitpunkt und Verursacher gespeichert: der Nutzer
 oder der benannte Agentenzugang. Diese Angaben sind in der Historie sichtbar.
 
 Standardmäßig bleiben pro Datensatz 20 historische Versionen zusätzlich zur
-aktuellen Fassung erhalten. Nutzer können dieses Limit pro Vault einstellen;
+aktuellen Fassung erhalten. Nutzer können dieses Limit pro Vault zwischen
+0 und 100 historischen Versionen einstellen;
 0 bedeutet keine Historie. Beim Überschreiten oder Senken des Limits werden
 die überzähligen ältesten Versionen automatisch entfernt. Die aktuelle
 Fassung bleibt erhalten.
@@ -191,6 +198,19 @@ innerhalb ihrer freigegebenen Vaults und entsprechend ihrer Berechtigungsstufe:
 - Inhalte suchen,
 - bestehende Datensätze und ihre Metadaten bearbeiten,
 - Datensätze löschen können.
+
+Agenten können einzelne Felder ändern: ausgelassene Felder bleiben erhalten,
+die Zusammenfassung kann ausdrücklich geleert werden. Markdown wird bei einer
+Änderung vollständig ersetzt; eine zusätzliche Suchen-und-Ersetzen-Schnittstelle
+gehört nicht zum MVP. Schreibaufrufe bearbeiten jeweils einen Datensatz;
+größere Datenübernahmen erfolgen über ZIP-Import.
+
+Anlegen, Ändern und Löschen unterstützen einen optionalen Wiederholungsschlüssel.
+Derselbe Schlüssel mit identischem Auftrag erzeugt innerhalb von 24 Stunden
+keine zweite Änderung; ein abweichender Auftrag mit demselben Schlüssel wird
+abgewiesen. Listen und Suchtreffer liefern standardmäßig 20, höchstens 100
+Ergebnisse pro Abruf mit Metadaten und kurzen Ausschnitten. Vollständiges
+Markdown wird beim Einzelabruf geliefert.
 
 Die MCP-Anbindung implementiert das tatsächliche Model Context Protocol und
 soll als entfernter MCP-Server über das Internet erreichbar betrieben werden
