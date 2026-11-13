@@ -47,16 +47,27 @@ Metadaten bleibt eine Implementierungsentscheidung.
 
 ### Versionierung und Aufbewahrung
 
-Änderungen an Markdown-Inhalten werden versioniert, unabhängig davon, ob sie
-über die Webapp, die CLI oder MCP erfolgen. Die Versionshistorie wird nur
-begrenzt aufbewahrt. Nutzer können die Aufbewahrungsgrenze einstellen,
-beispielsweise auf maximal X Versionen je Datensatz. Wird diese Grenze
-überschritten, werden die ältesten Versionen automatisch entfernt; der aktuelle
-Inhalt bleibt erhalten.
+Eine Version umfasst Markdown-Inhalt, Titel, Zusammenfassung und zugewiesene
+Tags. Jede tatsächliche Änderung erzeugt eine Version, unabhängig davon, ob
+sie über die Webapp, die CLI oder MCP erfolgt.
 
-Der genaue Geltungsbereich der Einstellung, der Standardwert und die Zählweise
-der aktuellen Fassung gegenüber historischen Versionen werden bei der
-Umsetzung festgelegt.
+Standardmäßig bleiben pro Datensatz 20 historische Versionen zusätzlich zur
+aktuellen Fassung erhalten. Nutzer können dieses Limit pro Vault einstellen;
+0 bedeutet keine Historie. Beim Überschreiten oder Senken des Limits werden
+die überzähligen ältesten Versionen automatisch entfernt. Die aktuelle
+Fassung bleibt erhalten.
+
+Nutzer können historische Versionen in der Webapp ansehen und wiederherstellen.
+Eine Wiederherstellung erzeugt eine neue aktuelle Fassung und unterliegt
+derselben Aufbewahrungsregel. Agenten erhalten zunächst keinen eigenen Zugriff
+auf die Versionshistorie.
+
+### Gleichzeitige Änderungen
+
+Hat sich ein Datensatz seit dem Lesen geändert, wird ein Schreibversuch auf
+Basis der veralteten Fassung abgelehnt. Nutzer oder Agent müssen den aktuellen
+Stand erneut laden, bevor sie ihre Änderung darauf anwenden. Diese Regel gilt
+für Webapp, CLI und MCP und verhindert unbemerktes Überschreiben.
 
 ### Vaults
 
@@ -76,17 +87,32 @@ Vaults begrenzt.
 
 ### Tags
 
-Tags ergänzen die Organisation innerhalb der Vault-Struktur und unterstützen
-das Wiederfinden von Inhalten. Nutzer legen fest, ob Agenten generell neue
-Tags anlegen dürfen oder ob ausschließlich Nutzer dies über die Webapp tun
-dürfen. Das Zuweisen vorhandener Tags zu Datensätzen ist davon zu unterscheiden.
-Die gewählte Regel muss auch bei Zugriffen über CLI und MCP durchgesetzt werden.
+Tags gehören jeweils zu einem Vault und unterstützen das Wiederfinden von
+Inhalten. Nutzer entscheiden einmal kontoweit, ob Agenten neue Tags anlegen
+dürfen oder ob ausschließlich Nutzer dies über die Webapp tun dürfen.
+
+Agenten mit Schreibrechten dürfen vorhandene Tags an einzelnen Datensätzen
+hinzufügen oder entfernen. Neue Tags dürfen sie nur mit Schreibrechten im
+betreffenden Vault und bei entsprechender kontoweiter Erlaubnis anlegen.
+Tags umbenennen, zusammenführen oder vollständig entfernen darf ausschließlich
+der Nutzer. Diese Regeln gelten gleichermaßen für CLI und MCP.
 
 ## Zugriff durch KI-Agenten
 
+Nutzer können beliebig viele benannte Agentenzugänge anlegen, beispielsweise
+„Coding-Agent“ oder „Persönlicher Assistent“, und jeden Zugang einzeln widerrufen.
+Je Zugang und freigegebenem Vault wählen sie eine von drei aufeinander
+aufbauenden Berechtigungsstufen:
+
+1. Lesen und Suchen.
+2. Zusätzlich Anlegen und Bearbeiten.
+3. Zusätzlich Löschen.
+
+Vault-Verwaltung bleibt unabhängig von diesen Stufen ausschließlich beim Nutzer.
+
 memoryaffe bietet zwei gleichwertig gedachte Zugangswege für die Arbeit mit
 Erinnerungen: eine CLI und eine MCP-Schnittstelle. Über beide sollen Agenten
-innerhalb ihrer freigegebenen Vaults:
+innerhalb ihrer freigegebenen Vaults und entsprechend ihrer Berechtigungsstufe:
 
 - Datensätze lesen,
 - neue Datensätze schreiben,
@@ -182,14 +208,13 @@ der Betrieb ohne SMTP sind dabei grundlegende Anforderungen.
   Installationen sinnvoll und mit den vorgesehenen Agenten kompatibel?
 - **Suche:** Welche Suchverfahren, Filter und Suchbereiche werden angeboten?
   Volltextsuche, semantische Suche und deren Kombination sind noch nicht festgelegt.
-- **Tag-Geltungsbereich:** Gelten Tags und die Erlaubnis zur Tag-Erstellung pro
-  Konto, pro Vault oder auf einer anderen Ebene?
 - **Einladungslinks:** Dienen sie der erstmaligen Kontoeinrichtung oder auch
   späteren Anmeldungen? Gültigkeit und Wiederverwendbarkeit sind zu definieren.
 - **Konten ohne SMTP:** Wie funktionieren insbesondere Passwortzurücksetzung
   und Kontowiederherstellung?
-- **Agentenzugänge:** Wie werden Zugangsdaten ausgegeben, verwaltet und
-  widerrufen? Sind neben Vault-Freigaben feinere Rechte erforderlich?
+- **Agentenauthentifizierung:** Wie werden Zugangsdaten technisch ausgegeben
+  und der Widerruf umgesetzt? Die benannten Zugänge und Berechtigungsstufen
+  pro Vault sind festgelegt.
 - **Löschen von Vaults:** Wie werden enthaltene Datensätze behandelt und
   unbeabsichtigte Datenverluste vermieden?
 - **Datenkontrolle im Betrieb:** Welche Export-, Backup- und
