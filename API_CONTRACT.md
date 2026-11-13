@@ -20,6 +20,12 @@ Bearbeiten und Löschen eines Datensatzes verlangen die erwartete Revision.
 Eine fehlende Revision ist ein Eingabefehler, eine veraltete ein Konflikt.
 Es gibt kein automatisches Überschreiben.
 
+Der [Web-/Administrationsvertrag](WEB_CONTRACT.md) erweitert den Revisionsschutz
+auf Vault-Einstellungen, Tags, Agentenrechte und Kontoverwaltung. Theme und
+Anzeigesprache verwenden die zuletzt gespeicherte Änderung. Der Vertrag
+konkretisiert außerdem Browseranmeldung, freiwillige 2FA, aktionsgebundene
+erneute Authentifizierung und vorbereitete Importe.
+
 ## Fehler
 
 Fachliche Fehler enthalten einen stabilen englischen Fehlercode, eine

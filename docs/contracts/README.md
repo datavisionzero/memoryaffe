@@ -4,6 +4,10 @@ Stand: 13. November 2026. Planungsartefakte, keine Serverimplementierung.
 Bestätigte Fachregeln stehen in [API_CONTRACT.md](../../API_CONTRACT.md),
 [DATA_CONTRACT.md](../../DATA_CONTRACT.md) und
 [OAUTH_CONTRACT.md](../../OAUTH_CONTRACT.md).
+Die bestätigten Browser-/Admin-Abläufe stehen im
+[WEB_CONTRACT.md](../../WEB_CONTRACT.md); ihre maschinenlesbare Abbildung fehlt
+noch. Das umfasst Sitzungen, 2FA, Aktionsbestätigung, Verwaltungsrevisionen
+und Importvorbereitung.
 
 ## Umfang und Status
 

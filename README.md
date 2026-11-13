@@ -10,5 +10,6 @@ ist noch nicht enthalten.
 - [Verbindlicher Datenvertrag](DATA_CONTRACT.md)
 - [Schnittstellenvertrag](API_CONTRACT.md)
 - [OAuth- und CIMD-Vertrag](OAUTH_CONTRACT.md)
+- [Web- und Administrationsvertrag](WEB_CONTRACT.md)
 - [Maschinenlesbare Verträge und Prüfungen](docs/contracts/README.md)
 - [Umsetzungsplan und Abnahmekriterien](IMPLEMENTATION.md)

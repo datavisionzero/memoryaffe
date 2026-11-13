@@ -5,6 +5,9 @@ Verträge, **noch keine vollständige OpenAPI-Abdeckung**. Die Fachfunktionen
 sind bereits beschlossen. Einzelne Routen sind keine neuen Produktfähigkeiten.
 Alle Produktpfade verwenden das Präfix `/api/v1`.
 
+Die fünf Ablaufentscheidungen im [Web-/Administrationsvertrag](../../WEB_CONTRACT.md)
+sind bestätigt; die Routenabbildung bleibt ein technischer Entwurf.
+
 Die Agenten-OpenAPI beschreibt bewusst nur Agententokens. Die Web-API erhält
 einen getrennten Cookie-/CSRF-Vertrag. Administratorrechte erweitern niemals
 den Inhaltsscope; Inhaltspfade prüfen stets das eigene Konto. Agententokens
@@ -15,6 +18,9 @@ dürfen keinen der folgenden nutzervorbehaltenen Anwendungsfälle aufrufen.
 | Ersteinrichtung | GET `/setup`, POST `/setup` | Status ohne Geheimnisse; einmaliges Betreibergeheimnis; kein 2FA-Schritt |
 | Anmeldung | POST `/auth/login`, `/auth/login/second-factor`, `/auth/logout` | Passwort, optional rememberMe; kurzlebiger 2FA-Zwischenzustand, keine Sitzung vor erfolgreichem Faktor |
 | Sitzungen | GET `/me/sessions`, DELETE `/me/sessions/{id}` | Nur eigene Sitzungen; serverseitiger Widerruf |
+| Andere Sitzungen | POST `/me/sessions/revoke-others` | Alle eigenen Sitzungen außer der aktuellen widerrufen |
+| CSRF | GET `/auth/csrf` | Gleichursprünglicher Nachweis; nach Identitätswechsel erneuern |
+| Aktionsbestätigung | POST `/me/reauthenticate` | Passwort und ggf. Faktor; fünf Minuten, an Sitzung, Aktion, Ziel und Angaben gebunden |
 | Profil | GET/PATCH `/me`, POST `/me/change-password`, DELETE `/me` | Theme/Sprache/Tag-Erlaubnis; aktuelle Authentifizierung für sensible Aktionen |
 | E-Mail | POST `/me/email-change`, `/auth/email-change/confirm` | Mit SMTP neue Adresse bestätigen; ohne SMTP administrative Änderung |
 | Einladung | POST `/auth/invitations/redeem` | Gebundene E-Mail; Einmalverbrauch; sieben Tage |
@@ -30,14 +36,19 @@ dürfen keinen der folgenden nutzervorbehaltenen Anwendungsfälle aufrufen.
 | Agentenzugänge | GET/POST `/agent-accesses`, GET/PATCH/DELETE `/agent-accesses/{id}` | Benannter Zugang, eigene Vault-Grants, aktuelle Rechte sofort wirksam |
 | CLI-Credentials | POST `/agent-accesses/{id}/tokens`, DELETE `/agent-accesses/{id}/tokens/{tokenId}` | Geheimnis nur einmal; Ablauf/Überlappung; keine Tokenwerte in Listen |
 | Export/Import | GET `/vaults/{id}/export`, POST `/imports/validate`, POST `/imports` | Konsistentes ZIP; Vorprüfung kein Teilimport, Zielname und neue IDs |
+| Importvorbereitung | GET/DELETE `/imports/{id}` | Eigene Vorschau/Ergebnis beziehungsweise Abbruch; 30 Minuten, eine Vorbereitung pro Nutzer |
 | Admin-Konten | GET `/admin/accounts`, PATCH/DELETE `/admin/accounts/{id}` | Status/Rolle/E-Mail, keine fremden Inhaltsfelder, Schutz letzten aktiven Admins |
 | Admin-Einladungen | GET/POST `/admin/invitations`, DELETE `/admin/invitations/{id}` | Manueller Link, optional SMTP, Ablauf/Widerruf |
 | Admin-Wiederherstellung | POST `/admin/accounts/{id}/password-reset`, `/admin/accounts/{id}/account-recovery` | Zwei getrennte Prozesse, erneute Authentifizierung bei umfassender Wiederherstellung |
 | Diagnose | GET `/admin/diagnostics` | Version/Bereitschaft/Speicher, keine fremden Inhalte oder Geheimnisse |
 
-Vor maschinenlesbarer Vervollständigung müssen insbesondere CSRF-Transport,
-Reauthentifizierungsnachweis, 2FA-Zwischenzustand, Konkurrenzschutz für
-Vault-/Grant-/Profiländerungen sowie Import-Vorprüfung und Upload-Lebensdauer
-konkretisiert werden. Unveröffentlichte Geheimnisse gehören nicht in URLs oder
+CSRF wird über einen Request-Header transportiert. Aktionsnachweise gelten fünf
+Minuten für genau einen vorbereiteten Auftrag. Der 2FA-Zwischenzustand gilt
+fünf Minuten mit maximal fünf Fehlversuchen; die Einrichtung zehn Minuten.
+Zehn Recovery-Codes sind einzeln verwendbar. Verwaltungsänderungen verlangen
+Revisionen, ausgenommen Theme und Anzeigesprache. Geprüfte Importvorbereitungen
+gelten 30 Minuten und werden höchstens einmal übernommen. Vollständige Schemas
+für diese Abläufe und die übrigen Routen stehen noch aus.
+Unveröffentlichte Geheimnisse gehören nicht in URLs oder
 normale Diagnoseausgaben. Öffentliche Liveness/Readiness und OAuth/MCP werden
 außerhalb dieses Produktpräfixes getrennt beschrieben.

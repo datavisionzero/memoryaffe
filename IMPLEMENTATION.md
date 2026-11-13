@@ -284,6 +284,21 @@ Hardware und begründen veröffentlichte Leistungsangaben.
 
 ## Lieferregel je Etappe
 
+Der bestätigte [Web-/Administrationsvertrag](WEB_CONTRACT.md) ergänzt die Abnahme:
+
+- Etappe 3: CSRF auch bei Login/Logout; eigene Sitzungsübersicht und gesammelter
+  Widerruf anderer Sitzungen. 2FA-Zwischenzustand fünf Minuten/fünf Fehlversuche,
+  Einrichtung zehn Minuten, zehn atomar einzeln verwendbare Recovery-Codes.
+- Etappe 3: Fünfminütige Aktionsbestätigung an Sitzung, Ziel und Angaben binden;
+  auch neue CLI-Tokens und Rechteerweiterungen absichern. Keine Wiederverwendung
+  für andere Aktionen, keine zweite Ausführung bei parallelen Bestätigungen.
+- Etappen 3/4: Veraltete Verwaltungsrevisionen für Vaults, Tags, Agentenrechte
+  und Konten abweisen; Theme und Sprache ohne Konfliktdialog zuletzt speichern.
+- Etappe 6: Eine Importvorbereitung pro Konto, Vorschau, 30 Minuten Gültigkeit,
+  Abbruch/Ersetzung/Bereinigung einschließlich Neustart. Kontozugriff und Zielname
+  bei Übernahme erneut prüfen. Doppelte Bestätigung und verlorene Antwort dürfen
+  keinen zweiten Vault erzeugen; Fehler dürfen keinen Teilimport hinterlassen.
+
 Ergänzende verbindliche Abnahmefälle aus der Vertragsausarbeitung:
 
 - Erfolgreiche Löschung per gleichem Schlüssel wiederholen, ohne Papierkorbinhalte
