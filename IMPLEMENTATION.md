@@ -9,10 +9,14 @@ bereits umgesetzt. Der MVP ist erst nach Etappe 7 vollständig.
 Architektur/Toolchains sowie die Regeln zu Anmeldung und Sicherheit sind
 bestätigt. Sicherheitsdetails wie die Wiederherstellung bei verlorenem zweiten
 Faktor, Datenrandfälle, Schnittstellen, UI-Abläufe sowie Betrieb und Lieferung
-werden noch gemeinsam entschieden. Paketversionen und Lizenzen, MCP-/OAuth-Bibliotheken und das
-Registrierungsverfahren werden vorab geprüft. Falls ein technischer Versuch
-notwendig ist, wird er ausdrücklich als isolierte Kompatibilitätsprüfung
-geplant; er ist kein Beginn des Produktbaus.
+werden noch gemeinsam entschieden. Beschlossen ist eine begrenzte OAuth-
+Eigenimplementierung mit CIMD und einer betreiberverwalteten Liste erlaubter
+Client-URLs, zunächst ChatGPT, ohne DCR. ASP.NET Core Identity bleibt die
+Anmeldebasis. Paketversionen und Lizenzen werden vorab geprüft. Der vollständige
+OAuth-/CIMD-Vertrag und ein isolierter ChatGPT-Test mit Fehler- und
+Widerrufsfällen werden vor dem Grundgerüst abgeschlossen; dieser Versuch ist
+kein Beginn des Produktbaus. Externe Testvoraussetzungen aus Etappe 2 gelten
+bereits hier. Fehlender realer Clientnachweis bleibt eine offene Voraussetzung.
 
 **Abnahme:** Keine offenen wesentlichen Produkt- oder Architekturentscheidungen.
 Verträge, Abhängigkeiten und Abnahmekriterien sind verbindlich dokumentiert.
@@ -32,7 +36,7 @@ Datenbankausfall korrekt. Noch keine Produktvollständigkeit behaupten.
 
 ## 2. Früher ChatGPT-Durchstich
 
-Das in Etappe 0 ausgewählte MCP-SDK und die OAuth-Bibliothek integrieren.
+Das in Etappe 0 geprüfte MCP-SDK und die eigene OAuth-Implementierung integrieren.
 Discovery, Anmeldung/Consent, Tokenprüfung und ein authentifiziertes Lesetool
 mit minimalem Testdatensatz implementieren. Registrierungsmethode anhand der
 realen ChatGPT-Verbindung gegen die festgelegte Architektur überprüfen.
@@ -41,7 +45,11 @@ Testcode darf nur mit klarer Trennung von Produktionsfunktionen landen.
 **Abnahme:** MCP Inspector prüft Initialisierung, Schemas und Fehler.
 ChatGPT verbindet sich tatsächlich über HTTPS, liest den freigegebenen
 Testdatensatz und verliert nach Widerruf den Zugriff. Tokenablauf, Refresh,
-falsche Resource/Audience und ungültige Redirects werden geprüft.
+falsche Resource/Audience und ungültige Redirects werden geprüft. Ergänzend
+werden PKCE-Fehler, doppelte Codeverwendung, Refresh-Token-Wiederverwendung,
+unerlaubte CIMD-Clients sowie manipulierte Metadaten und interne Abrufziele
+geprüft. Bereits vor dem Grundgerüst geprüfte Abläufe werden als integrierte
+Produktfunktionen erneut abgenommen.
 
 **Externe Voraussetzung:** erreichbarer Testendpunkt und Zugriff auf ein
 ChatGPT-Konto mit erlaubten eigenen MCP-Verbindungen. Fehlen diese, wird der

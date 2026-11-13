@@ -12,6 +12,10 @@ Monolith mit vier Backend-Schichten, EF Core/Npgsql, Go-CLI, React/TypeScript/
 Vite und die unten benannten UI-Bausteine sowie generierte OpenAPI-Clients.
 Block 2 (Anmeldung, Agentenzugänge und Sicherheit) ist ebenfalls bestätigt,
 einschließlich freiwilliger TOTP-Zwei-Faktor-Anmeldung ausschließlich im Profil.
+Die OAuth-Auswahl ist bestätigt: eine begrenzte Eigenimplementierung mit CIMD
+und einer betreiberverwalteten Liste erlaubter Client-Metadaten-URLs. Diese
+Entscheidung ersetzt die frühere Vorgabe, keinen eigenen OAuth-Stack zu bauen.
+ASP.NET Core Identity bleibt die Basis für Benutzeranmeldung und TOTP.
 Die übrigen technischen Konkretisierungen dieses Dokuments bleiben Entwurf,
 soweit sie nicht bereits ausdrücklich in der Produktvision beschlossen sind.
 Vor dem Grundgerüst werden alle weiteren Entscheidungsblöcke gemeinsam geklärt.
@@ -184,15 +188,41 @@ sofort.
 Erster Abnahmeclient ist ChatGPT, danach Claude. Geplant ist Streamable HTTP
 unter `/mcp`, im Internet über HTTPS. Für private Daten beschreibt OpenAI
 OAuth 2.1 mit Authorization Code/PKCE, Discovery-Metadaten und Resource-Bindung.
-Die Auswahl zwischen CIMD, dynamischer Registrierung und einem vorkonfigurierten
-Client wird im frühen Kompatibilitätstest getroffen. Ein einfacher API-Key
-ersetzt diesen Ablauf für ChatGPT nicht.
+CIMD ist das festgelegte Verfahren zur Clientidentifikation. Es gibt im MVP
+keine dynamische Clientregistrierung (DCR). Eine vom Betreiber erweiterbare
+Liste erlaubt konkrete CIMD-Dokument-URLs, zunächst für ChatGPT. Die Zulassung
+eines Clients erteilt keine Vault-Rechte: Jeder Nutzer bestätigt seine eigene
+Verbindung und deren Rechte. Ein einfacher API-Key ersetzt OAuth nicht.
 [Quelle: OpenAI Authentication](https://developers.openai.com/plugins/build/auth)
 
-MCP wird über eine geeignete .NET-Bibliothek integriert. SDK und OAuth-Server-
-Bibliothek werden zuerst in einem kleinen technischen Durchstich geprüft;
-wir schreiben keinen eigenen OAuth-Protokollstack. Noch ist keine konkrete
-Bibliothek oder Protokollversion als kompatibel nachgewiesen.
+Für MCP ist das offizielle C# SDK mit `ModelContextProtocol.AspNetCore`
+vorgesehen. OAuth wird bewusst als begrenzte Eigenimplementierung umgesetzt,
+ohne OpenIddict und ohne vollständigen OpenID-Connect-Anbieter. Unterstützt
+werden Authorization Code mit verpflichtendem PKCE/S256 und rotierende
+Refresh-Tokens. CIMD-Clients verwenden zunächst die Token-Endpunkt-Methode
+`none` mit PKCE. ASP.NET Core Identity übernimmt weiterhin Benutzeranmeldung,
+Passwortprüfung und optionales TOTP; kryptografische Primitive werden nicht
+selbst entwickelt.
+
+Access- und Refresh-Tokens sind kryptografisch zufällige, undurchsichtige
+Geheimnisse, deren Hashes in PostgreSQL liegen. Jeder Zugriff prüft Ablauf,
+Resource-Bindung und aktuelle Rechte. Autorisierungscodes werden atomar
+einmalig verbraucht. Wiederverwendung verbrauchter Refresh-Tokens widerruft
+die betroffene Tokenfamilie. Discovery und Consent folgen dem OAuth-/MCP-Vertrag.
+
+CIMD-Dokumente werden über HTTPS abgerufen; Client-ID und Redirect-URI werden
+exakt validiert. Abrufe erhalten Größen- und Zeitlimits sowie Schutz gegen
+Zugriffe auf interne Netzwerkadressen, einschließlich Umleitungen und
+DNS-Wechseln. Die erlaubte Client-URL ersetzt diese Prüfungen nicht.
+[Quellen: MCP-Autorisierung](https://modelcontextprotocol.io/specification/2025-11-25/basic/authorization),
+[offizielles C# SDK](https://github.com/modelcontextprotocol/csharp-sdk).
+
+Vor dem Grundgerüst werden der vollständige Protokollvertrag und eine isolierte
+ChatGPT-Kompatibilitätsprüfung einschließlich Fehler- und Widerrufsfällen
+abgeschlossen. Paket-/Protokollversionen, genaue CIMD-URL und Cache-Regeln
+werden dabei festgehalten. Die gemeinsame Kompatibilität ist noch nicht
+praktisch nachgewiesen. CIMD benötigt zum Metadatenabruf Netzwerkzugriff;
+der rein lokale CLI-Betrieb bleibt davon unabhängig.
 
 Vorgesehene Tools: `list_vaults`, `list_tags`, `search_memories`, `get_memory`,
 `create_memory`, `update_memory`, `delete_memory` und `create_tag`.
@@ -265,7 +295,7 @@ Logs vermeiden Inhalte und Geheimnisse; Telemetrie wird nicht eingebaut.
 
 ## Noch vor Implementierung zu konkretisieren
 
-- .NET-MCP-SDK und OAuth-Bibliothek samt ChatGPT-Registrierungsverfahren.
+- OAuth-/CIMD-Protokollvertrag und isolierter ChatGPT-Kompatibilitätsnachweis.
 - Genaue Request-Schemas, Fehlercodes, Limits und Wiederholungsbehandlung.
 - Tag-Normalisierung, Volltext-Sprachkonfiguration und ZIP-Manifest.
 - Runtime-/Paketversionen, CLI-Zielarchitekturen und Release-Matrix.
