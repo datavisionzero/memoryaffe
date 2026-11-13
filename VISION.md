@@ -229,6 +229,12 @@ die reguläre Anmeldung mit E-Mail-Adresse und Passwort.
 Neue Nutzer starten mit einem automatisch angelegten persönlichen Vault,
 den sie umbenennen können.
 
+Bereits im MVP ist Zwei-Faktor-Anmeldung per TOTP mit Wiederherstellungscodes
+verfügbar. Sie ist für alle Nutzer freiwillig, auch für Administratoren, und
+funktioniert ohne SMTP. Die Aktivierung erfolgt ausschließlich später im Profil.
+Bei der Ersteinrichtung und der Kontoanlage gibt es weder einen 2FA-Schritt
+noch eine Aufforderung zur Einrichtung.
+
 Die gesamte Anwendung muss ohne SMTP-Server betreibbar sein. Ohne SMTP erzeugt
 der Admin bei vergessenem Passwort einen einmaligen Reset-Link zur manuellen
 Weitergabe. Mit konfiguriertem SMTP können Nutzer einen Reset-Link selbst

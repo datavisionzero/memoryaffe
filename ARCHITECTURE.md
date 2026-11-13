@@ -10,6 +10,8 @@ und Lizenzen werden vor dem Grundgerüstbau geprüft und festgehalten.
 Block 1 (Architektur und Toolchains) wurde vom Nutzer bestätigt: modularer
 Monolith mit vier Backend-Schichten, EF Core/Npgsql, Go-CLI, React/TypeScript/
 Vite und die unten benannten UI-Bausteine sowie generierte OpenAPI-Clients.
+Block 2 (Anmeldung, Agentenzugänge und Sicherheit) ist ebenfalls bestätigt,
+einschließlich freiwilliger TOTP-Zwei-Faktor-Anmeldung ausschließlich im Profil.
 Die übrigen technischen Konkretisierungen dieses Dokuments bleiben Entwurf,
 soweit sie nicht bereits ausdrücklich in der Produktvision beschlossen sind.
 Vor dem Grundgerüst werden alle weiteren Entscheidungsblöcke gemeinsam geklärt.
@@ -122,17 +124,60 @@ Passwort-Hasher gespeichert. Einladungs- und Reset-Geheimnisse werden nur
 gehasht gespeichert und atomar einmalig verbraucht. Die erste Einrichtung wird
 durch ein einmaliges Betreibergeheimnis geschützt und nach Abschluss gesperrt.
 
+Passwörter haben 15 bis 128 Zeichen; Leerzeichen, Einfügen und Passwortmanager
+werden unterstützt. Es gibt keine erzwungenen Zeichengruppen und keinen
+regelmäßigen Wechselzwang. Wiederholte Anmeldefehler werden pro Konto und
+Quelladresse begrenzt beziehungsweise zeitweilig verzögert, ohne dauerhafte
+automatische Kontosperre. Login- und Reset-Antworten verraten keine Kontoexistenz.
+
+Web-Sitzungen enden standardmäßig nach 12 Stunden Inaktivität, spätestens nach
+sieben Tagen. Mit „Angemeldet bleiben“ gelten sieben Tage Inaktivität und
+höchstens 30 Tage Gesamtdauer. Im Profil lassen sich aktive Sitzungen ansehen
+und einzeln oder gemeinsam beenden. Logout widerruft die aktuelle Sitzung
+serverseitig.
+
+Eine normale Passwortänderung verlangt das bisherige Passwort und beendet
+andere Web-Sitzungen. Ein Passwort-Reset beendet alle Web-Sitzungen und widerruft
+sämtliche Agentenzugangsdaten einschließlich OAuth-Verbindungen. Die benannten
+Agentenzugänge und ihre Rechte bleiben für eine erneute Einrichtung erhalten.
+
+TOTP mit Wiederherstellungscodes gehört zum MVP und funktioniert ohne SMTP.
+Die Einrichtung ist für alle Konten freiwillig, ausdrücklich auch für Admins.
+Sie wird ausschließlich später im Profil angeboten. Weder Ersteinrichtung noch
+Einladung/Kontoanlage enthalten einen 2FA-Schritt oder eine Aufforderung dazu.
+Passkeys und externe Loginanbieter sind zunächst nicht vorgesehen.
+
+Ein dokumentierter Befehl innerhalb des Servercontainers kann für einen
+bestehenden Admin einen einmaligen Wiederherstellungslink erzeugen. Damit ist
+Wiederherstellung ohne SMTP und zweiten Admin möglich; sie erfordert Zugriff
+auf die Infrastruktur. Die genaue Behandlung eines verlorenen zweiten Faktors
+und die Absicherung dieses Ablaufs werden vor Implementierung konkretisiert.
+
 Für die CLI werden widerrufbare Agententokens vorgesehen, nur bei Ausgabe im
 Klartext sichtbar. Übergabe über geschützte Konfiguration oder Umgebungsvariable,
 nicht als Kommandozeilenargument. Der Server prüft bei jedem Zugriff Konto,
 Agentenzugang und aktuelle Vault-Rechte. Sperren und Widerruf wirken dadurch
 auch auf bereits ausgegebene Zugangsdaten.
 
+CLI-Tokens gelten standardmäßig 90 Tage; bei Erstellung sind 30, 90, 365 Tage
+oder unbegrenzte Gültigkeit wählbar. Die UI zeigt Ablauf und letzte Nutzung.
+Bei einem Tokenwechsel kann das alte Token sofort oder nach einer Überlappung
+von höchstens 24 Stunden ungültig werden. Ein ausdrücklicher Widerruf wirkt
+immer sofort.
+
 ChatGPT erhält einen OAuth-Ablauf statt eines CLI-Tokens. Der Nutzer meldet sich
 bei memoryaffe an und ordnet die Verbindung einem eigenen benannten
 Agentenzugang mit ausgewählten Vault-Rechten zu. OAuth-Scopes können diese
 Rechte begrenzen, aber niemals erweitern. Token und Refresh-Vorgänge prüfen
 weiterhin den aktuellen Sperr- und Widerrufsstatus.
+
+Jede OAuth-Verbindung wird einem eigenen benannten Agentenzugang zugeordnet.
+Beim Verbinden bestätigt der Nutzer Vaults und Rechte; zusätzliche Rechte
+erfordern eine ausdrückliche Nutzerentscheidung. Access-Tokens gelten 15 Minuten.
+Rotierende Refresh-Tokens ermöglichen Erneuerung bis zu 30 Tagen Inaktivität
+beziehungsweise höchstens 180 Tagen seit Anmeldung. Danach ist erneute Anmeldung
+erforderlich. Kontosperre und Widerruf greifen unabhängig von Tokenlaufzeiten
+sofort.
 
 ## MCP und ChatGPT
 

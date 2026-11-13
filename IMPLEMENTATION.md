@@ -6,9 +6,10 @@ bereits umgesetzt. Der MVP ist erst nach Etappe 7 vollständig.
 
 ## 0. Entscheidungen vor dem Grundgerüst abschließen
 
-Architektur/Toolchains sind bestätigt. Identität und Sicherheit, Datenrandfälle,
-Schnittstellen, UI-Abläufe sowie Betrieb und Lieferung werden noch gemeinsam
-entschieden. Paketversionen und Lizenzen, MCP-/OAuth-Bibliotheken und das
+Architektur/Toolchains sowie die Regeln zu Anmeldung und Sicherheit sind
+bestätigt. Sicherheitsdetails wie die Wiederherstellung bei verlorenem zweiten
+Faktor, Datenrandfälle, Schnittstellen, UI-Abläufe sowie Betrieb und Lieferung
+werden noch gemeinsam entschieden. Paketversionen und Lizenzen, MCP-/OAuth-Bibliotheken und das
 Registrierungsverfahren werden vorab geprüft. Falls ein technischer Versuch
 notwendig ist, wird er ausdrücklich als isolierte Kompatibilitätsprüfung
 geplant; er ist kein Beginn des Produktbaus.
@@ -52,6 +53,8 @@ Inspector-Test als bestanden ersetzt. Keine echten privaten Inhalte verwenden.
 Geführte geschützte Ersteinrichtung, Login/Logout, Einladung, Reset, optionales
 SMTP und Kontosperre implementieren. Persönlichen Start-Vault, Agentenzugänge,
 CLI-Token und OAuth-Zuordnung ergänzen. Rechte zentral durchsetzen.
+Freiwilliges TOTP mit Wiederherstellungscodes im Profil, Sitzungsverwaltung,
+Tokenwechsel und den operativen Admin-Wiederherstellungsweg ergänzen.
 
 **Abnahme:** Einladungen verfallen nach sieben Tagen, Reset-Links nach einer
 Stunde und sind nur einmal verwendbar. Alles funktioniert ohne SMTP. Zwei
@@ -59,6 +62,13 @@ Konten sehen niemals gegenseitige Vaults, auch bei geratenen IDs. Ein Admin
 erhält keinen Inhaltszugriff. Alle drei Rechtestufen, Widerruf und Sperre
 werden über HTTP und MCP getestet; alte Sitzungen funktionieren nach Sperre
 nicht weiter. Der Login zeigt den Infrastruktur-Vertrauenshinweis.
+Ersteinrichtung und Einladung/Kontoanlage funktionieren für Nutzer und Admins
+ohne 2FA-Schritt oder Einrichtungsaufforderung. TOTP lässt sich später freiwillig
+im Profil aktivieren; Anmeldung mit und ohne aktivierte 2FA wird geprüft.
+Sitzungs- und Tokenfristen, Rotation und sofortiger Widerruf entsprechen dem
+Architekturvertrag. Passwortänderung beendet andere Web-Sitzungen; Passwort-Reset
+beendet alle Web-Sitzungen und widerruft sämtliche Agentenzugangsdaten, erhält
+aber benannte Zugänge und Rechte für deren erneute Einrichtung.
 
 ## 4. Inhalte, Tags, Historie und Suche
 
