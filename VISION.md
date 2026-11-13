@@ -64,6 +64,11 @@ Vaults bilden die oberste Ebene der Inhaltshierarchie. Jeder Datensatz gehört
 zu einem Vault. Nutzer entscheiden, ob sie ihr gesamtes Wissen in einem großen
 Vault sammeln oder auf mehrere Vaults verteilen.
 
+Jeder Vault gehört genau einem Nutzerkonto. Nutzer haben ausschließlich eigene
+Vaults; gemeinsame Vaults und Freigaben zwischen Konten sind nicht vorgesehen.
+Ein Agentenzugang gehört ebenfalls zu einem Konto und kann nur für dessen
+Vaults freigeschaltet werden.
+
 Nur Nutzer dürfen Vaults anlegen und löschen; Agenten erhalten diese Befugnis
 nicht. Jeder Agentenzugang wird ausdrücklich für einen oder mehrere Vaults
 freigeschaltet. Zugriffe und Suchergebnisse bleiben auf diese freigegebenen
