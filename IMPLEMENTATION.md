@@ -132,6 +132,10 @@ Zusammenfassung/Inhaltsanfang entsprechen dem Suchvertrag in allen Adaptern.
 CLI-Befehle und alle vorgesehenen MCP-Tools auf die gemeinsamen Anwendungsfälle
 setzen. JSON-Ausgabe, stabile Exitcodes, Datei-/stdin-Eingabe für Markdown,
 Konfigurationshilfe und kopierbare Verbindungsbeispiele ergänzen.
+Benannte Verbindungsprofile mit Standard und Auswahl pro Aufruf, verdeckte
+Token-Eingabe beziehungsweise Umgebungsvariable und ausdrücklich gewählte
+lokale Speicherung mit eingeschränkten Dateirechten ergänzen. Ein lesender
+Prüfbefehl kontrolliert Erreichbarkeit, Anmeldung und zugängliche Vaults.
 
 **Abnahme:** ChatGPT führt Anlegen, Lesen, Suche, Bearbeiten und Löschen
 erfolgreich durch. Negative Fälle: fremder Vault, Leserechte bei Schreibversuch,
@@ -141,6 +145,16 @@ erzeugen innerhalb von 24 Stunden keine zweite Änderung; abweichende Aufträge
 werden abgewiesen. Listen-/Suchseitengrößen entsprechen Standard 20 und Maximum
 100. Fremde und unbekannte IDs liefern dieselbe Antwort, fehlende Schreibrechte
 auf sichtbare Datensätze dagegen einen Berechtigungsfehler.
+Profile wechseln die Verbindung korrekt. Tokens erscheinen nicht als
+Kommandozeilenargument; lokale Speicherung erfolgt nur ausdrücklich.
+Datei-/stdin-Eingaben erhalten Markdown unverändert. JSON auf stdout bleibt
+maschinenlesbar, Diagnosen verwenden stderr und Fehler stabile Exitcodes.
+Vollständig angegebene Agentenbefehle warten nicht auf Eingaben; fehlende
+Pflichtangaben führen zu Fehlern. Vorübergehende Lesefehler werden begrenzt
+wiederholt, Schreibwiederholungen verwenden denselben Schlüssel und
+Versionskonflikte werden nicht überschrieben. MCP-Schreibergebnisse enthalten
+ID, neue Revision und Änderungszeitpunkt ohne vollständiges Markdown.
+Der Verbindungsprüfbefehl verändert keine Inhalte.
 Protokolliert werden Testdatum, Client/Oberfläche, Tool-Auswahl und Ergebnis,
 ohne Geheimnisse. Keine Agententools für Nutzer-only-Aktionen vorhanden.
 CLI-Smoke-Tests laufen unter Windows, Linux und macOS. Claude folgt als

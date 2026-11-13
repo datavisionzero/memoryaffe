@@ -262,9 +262,29 @@ Heimnetz verbindet sie sich über die lokale Serveradresse. Sie unterstützt
 Windows, Linux und macOS sowie lesbare Ausgabe und einen JSON-Modus für
 Agenten und Skripte.
 
+Benannte Verbindungsprofile enthalten Serveradresse und Agentenzugang. Ein
+Profil ist Standard, pro Aufruf kann ein anderes gewählt werden. Tokens werden
+über verdeckte Eingabe oder Umgebungsvariable entgegengenommen, nicht als
+Kommandozeilenargument. Lokales Speichern erfolgt nur ausdrücklich in einer
+Datei mit eingeschränkten Zugriffsrechten. Markdown wird aus Datei oder
+Standardeingabe gelesen.
+
+Standardausgabe ist menschenlesbar. Mit `--json` enthält stdout ausschließlich
+strukturierte Ausgabe; Diagnosemeldungen gehen an stderr. Stabile Exitcodes
+unterscheiden Validierung, Anmeldung, Berechtigung, Konflikt und
+Verbindungsfehler. Vollständig angegebene Befehle laufen ohne Rückfragen;
+Agentenaufrufe warten nicht auf Eingaben. Fehlende Pflichtangaben ergeben Fehler.
+
+Lesezugriffe werden bei vorübergehenden Verbindungsfehlern begrenzt wiederholt.
+Schreibzugriffe werden nur mit demselben Wiederholungsschlüssel erneut gesendet;
+Versionskonflikte werden niemals automatisch überschrieben. MCP-Schreiboperationen
+liefern ID, neue Revision und Änderungszeitpunkt, vollständiges Markdown nur
+bei ausdrücklichem Lesen. Ein CLI-Prüfbefehl kontrolliert Erreichbarkeit,
+Anmeldung und zugängliche Vaults, ohne Inhalte zu verändern.
+
 Die Webapp zeigt je Agentenzugang passende Verbindungsinformationen und
-kopierbare Konfigurationsbeispiele. Die konkreten Authentifizierungsverfahren
-werden nach Prüfung der vorgesehenen MCP-Clients festgelegt.
+kopierbare Konfigurationsbeispiele. CLI-Tokens und OAuth mit CIMD für MCP sind
+festgelegt; die praktische MCP-Clientkompatibilität wird vorab geprüft.
 
 ## Webapp und Bedienung
 

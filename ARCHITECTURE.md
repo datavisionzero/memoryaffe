@@ -38,6 +38,10 @@ Der Betriebs- und Veröffentlichungsumfang ist bestätigt: eine Anwendungsinstan
 HTTPS, feste Basis-URL, Infrastrukturkonfiguration, bewusste Updates,
 Zielplattformen, GitHub-Veröffentlichung, getrennte Zustandsprüfungen und
 dokumentierte Leistungsmessungen.
+Bestätigt sind CLI-Profile, sichere Token-Eingabe und ausdrückliche lokale
+Speicherung, Datei-/stdin-Eingabe, Ausgabe-/Exitcode-Konventionen,
+nichtinteraktive Agentenaufrufe, begrenzte Wiederholungen, kompakte
+MCP-Schreibergebnisse und ein lesender Verbindungsprüfbefehl.
 Die übrigen technischen Konkretisierungen dieses Dokuments bleiben Entwurf,
 soweit sie nicht bereits ausdrücklich in der Produktvision beschlossen sind.
 Vor dem Grundgerüst werden alle weiteren Entscheidungsblöcke gemeinsam geklärt.
@@ -300,6 +304,31 @@ HTTP-Endpunkt im LAN verwenden; stdio bleibt eine spätere Bedarfsprüfung.
 [Quelle: Verbindung und Test](https://developers.openai.com/plugins/deploy/connect-chatgpt)
 
 ## HTTP, Suche und Oberfläche
+
+### CLI- und Agentenverhalten
+
+Die CLI unterstützt benannte Profile mit Serveradresse und Agentenzugang,
+ein Standardprofil und Auswahl pro Aufruf. Token-Eingabe erfolgt verdeckt
+oder über Umgebungsvariable, niemals als Kommandozeilenargument. Lokales
+Speichern verlangt eine ausdrückliche Entscheidung und eine Datei mit
+eingeschränkten Zugriffsrechten. Markdown wird aus Datei oder stdin gelesen.
+
+Standardausgabe ist menschenlesbar; `--json` liefert ausschließlich strukturierte
+Ausgabe auf stdout, Diagnosen auf stderr. Stabile Exitcodes unterscheiden
+Validierung, Anmeldung, Berechtigung, Konflikt und Verbindungsfehler.
+Vollständig angegebene Befehle laufen ohne Rückfragen, fehlende Pflichtangaben
+ergeben verständliche Fehler. Agentenaufrufe dürfen nicht auf Eingaben warten.
+Interaktive Einrichtung ist ein ausdrücklich gewählter separater Ablauf.
+
+Lesezugriffe dürfen bei vorübergehenden Verbindungsfehlern begrenzt wiederholt
+werden. Schreibzugriffe werden nur mit demselben Wiederholungsschlüssel erneut
+gesendet; Versionskonflikte werden nicht automatisch überschrieben.
+MCP-Schreibergebnisse enthalten ID, neue Revision und Änderungszeitpunkt,
+aber kein vollständiges Markdown; dieses wird ausdrücklich gelesen.
+Ein CLI-Prüfbefehl prüft Erreichbarkeit, Anmeldung und zugängliche Vaults
+ohne Inhaltsänderung. Die Webapp liefert passende Konfigurationsbeispiele.
+
+### HTTP-Verträge und Suche
 
 HTTP-Verträge werden aus Endpunkten erzeugt, als OpenAPI eingecheckt und in CI
 auf Drift geprüft. Web- und Go-Client werden daraus generiert. Listen liefern
