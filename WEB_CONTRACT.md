@@ -3,8 +3,9 @@
 Stand: 13. November 2026. Die folgenden fünf Entscheidungsblöcke sind bestätigt.
 Sie beschreiben geplantes Verhalten, keine implementierte Anwendung. Der
 [Schnittstellenvertrag](API_CONTRACT.md) und bestehende Konto-, Rechte- und
-Datenregeln gelten zusätzlich. Vollständige maschinenlesbare Schemas bleiben
-vor dem Grundgerüst zu ergänzen.
+Datenregeln gelten zusätzlich. Maschinenlesbare Schemas stehen in
+[web.openapi.json](docs/contracts/web.openapi.json), technische Semantik in
+[WEB_PROTOCOL.md](docs/contracts/WEB_PROTOCOL.md).
 
 ## 1. Browseranmeldung und Sitzungen
 
@@ -36,8 +37,8 @@ verbraucht den Zwischenzustand atomar, auch bei parallelen Anfragen.
 
 Nach fünf falschen Faktorversuchen wird der Zwischenzustand ungültig; die
 Anmeldung muss beim Passwort neu beginnen. Übergreifende Anfragelimits verhindern
-das Umgehen durch wiederholtes Beginnen. Deren konkrete Betriebsmatrix steht
-noch aus.
+das Umgehen durch wiederholtes Beginnen. Die konkrete Betriebsmatrix steht
+in [OPERATIONS.md](docs/contracts/OPERATIONS.md).
 
 TOTP-Einrichtung ist eine freiwillige Profilfunktion. Die Vorbereitung gilt
 zehn Minuten. Secret-Ausgabe aktiviert 2FA noch nicht; ein korrekter Testcode
@@ -126,11 +127,11 @@ weiter aufzubewahren. Ein geänderter Zielname nach Erfolg erzeugt keinen zweite
 Import unter derselben Vorbereitung. Eine abgelaufene oder ersetzte, noch nicht
 übernommene Vorbereitung verlangt einen neuen Upload.
 
-## Ausstehende Artefakte und Abnahme
+## Vertragsartefakte und ausstehende Anwendungsabnahme
 
 Das [Endpunktinventar](docs/contracts/WEB_ENDPOINTS.md) bildet diese Abläufe ab.
-Vollständige Request-/Response-Schemas, konkrete Header-/Fehlerdefinitionen und
-die verbleibende Ratelimit-/Ressourcenmatrix folgen vor dem Grundgerüst.
+Request-/Response-Schemas, konkrete Header-/Fehlerdefinitionen und die
+Ratelimit-/Ressourcenmatrix sind in docs/contracts ergänzt.
 Die fünf Fachentscheidungen selbst sind abgeschlossen.
 
 Die spätere Anwendung muss insbesondere Ablaufgrenzen, fünf Fehlversuche,

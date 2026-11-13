@@ -1,0 +1,732 @@
+{
+  "checkedAt": "2026-11-13",
+  "status": "Registry metadata verified; restore/build and full transitive license audit required in bootstrap.",
+  "runtimes": {
+    "dotnetSdk": "10.0.404",
+    "dotnetRuntime": "10.0.15",
+    "node": "24.22.3",
+    "go": "1.27.4",
+    "postgres": "18.7"
+  },
+  "packages": [
+    {
+      "ecosystem": "npm",
+      "name": "@base-ui/react",
+      "version": "1.9.0",
+      "source": "https://registry.npmjs.org/%40base-ui%2Freact/1.9.0",
+      "license": "MIT",
+      "engines": {
+        "node": ">=14.0.0"
+      },
+      "peerDependencies": {
+        "react": "^17 || ^18 || ^19",
+        "date-fns": "^4.0.0",
+        "react-dom": "^17 || ^18 || ^19",
+        "@date-fns/tz": "^1.2.0",
+        "@types/react": "^17 || ^18 || ^19"
+      },
+      "peerDependenciesMeta": {
+        "date-fns": {
+          "optional": true
+        },
+        "@date-fns/tz": {
+          "optional": true
+        },
+        "@types/react": {
+          "optional": true
+        }
+      },
+      "integrity": "sha512-S8CSYosASBKtpL8SWUfS78rFElfLijiCgA7oHOK22jCJ95FULsYyKwBNFOgudt0RA+/7yNc7F81bOvQnRgbBiQ=="
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@codemirror/lang-markdown",
+      "version": "6.5.2",
+      "source": "https://registry.npmjs.org/%40codemirror%2Flang-markdown/6.5.2",
+      "license": "MIT",
+      "engines": {},
+      "peerDependencies": {},
+      "peerDependenciesMeta": {},
+      "integrity": "sha512-AwBOdkWYuA//WcM0xO5PfHPUcmz/O2i5o0Nsg1U69SII/loCJlFI1Romd9xp2HYb1kYJRGZotyqRghuHH5n8Kw=="
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@codemirror/state",
+      "version": "6.7.6",
+      "source": "https://registry.npmjs.org/%40codemirror%2Fstate/6.7.6",
+      "license": "MIT",
+      "engines": {},
+      "peerDependencies": {},
+      "peerDependenciesMeta": {},
+      "integrity": "sha512-kAz+AncRtKuIknedxT1bq4XwXv4UowhbkHU1myPrtVb/jZtImWuV5BXzv5vK6i3kYACsdiZiQKFQQ5Mq7elW8w=="
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@codemirror/view",
+      "version": "6.43.15",
+      "source": "https://registry.npmjs.org/%40codemirror%2Fview/6.43.15",
+      "license": "MIT",
+      "engines": {},
+      "peerDependencies": {},
+      "peerDependenciesMeta": {},
+      "integrity": "sha512-HHsfpqFeHyXLs983pSRe38Xajs0vFWZQ2BuX0m7Ki8w3jZ5iD8cuR3lBz2/5/X53Dhf32SBHKh6rtSTB6tKeGw=="
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@playwright/test",
+      "version": "1.65.0",
+      "source": "https://registry.npmjs.org/%40playwright%2Ftest/1.65.0",
+      "license": "Apache-2.0",
+      "engines": {
+        "node": ">=20"
+      },
+      "peerDependencies": {},
+      "peerDependenciesMeta": {},
+      "integrity": "sha512-iGURLGuKDLakSEl7Pgfv8h7f+XLT+V861Wfhz0zlEl5nyFuKUopdkFBPKqTllTUp06aOwPuH8iuUEb3yp3MpbQ=="
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@tailwindcss/vite",
+      "version": "4.3.5",
+      "source": "https://registry.npmjs.org/%40tailwindcss%2Fvite/4.3.5",
+      "license": "MIT",
+      "engines": {},
+      "peerDependencies": {
+        "vite": "^5.2.0 || ^6 || ^7 || ^8"
+      },
+      "peerDependenciesMeta": {},
+      "integrity": "sha512-BCNiY0a1ZjdOHVqw7kyb7U72BwfMF3dfUuN+tQsLWky/J5JOI/r7abibglXfygrZhVO/3u3V+E25kkKTeMkXaQ=="
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@testing-library/dom",
+      "version": "10.4.2",
+      "source": "https://registry.npmjs.org/%40testing-library%2Fdom/10.4.2",
+      "license": "MIT",
+      "engines": {
+        "node": ">=18"
+      },
+      "peerDependencies": {},
+      "peerDependenciesMeta": {},
+      "integrity": "sha512-yzr2S9HyAIdhz2/6qHgbs665Q7PKVcDF05vsOlHPxG1mo36gKVesdYVeDLnXgfjJ03CrKRk08knc6+E/9m8v2Q=="
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@testing-library/react",
+      "version": "16.3.3",
+      "source": "https://registry.npmjs.org/%40testing-library%2Freact/16.3.3",
+      "license": "MIT",
+      "engines": {
+        "node": ">=18"
+      },
+      "peerDependencies": {
+        "react": "^18.0.0 || ^19.0.0",
+        "react-dom": "^18.0.0 || ^19.0.0",
+        "@types/react": "^18.0.0 || ^19.0.0",
+        "@types/react-dom": "^18.0.0 || ^19.0.0",
+        "@testing-library/dom": "^10.0.0"
+      },
+      "peerDependenciesMeta": {
+        "@types/react": {
+          "optional": true
+        },
+        "@types/react-dom": {
+          "optional": true
+        }
+      },
+      "integrity": "sha512-Uo193NgQbPMz6lrrhtRQQFcMC6Re/ELLFbbuVL30WDlZxlpZf9/lMHTAVxPRLw1q1iu9OJmR1c2BLiENRstdBg=="
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@types/react",
+      "version": "19.3.0",
+      "source": "https://registry.npmjs.org/%40types%2Freact/19.3.0",
+      "license": "MIT",
+      "engines": {},
+      "peerDependencies": {},
+      "peerDependenciesMeta": {},
+      "integrity": "sha512-N0rFCuH9YoxG9/m61l9MfpJKfmLOVU0em7ipIz6TRgSSkvReLB9vL85GB+yr8Bs5leqpvg96JSwF4ZS1s4viQg=="
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@types/react-dom",
+      "version": "19.3.0",
+      "source": "https://registry.npmjs.org/%40types%2Freact-dom/19.3.0",
+      "license": "MIT",
+      "engines": {},
+      "peerDependencies": {
+        "@types/react": "^19.3.0"
+      },
+      "peerDependenciesMeta": {},
+      "integrity": "sha512-ZI7bU42mZXXKHn/qNLEw2IrbiINU7X5+vfgdixBHkCNpYWXjKgfQ/P+uyGb5CjOLB9UcnTeg3rylQtV2hym44Q=="
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@vitejs/plugin-react",
+      "version": "6.3.0",
+      "source": "https://registry.npmjs.org/%40vitejs%2Fplugin-react/6.3.0",
+      "license": "MIT",
+      "engines": {
+        "node": "^20.19.0 || >=22.12.0"
+      },
+      "peerDependencies": {
+        "vite": "^8.0.0",
+        "oxc-transform-react": ">=0.152.0 <0.157.0",
+        "@rolldown/plugin-babel": "^0.1.7 || ^0.2.0 || ^0.3.0",
+        "babel-plugin-react-compiler": "^1.0.0"
+      },
+      "peerDependenciesMeta": {
+        "oxc-transform-react": {
+          "optional": true
+        },
+        "@rolldown/plugin-babel": {
+          "optional": true
+        },
+        "babel-plugin-react-compiler": {
+          "optional": true
+        }
+      },
+      "integrity": "sha512-H9E955aVvD2F4zNHCw4eIZbIfF6xKldlh7MNu+hSU7xwQzh65lI/N+CJWqmfhi0PEjDXIt/H7T7J/4wU63KJiw=="
+    },
+    {
+      "ecosystem": "npm",
+      "name": "jsdom",
+      "version": "31.0.1",
+      "source": "https://registry.npmjs.org/jsdom/31.0.1",
+      "license": "MIT",
+      "engines": {
+        "node": "^22.22.2 || ^24.15.0 || >=26.0.0"
+      },
+      "peerDependencies": {
+        "@napi-rs/canvas": "^1.0.13"
+      },
+      "peerDependenciesMeta": {
+        "@napi-rs/canvas": {
+          "optional": true
+        }
+      },
+      "integrity": "sha512-CbhJL8ZQg3eKswxSZth4QO9tW0jPIhmR0vtSXQSbKSfWbwIT6hoRc17wdHIVTQ43KI0mdV5iTJr3281IDgVZ5g=="
+    },
+    {
+      "ecosystem": "npm",
+      "name": "openapi-typescript",
+      "version": "7.13.0",
+      "source": "https://registry.npmjs.org/openapi-typescript/7.13.0",
+      "license": "MIT",
+      "engines": {},
+      "peerDependencies": {
+        "typescript": "^5.x"
+      },
+      "peerDependenciesMeta": {},
+      "integrity": "sha512-EFP392gcqXS7ntPvbhBzbF8TyBA+baIYEm791Hy5YkjDYKTnk/Tn5OQeKm5BIZvJihpp8Zzr4hzx0Irde1LNGQ=="
+    },
+    {
+      "ecosystem": "npm",
+      "name": "react",
+      "version": "19.3.1",
+      "source": "https://registry.npmjs.org/react/19.3.1",
+      "license": "MIT",
+      "engines": {
+        "node": ">=0.10.0"
+      },
+      "peerDependencies": {},
+      "peerDependenciesMeta": {},
+      "integrity": "sha512-QNhWdt7nrgVWWQG58QuGsAR3jv3Hbe4mb4vz7w2csnHavciZJgda1CPNaldF6eVxv90ud3jUXpKlHL69gO38yw=="
+    },
+    {
+      "ecosystem": "npm",
+      "name": "react-dom",
+      "version": "19.3.1",
+      "source": "https://registry.npmjs.org/react-dom/19.3.1",
+      "license": "MIT",
+      "engines": {},
+      "peerDependencies": {
+        "react": "^19.3.1"
+      },
+      "peerDependenciesMeta": {},
+      "integrity": "sha512-Y0bARz53lhEC1NMCASs0/j+faB/zqt3R8hpvg1e8+61ZVJ4UL0UdC4cBbXfZMcIuhrfgeILTLe+ZeBCavQPtKQ=="
+    },
+    {
+      "ecosystem": "npm",
+      "name": "react-markdown",
+      "version": "10.1.0",
+      "source": "https://registry.npmjs.org/react-markdown/10.1.0",
+      "license": "MIT",
+      "engines": {},
+      "peerDependencies": {
+        "react": ">=18",
+        "@types/react": ">=18"
+      },
+      "peerDependenciesMeta": {},
+      "integrity": "sha512-qKxVopLT/TyA6BX3Ue5NwabOsAzm0Q7kAPwq6L+wWDwisYs7R8vZ0nRXqq6rkueboxpkjvLGU9fWifiX/ZZFxQ=="
+    },
+    {
+      "ecosystem": "npm",
+      "name": "react-router",
+      "version": "8.5.1",
+      "source": "https://registry.npmjs.org/react-router/8.5.1",
+      "license": "MIT",
+      "engines": {
+        "node": ">=22.22.0"
+      },
+      "peerDependencies": {
+        "react": ">=19.2.7",
+        "react-dom": ">=19.2.7",
+        "@types/react": ">=19.2.0",
+        "@types/react-dom": ">=19.2.0"
+      },
+      "peerDependenciesMeta": {
+        "react-dom": {
+          "optional": true
+        },
+        "@types/react": {
+          "optional": true
+        },
+        "@types/react-dom": {
+          "optional": true
+        }
+      },
+      "integrity": "sha512-5u1eQ46QjuXjNfEnLwzrnou1Bm5dquO3xjVYkkMYCudtkicD2AQHtx+fvXzPATtPJx8TW6DR1x1TDRqsfHyZBw=="
+    },
+    {
+      "ecosystem": "npm",
+      "name": "remark-gfm",
+      "version": "4.0.1",
+      "source": "https://registry.npmjs.org/remark-gfm/4.0.1",
+      "license": "MIT",
+      "engines": {},
+      "peerDependencies": {},
+      "peerDependenciesMeta": {},
+      "integrity": "sha512-1quofZ2RQ9EWdeN34S79+KExV1764+wCUGop5CPL1WGdD0ocPpu91lzPGbwWMECpEpd42kJGQwzRfyov9j4yNg=="
+    },
+    {
+      "ecosystem": "npm",
+      "name": "tailwindcss",
+      "version": "4.3.5",
+      "source": "https://registry.npmjs.org/tailwindcss/4.3.5",
+      "license": "MIT",
+      "engines": {},
+      "peerDependencies": {},
+      "peerDependenciesMeta": {},
+      "integrity": "sha512-FcQk9BuffmEHJP2G0XmB2SplU1aLTI7j07Kunk+U74Ny+XiWOtzXz9aujFZ/avntw1e2cOv/3PkgzflQ7gX2vQ=="
+    },
+    {
+      "ecosystem": "npm",
+      "name": "typescript",
+      "version": "5.9.3",
+      "source": "https://registry.npmjs.org/typescript/5.9.3",
+      "license": "Apache-2.0",
+      "engines": {
+        "node": ">=14.17"
+      },
+      "peerDependencies": {},
+      "peerDependenciesMeta": {},
+      "integrity": "sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw=="
+    },
+    {
+      "ecosystem": "npm",
+      "name": "vite",
+      "version": "8.3.8",
+      "source": "https://registry.npmjs.org/vite/8.3.8",
+      "license": "MIT",
+      "engines": {
+        "node": "^20.19.0 || >=22.12.0"
+      },
+      "peerDependencies": {
+        "tsx": "^4.8.1",
+        "jiti": ">=1.21.0",
+        "less": "^4.0.0",
+        "sass": "^1.70.0",
+        "yaml": "^2.4.2",
+        "stylus": ">=0.54.8",
+        "terser": "^5.16.0",
+        "esbuild": "^0.27.0 || ^0.28.0",
+        "sugarss": "^5.0.0",
+        "@types/node": "^20.19.0 || >=22.12.0",
+        "sass-embedded": "^1.70.0",
+        "@vitejs/devtools": "^0.7.1 || ^0.8.0"
+      },
+      "peerDependenciesMeta": {
+        "tsx": {
+          "optional": true
+        },
+        "jiti": {
+          "optional": true
+        },
+        "less": {
+          "optional": true
+        },
+        "sass": {
+          "optional": true
+        },
+        "yaml": {
+          "optional": true
+        },
+        "stylus": {
+          "optional": true
+        },
+        "terser": {
+          "optional": true
+        },
+        "esbuild": {
+          "optional": true
+        },
+        "sugarss": {
+          "optional": true
+        },
+        "@types/node": {
+          "optional": true
+        },
+        "sass-embedded": {
+          "optional": true
+        },
+        "@vitejs/devtools": {
+          "optional": true
+        }
+      },
+      "integrity": "sha512-LzOn3h9rG/0vhLdXrV4yJ4QFA9eEoqCl+Yx+kGJd7aB9w6nfNgVHKSYwLPZUHrz4ZGa+t+kXjV9itvcHDLQouA=="
+    },
+    {
+      "ecosystem": "npm",
+      "name": "vitest",
+      "version": "5.1.0",
+      "source": "https://registry.npmjs.org/vitest/5.1.0",
+      "license": "MIT",
+      "engines": {
+        "node": "^22.12.0 || ^24.0.0 || >=26.0.0"
+      },
+      "peerDependencies": {
+        "vite": "^6.4.0 || ^7.0.0 || ^8.0.0",
+        "jsdom": "*",
+        "happy-dom": "*",
+        "@vitest/ui": "5.1.0",
+        "@types/node": "^22.0.0 || >=24.0.0",
+        "@edge-runtime/vm": "*",
+        "@opentelemetry/api": "^1.9.0",
+        "@vitest/coverage-v8": "5.1.0",
+        "@vitest/browser-preview": "5.1.0",
+        "@vitest/coverage-istanbul": "5.1.0",
+        "@vitest/browser-playwright": "5.1.0",
+        "@vitest/browser-webdriverio": "^5.0.0-beta.5 || >=5.0.0"
+      },
+      "peerDependenciesMeta": {
+        "vite": {
+          "optional": false
+        },
+        "jsdom": {
+          "optional": true
+        },
+        "happy-dom": {
+          "optional": true
+        },
+        "@vitest/ui": {
+          "optional": true
+        },
+        "@types/node": {
+          "optional": true
+        },
+        "@edge-runtime/vm": {
+          "optional": true
+        },
+        "@opentelemetry/api": {
+          "optional": true
+        },
+        "@vitest/coverage-v8": {
+          "optional": true
+        },
+        "@vitest/browser-preview": {
+          "optional": true
+        },
+        "@vitest/coverage-istanbul": {
+          "optional": true
+        },
+        "@vitest/browser-playwright": {
+          "optional": true
+        },
+        "@vitest/browser-webdriverio": {
+          "optional": true
+        }
+      },
+      "integrity": "sha512-MzmNFnrwa8v8lF1bLxw3UJ4EREwVOVb75VqJZmUDRjJ6EluK/x9th7qTbaeDk41WxE1GxWqmTXcdsfobfH5sOA=="
+    },
+    {
+      "ecosystem": "nuget",
+      "name": "Microsoft.AspNetCore.Identity.EntityFrameworkCore",
+      "version": "10.0.15",
+      "source": "https://api.nuget.org/v3/registration5-gz-semver2/microsoft.aspnetcore.identity.entityframeworkcore/10.0.15.json",
+      "license": "MIT",
+      "dependencyGroups": [
+        {
+          "@id": "https://api.nuget.org/v3/catalog0/data/2026.11.10.14.16.14/microsoft.aspnetcore.identity.entityframeworkcore.10.0.15.json#dependencygroup/net10.0",
+          "@type": "PackageDependencyGroup",
+          "dependencies": [
+            {
+              "@id": "https://api.nuget.org/v3/catalog0/data/2026.11.10.14.16.14/microsoft.aspnetcore.identity.entityframeworkcore.10.0.15.json#dependencygroup/net10.0/microsoft.extensions.identity.stores",
+              "@type": "PackageDependency",
+              "id": "Microsoft.Extensions.Identity.Stores",
+              "range": "[10.0.15, )"
+            },
+            {
+              "@id": "https://api.nuget.org/v3/catalog0/data/2026.11.10.14.16.14/microsoft.aspnetcore.identity.entityframeworkcore.10.0.15.json#dependencygroup/net10.0/microsoft.entityframeworkcore.relational",
+              "@type": "PackageDependency",
+              "id": "Microsoft.EntityFrameworkCore.Relational",
+              "range": "[10.0.15, )"
+            }
+          ],
+          "targetFramework": "net10.0"
+        }
+      ]
+    },
+    {
+      "ecosystem": "nuget",
+      "name": "Microsoft.AspNetCore.OpenApi",
+      "version": "10.0.15",
+      "source": "https://api.nuget.org/v3/registration5-gz-semver2/microsoft.aspnetcore.openapi/10.0.15.json",
+      "license": "MIT",
+      "dependencyGroups": [
+        {
+          "@id": "https://api.nuget.org/v3/catalog0/data/2026.11.10.13.40.01/microsoft.aspnetcore.openapi.10.0.15.json#dependencygroup/net10.0",
+          "@type": "PackageDependencyGroup",
+          "dependencies": [
+            {
+              "@id": "https://api.nuget.org/v3/catalog0/data/2026.11.10.13.40.01/microsoft.aspnetcore.openapi.10.0.15.json#dependencygroup/net10.0/microsoft.openapi",
+              "@type": "PackageDependency",
+              "id": "Microsoft.OpenApi",
+              "range": "[2.13.0, 3.0.0)"
+            }
+          ],
+          "targetFramework": "net10.0"
+        }
+      ]
+    },
+    {
+      "ecosystem": "nuget",
+      "name": "Microsoft.EntityFrameworkCore",
+      "version": "10.0.15",
+      "source": "https://api.nuget.org/v3/registration5-gz-semver2/microsoft.entityframeworkcore/10.0.15.json",
+      "license": "MIT",
+      "dependencyGroups": [
+        {
+          "@id": "https://api.nuget.org/v3/catalog0/data/2026.11.10.13.57.26/microsoft.entityframeworkcore.10.0.15.json#dependencygroup/net10.0",
+          "@type": "PackageDependencyGroup",
+          "dependencies": [
+            {
+              "@id": "https://api.nuget.org/v3/catalog0/data/2026.11.10.13.57.26/microsoft.entityframeworkcore.10.0.15.json#dependencygroup/net10.0/microsoft.entityframeworkcore.abstractions",
+              "@type": "PackageDependency",
+              "id": "Microsoft.EntityFrameworkCore.Abstractions",
+              "range": "[10.0.15, )"
+            },
+            {
+              "@id": "https://api.nuget.org/v3/catalog0/data/2026.11.10.13.57.26/microsoft.entityframeworkcore.10.0.15.json#dependencygroup/net10.0/microsoft.entityframeworkcore.analyzers",
+              "@type": "PackageDependency",
+              "id": "Microsoft.EntityFrameworkCore.Analyzers",
+              "range": "[10.0.15, )"
+            },
+            {
+              "@id": "https://api.nuget.org/v3/catalog0/data/2026.11.10.13.57.26/microsoft.entityframeworkcore.10.0.15.json#dependencygroup/net10.0/microsoft.extensions.caching.memory",
+              "@type": "PackageDependency",
+              "id": "Microsoft.Extensions.Caching.Memory",
+              "range": "[10.0.15, )"
+            },
+            {
+              "@id": "https://api.nuget.org/v3/catalog0/data/2026.11.10.13.57.26/microsoft.entityframeworkcore.10.0.15.json#dependencygroup/net10.0/microsoft.extensions.logging",
+              "@type": "PackageDependency",
+              "id": "Microsoft.Extensions.Logging",
+              "range": "[10.0.15, )"
+            }
+          ],
+          "targetFramework": "net10.0"
+        }
+      ]
+    },
+    {
+      "ecosystem": "nuget",
+      "name": "ModelContextProtocol.AspNetCore",
+      "version": "2.4.0",
+      "source": "https://api.nuget.org/v3/registration5-gz-semver2/modelcontextprotocol.aspnetcore/2.4.0.json",
+      "license": "Apache-2.0",
+      "dependencyGroups": [
+        {
+          "@id": "https://api.nuget.org/v3/catalog0/data/2026.11.07.04.31.45/modelcontextprotocol.aspnetcore.2.4.0.json#dependencygroup/net10.0",
+          "@type": "PackageDependencyGroup",
+          "dependencies": [
+            {
+              "@id": "https://api.nuget.org/v3/catalog0/data/2026.11.07.04.31.45/modelcontextprotocol.aspnetcore.2.4.0.json#dependencygroup/net10.0/modelcontextprotocol",
+              "@type": "PackageDependency",
+              "id": "ModelContextProtocol",
+              "range": "[2.4.0, 2.4.0]"
+            }
+          ],
+          "targetFramework": "net10.0"
+        },
+        {
+          "@id": "https://api.nuget.org/v3/catalog0/data/2026.11.07.04.31.45/modelcontextprotocol.aspnetcore.2.4.0.json#dependencygroup/net8.0",
+          "@type": "PackageDependencyGroup",
+          "dependencies": [
+            {
+              "@id": "https://api.nuget.org/v3/catalog0/data/2026.11.07.04.31.45/modelcontextprotocol.aspnetcore.2.4.0.json#dependencygroup/net8.0/modelcontextprotocol",
+              "@type": "PackageDependency",
+              "id": "ModelContextProtocol",
+              "range": "[2.4.0, 2.4.0]"
+            }
+          ],
+          "targetFramework": "net8.0"
+        },
+        {
+          "@id": "https://api.nuget.org/v3/catalog0/data/2026.11.07.04.31.45/modelcontextprotocol.aspnetcore.2.4.0.json#dependencygroup/net9.0",
+          "@type": "PackageDependencyGroup",
+          "dependencies": [
+            {
+              "@id": "https://api.nuget.org/v3/catalog0/data/2026.11.07.04.31.45/modelcontextprotocol.aspnetcore.2.4.0.json#dependencygroup/net9.0/modelcontextprotocol",
+              "@type": "PackageDependency",
+              "id": "ModelContextProtocol",
+              "range": "[2.4.0, 2.4.0]"
+            }
+          ],
+          "targetFramework": "net9.0"
+        }
+      ]
+    },
+    {
+      "ecosystem": "nuget",
+      "name": "Npgsql.EntityFrameworkCore.PostgreSQL",
+      "version": "10.0.3",
+      "source": "https://api.nuget.org/v3/registration5-gz-semver2/npgsql.entityframeworkcore.postgresql/10.0.3.json",
+      "license": "PostgreSQL",
+      "dependencyGroups": [
+        {
+          "@id": "https://api.nuget.org/v3/catalog0/data/2026.07.10.08.56.27/npgsql.entityframeworkcore.postgresql.10.0.3.json#dependencygroup/net10.0",
+          "@type": "PackageDependencyGroup",
+          "dependencies": [
+            {
+              "@id": "https://api.nuget.org/v3/catalog0/data/2026.07.10.08.56.27/npgsql.entityframeworkcore.postgresql.10.0.3.json#dependencygroup/net10.0/microsoft.entityframeworkcore",
+              "@type": "PackageDependency",
+              "id": "Microsoft.EntityFrameworkCore",
+              "range": "[10.0.4, 11.0.0)"
+            },
+            {
+              "@id": "https://api.nuget.org/v3/catalog0/data/2026.07.10.08.56.27/npgsql.entityframeworkcore.postgresql.10.0.3.json#dependencygroup/net10.0/microsoft.entityframeworkcore.relational",
+              "@type": "PackageDependency",
+              "id": "Microsoft.EntityFrameworkCore.Relational",
+              "range": "[10.0.4, 11.0.0)"
+            },
+            {
+              "@id": "https://api.nuget.org/v3/catalog0/data/2026.07.10.08.56.27/npgsql.entityframeworkcore.postgresql.10.0.3.json#dependencygroup/net10.0/npgsql",
+              "@type": "PackageDependency",
+              "id": "Npgsql",
+              "range": "[10.0.3, )"
+            }
+          ],
+          "targetFramework": "net10.0"
+        }
+      ]
+    },
+    {
+      "ecosystem": "nuget",
+      "name": "Testcontainers.PostgreSql",
+      "version": "4.16.0",
+      "source": "https://api.nuget.org/v3/registration5-gz-semver2/testcontainers.postgresql/4.16.0.json",
+      "license": "MIT",
+      "dependencyGroups": [
+        {
+          "@id": "https://api.nuget.org/v3/catalog0/data/2026.10.08.18.36.28/testcontainers.postgresql.4.16.0.json#dependencygroup/net10.0",
+          "@type": "PackageDependencyGroup",
+          "dependencies": [
+            {
+              "@id": "https://api.nuget.org/v3/catalog0/data/2026.10.08.18.36.28/testcontainers.postgresql.4.16.0.json#dependencygroup/net10.0/testcontainers",
+              "@type": "PackageDependency",
+              "id": "Testcontainers",
+              "range": "[4.16.0, )"
+            }
+          ],
+          "targetFramework": "net10.0"
+        },
+        {
+          "@id": "https://api.nuget.org/v3/catalog0/data/2026.10.08.18.36.28/testcontainers.postgresql.4.16.0.json#dependencygroup/net8.0",
+          "@type": "PackageDependencyGroup",
+          "dependencies": [
+            {
+              "@id": "https://api.nuget.org/v3/catalog0/data/2026.10.08.18.36.28/testcontainers.postgresql.4.16.0.json#dependencygroup/net8.0/testcontainers",
+              "@type": "PackageDependency",
+              "id": "Testcontainers",
+              "range": "[4.16.0, )"
+            }
+          ],
+          "targetFramework": "net8.0"
+        },
+        {
+          "@id": "https://api.nuget.org/v3/catalog0/data/2026.10.08.18.36.28/testcontainers.postgresql.4.16.0.json#dependencygroup/net9.0",
+          "@type": "PackageDependencyGroup",
+          "dependencies": [
+            {
+              "@id": "https://api.nuget.org/v3/catalog0/data/2026.10.08.18.36.28/testcontainers.postgresql.4.16.0.json#dependencygroup/net9.0/testcontainers",
+              "@type": "PackageDependency",
+              "id": "Testcontainers",
+              "range": "[4.16.0, )"
+            }
+          ],
+          "targetFramework": "net9.0"
+        },
+        {
+          "@id": "https://api.nuget.org/v3/catalog0/data/2026.10.08.18.36.28/testcontainers.postgresql.4.16.0.json#dependencygroup/.netstandard2.0",
+          "@type": "PackageDependencyGroup",
+          "dependencies": [
+            {
+              "@id": "https://api.nuget.org/v3/catalog0/data/2026.10.08.18.36.28/testcontainers.postgresql.4.16.0.json#dependencygroup/.netstandard2.0/testcontainers",
+              "@type": "PackageDependency",
+              "id": "Testcontainers",
+              "range": "[4.16.0, )"
+            }
+          ],
+          "targetFramework": ".NETStandard2.0"
+        },
+        {
+          "@id": "https://api.nuget.org/v3/catalog0/data/2026.10.08.18.36.28/testcontainers.postgresql.4.16.0.json#dependencygroup/.netstandard2.1",
+          "@type": "PackageDependencyGroup",
+          "dependencies": [
+            {
+              "@id": "https://api.nuget.org/v3/catalog0/data/2026.10.08.18.36.28/testcontainers.postgresql.4.16.0.json#dependencygroup/.netstandard2.1/testcontainers",
+              "@type": "PackageDependency",
+              "id": "Testcontainers",
+              "range": "[4.16.0, )"
+            }
+          ],
+          "targetFramework": ".NETStandard2.1"
+        }
+      ]
+    },
+    {
+      "ecosystem": "nuget",
+      "name": "xunit",
+      "version": "2.9.3",
+      "source": "https://api.nuget.org/v3/registration5-gz-semver2/xunit/2.9.3.json",
+      "license": "Apache-2.0",
+      "dependencyGroups": [
+        {
+          "@id": "https://api.nuget.org/v3/catalog0/data/2026.04.10.00.22.07/xunit.2.9.3.json#dependencygroup",
+          "@type": "PackageDependencyGroup",
+          "dependencies": [
+            {
+              "@id": "https://api.nuget.org/v3/catalog0/data/2026.04.10.00.22.07/xunit.2.9.3.json#dependencygroup/xunit.core",
+              "@type": "PackageDependency",
+              "id": "xunit.core",
+              "range": "[2.9.3, 2.9.3]"
+            },
+            {
+              "@id": "https://api.nuget.org/v3/catalog0/data/2026.04.10.00.22.07/xunit.2.9.3.json#dependencygroup/xunit.assert",
+              "@type": "PackageDependency",
+              "id": "xunit.assert",
+              "range": "[2.9.3, )"
+            },
+            {
+              "@id": "https://api.nuget.org/v3/catalog0/data/2026.04.10.00.22.07/xunit.2.9.3.json#dependencygroup/xunit.analyzers",
+              "@type": "PackageDependency",
+              "id": "xunit.analyzers",
+              "range": "[1.18.0, )"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

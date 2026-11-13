@@ -5,9 +5,8 @@ Bestätigte Fachregeln stehen in [API_CONTRACT.md](../../API_CONTRACT.md),
 [DATA_CONTRACT.md](../../DATA_CONTRACT.md) und
 [OAUTH_CONTRACT.md](../../OAUTH_CONTRACT.md).
 Die bestätigten Browser-/Admin-Abläufe stehen im
-[WEB_CONTRACT.md](../../WEB_CONTRACT.md); ihre maschinenlesbare Abbildung fehlt
-noch. Das umfasst Sitzungen, 2FA, Aktionsbestätigung, Verwaltungsrevisionen
-und Importvorbereitung.
+[WEB_CONTRACT.md](../../WEB_CONTRACT.md); ihre maschinenlesbare Abbildung ist
+in web.openapi.json ergänzt. Alle Artefakte beschreiben geplantes Verhalten.
 
 ## Umfang und Status
 
@@ -18,10 +17,20 @@ und Importvorbereitung.
 | `mcp-tools.json` | Dieselben acht Fachoperationen mit eigenständigen Ein-/Ausgabeschemas |
 | `vault-manifest.schema.json` | Vault-Exportformat 1, JSON Schema 2020-12 |
 | `manifest.example.json` | Gültiges Manifest mit einem Datensatz, kein vollständiges ZIP |
+| `web.openapi.json` | 74 Browser-/Adminoperationen, Cookie/CSRF, typisierte Aufträge und Antworten |
+| `oauth.openapi.json` | Fünf Discovery-/Authorize-/Token-/Revoke-Operationen |
+| [WEB_PROTOCOL.md](WEB_PROTOCOL.md) | Browsertransport, Fehler, Einmalabläufe, Verwaltungssemantik |
+| [OAUTH_PROTOCOL.md](OAUTH_PROTOCOL.md) | OAuth-Parameter, Consent, CIMD-Auswahl, MCP-Challenges und Transport |
+| [PERSISTENCE.md](PERSISTENCE.md) | Tabelleninvarianten, Transaktions- und Lockinggrenzen |
+| [CLI.md](CLI.md) | Konkrete Befehle, Flags, Profile, Retry-/Ausgabeverhalten |
+| [SEARCH_UNICODE.md](SEARCH_UNICODE.md) | Unicode17, Suchabbildung und PostgreSQL-Abnahmekorpus |
+| [OPERATIONS.md](OPERATIONS.md) | Betriebsgrenzen, Toolchainpins, Lizenz-/CI-Matrix und Prüfstatus |
+| `dependencies.snapshot.json` | Direkt aus npm/NuGet erhobene exakte Versionen und Metadaten |
+| [VALIDATION.md](VALIDATION.md) | Tatsächlich ausgeführte Planungsprüfungen und klare Nachweisgrenzen |
 
-Dies ist der ausgearbeitete **Agenten-Datenvertrag**, nicht die vollständige
-Web-/Admin-API. Die noch ausstehenden Bereiche sind unten ausdrücklich benannt.
-Feldnamen und Routen konkretisieren bestätigte Regeln. Die fünf ergänzenden
+Agenten-, Browser-/Admin- und OAuth-Verträge sind maschinenlesbar ausgearbeitet.
+Ihre Anwendungssemantik ergänzen die verlinkten Dokumente; sie muss erst
+implementiert werden. Feldnamen und Routen konkretisieren bestätigte Regeln. Die fünf ergänzenden
 [Randfallentscheidungen](DECISIONS.md) sind ebenfalls bestätigt.
 
 ## HTTP-Abbildung
@@ -66,7 +75,7 @@ ausgewiesen.
 JSON Schema allein ersetzt keine Anwendungsvalidierung. Verpflichtend bleiben:
 
 - Titel nach Trimming nicht leer, Namen normalisiert/eindeutig; Unicode-Version
-  und genaue White-Space-Regel werden noch festgelegt.
+  und genaue White-Space-Regel sind in SEARCH_UNICODE.md festgelegt.
 - Markdown maximal 1.048.576 UTF-8-Bytes; keine Änderung von Zeilenumbrüchen.
 - Ungültiges Unicode, isolierte Surrogate und U+0000 abweisen, nicht ersetzen.
   Das ist zusätzliche semantische Validierung, noch kein implementierter Test
@@ -91,7 +100,7 @@ JSON Schema allein ersetzt keine Anwendungsvalidierung. Verpflichtend bleiben:
 
 ## Reproduzierbare Prüfung
 
-`node docs/contracts/build.mjs` erzeugt die JSON-Artefakte deterministisch.
+`node docs/contracts/build-all.mjs` erzeugt die Vertrags-JSON-Artefakte deterministisch.
 Der Generator ist Planungswerkzeug, keine zusätzliche Produkt-Toolchain. Sobald
 die Backend-API besteht, übernimmt deren vereinbarter OpenAPI-Export die
 Quelle; ein Vertragsvergleich muss Abweichungen sichtbar machen.
@@ -106,25 +115,26 @@ und diesen drei exakten Paketangaben. Danach:
 node docs/contracts/check.mjs <absolute-tool-directory>
 ```
 
-Die Prüfung kompiliert die MCP-Schemas, prüft positive und negative Beispiele,
-lokale Referenzen und das OpenAPI-Dokument. Sie bestätigt keine implementierten
+Die Prüfung kompiliert MCP-, Browser- und OAuth-Schemas, prüft positive und
+negative Beispiele, lokale Referenzen und drei OpenAPI-Dokumente. Sie bestätigt keine implementierten
 Berechtigungen, Byte-Limits, ZIP-Sicherheit oder echte Clientkompatibilität.
 
-## Noch ausstehende Vertragsbereiche
+## Planungsabschluss und ausstehende Ausführungsnachweise
 
-1. [Web-/Admin-Endpunktinventar](WEB_ENDPOINTS.md) mit vollständigen Schemas für Konten, Sitzungen, 2FA,
-   Einladungen, Wiederherstellung, Vault-Verwaltung, Historie/Papierkorb,
-   Agenten-/Tokenverwaltung, Import/Export und Diagnose.
-2. OAuth-Endpunktparameter, Discovery-Dokumente und Fehler-/Challenge-Matrix;
-   CIMD-Methodenauswahl anhand des realen ChatGPT-Dokuments.
-3. Suchkorpus/SQL-Abbildung, genaue Unicode-Normalisierung und White-Space-Tabelle.
-4. Verbleibende Betriebsgrenzen für Authentifizierungs-Ratelimits und
-   Import-/Exportressourcen. Suchtext-, Cursor-, Schlüsselgrenzen und
-   Wiederholungswartezeit sind entschieden und in den Verträgen festgehalten.
-5. Paket-/Lizenzmatrix, Zielplattformprüfungen und realer ChatGPT-Versuch.
+Das [Web-/Admin-Endpunktinventar](WEB_ENDPOINTS.md) dient als lesbare Übersicht;
+vollständige Felder stehen in den Schemas. Protokolle, Unicode, Suchkorpus,
+Betriebslimits und direkte Paketmatrix sind ausgearbeitet. Kein notwendiger
+weiterer Produktentscheidungsblock vor dem Bootstrap.
+
+Ausstehend sind Implementierung/Integration der Verträge, Ausführung des
+Suchkorpus gegen PostgreSQL, Toolchain-Restore/Build, transitive Lizenzprüfung,
+Plattformtests und echter ChatGPT-Nachweis. npm-Peerauflösung wurde separat
+geprüft, kein Frontendbuild behauptet. Siehe Prüfstatus in OPERATIONS.md.
 
 Die fünf ergänzenden fachlichen Entscheidungen stehen in [DECISIONS.md](DECISIONS.md).
-Die oben noch ausstehenden Bereiche bleiben Voraussetzungen vor dem Grundgerüst.
+Der Nutzer hat den echten ChatGPT-Test auf später verschoben und den Bau des
+Prototypen vorher erlaubt. Der [Agentenauftrag](../../AGENT_HANDOFF.md) führt
+durch die Umsetzung und trennt geplante Abnahmen von tatsächlich bestandenen Tests.
 
 ## Primärquellen
 
@@ -132,5 +142,5 @@ Die oben noch ausstehenden Bereiche bleiben Voraussetzungen vor dem Grundgerüst
 - [JSON Schema Validation 2020-12](https://json-schema.org/draft/2020-12/json-schema-validation)
 - [MCP Tools](https://modelcontextprotocol.io/specification/2025-11-25/server/tools)
 
-Diese Formatgrundlagen sind von der noch festzulegenden MCP-SDK-/Protokollversion
-und deren realer ChatGPT-Abnahme zu unterscheiden.
+Diese Formatgrundlagen sind von der SDK-/Protokollbasis in OPERATIONS.md und
+der noch ausstehenden realen ChatGPT-Abnahme zu unterscheiden.

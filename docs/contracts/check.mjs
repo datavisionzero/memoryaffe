@@ -46,6 +46,8 @@ expect(inputs.update_memory, { id, expectedRevision: '2', summary: null, tagIds:
 expect(inputs.update_memory, { id, title: 'Neu' }, false);
 expect(inputs.update_memory, { id, expectedRevision: 2, title: 'Neu' }, false);
 expect(inputs.delete_memory, { id, expectedRevision: '0' }, false);
+expect(inputs.delete_memory, { id, expectedRevision: '1\n' }, false);
+expect(inputs.get_memory, { id: id + '\n' }, false);
 expect(inputs.delete_memory, { id, expectedRevision: '10', idempotencyKey: 'retry-example' }, true);
 expect(inputs.search_memories, { vaultId: id }, true);
 expect(inputs.search_memories, { allVaults: true }, true);
@@ -100,4 +102,76 @@ for (const file of ['models.schema.json', 'mcp-tools.json', 'agent.openapi.json'
   };
   visit(doc, doc);
 }
-console.log(`${checks} positive/negative schema cases passed; 8 MCP input/output schemas compiled; OpenAPI and all local references validated.`);
+// Full browser/OAuth surfaces: compile every declared schema and operation payload.
+function schemaFor(doc, schema) {
+  const rewrite = value => {
+    if (Array.isArray(value)) return value.map(rewrite);
+    if (value && typeof value === 'object') return Object.fromEntries(Object.entries(value).map(([key, item]) => [key, key === '$ref' ? item.replace('#/components/schemas/', '#/$defs/') : rewrite(item)]));
+    return value;
+  };
+  return { $schema: 'https://json-schema.org/draft/2020-12/schema', ...rewrite(schema), $defs: rewrite(doc.components.schemas) };
+}
+const web = load('web.openapi.json'), oauth = load('oauth.openapi.json');
+const validators = {};
+for (const [label, doc] of [['web', web], ['oauth', oauth]]) {
+  await SwaggerParser.validate(structuredClone(doc));
+  const seen = new Set();
+  for (const schema of Object.values(doc.components.schemas)) ajv.compile(schemaFor(doc, schema));
+  for (const [path, methods] of Object.entries(doc.paths)) for (const [method, op] of Object.entries(methods)) {
+    assert.ok(!seen.has(op.operationId), `Duplicate operationId ${op.operationId}`); seen.add(op.operationId);
+    const body = op.requestBody && Object.values(op.requestBody.content)[0].schema;
+    if (body) validators[op.operationId] = ajv.compile(schemaFor(doc, body));
+    for (const response of Object.values(op.responses)) for (const media of Object.values(response.content ?? {})) ajv.compile(schemaFor(doc, media.schema));
+    for (const parameter of op.parameters ?? []) ajv.compile(schemaFor(doc, parameter.schema));
+    if (label === 'web') {
+      assert.ok(!JSON.stringify(op.security).includes('agentToken'));
+      if (method !== 'get') assert.ok(op.security.every(x => Object.hasOwn(x, 'csrf')), `Missing CSRF: ${path}`);
+      if (path.startsWith('/api/v1/admin/')) { assert.equal(op['x-account-scope'], 'admin-metadata-only'); assert.ok(op.security.every(x => Object.hasOwn(x, 'webSession'))); }
+    }
+  }
+  console.log(`${label}: ${seen.size} operations; all declared schemas compiled and OpenAPI validated.`);
+}
+expect(validators.web_login, { email: 'a@example.org', password: 'password' }, true);
+expect(validators.web_login, { email: 'invalid', password: 'password' }, false);
+expect(validators.web_login, { email: 'a@example.org', password: 'password', role: 'admin' }, false);
+expect(validators.web_setup, { email: 'a@example.org', password: 'x'.repeat(15), setupSecret: 'secret' }, true);
+expect(validators.web_setup, { email: 'a@example.org', password: 'short', setupSecret: 'secret' }, false);
+expect(validators.web_login_factor, { factor: { kind: 'totp', code: '012345' } }, true);
+expect(validators.web_login_factor, { factor: { kind: 'totp', code: '012345\n' } }, false);
+expect(validators.web_login_factor, { factor: { kind: 'recoveryCode', code: 'one-use-code' } }, true);
+expect(validators.web_login_factor, { factor: { kind: 'totp', code: '12345' } }, false);
+expect(validators.web_update_profile, { theme: 'dark' }, true);
+expect(validators.web_update_profile, { allowAgentTagCreation: true }, false);
+expect(validators.web_update_profile, { expectedRevision: '1', allowAgentTagCreation: true }, true);
+expect(validators.web_update_profile, { role: 'admin' }, false);
+expect(validators.web_create_vault, { name: 'Wissen', versionLimit: 100 }, true);
+expect(validators.web_create_vault, { name: 'Wissen', versionLimit: 101 }, false);
+expect(validators.web_update_vault, { name: 'Neu' }, false);
+expect(validators.web_create_agent_access, { name: 'Agent', grants: [] }, false);
+expect(validators.web_create_agent_access, { name: 'Agent', grants: [{ vaultId: id, level: 'write' }] }, true);
+expect(validators.web_create_agent_access, { name: 'Agent', grants: [{ vaultId: id, level: 'admin' }] }, false);
+expect(validators.web_issue_token, { expectedRevision: '1', lifetimeDays: null, overlapSeconds: 86400 }, true);
+expect(validators.web_issue_token, { expectedRevision: '1', overlapSeconds: 86401 }, false);
+expect(validators.web_issue_token, { expectedRevision: '1', lifetimeDays: 7 }, false);
+expect(validators.web_merge_tags, { expectedRevision: '1', targetTagId: other }, false);
+expect(validators.web_restore_version, { expectedRevision: '2', sourceRevision: '1', restoreToken: 'proof' }, true);
+expect(validators.web_restore_version, { expectedRevision: '2', sourceRevision: '1' }, false);
+expect(validators.web_commit_import, { preparationId: id, targetName: 'Import' }, true);
+expect(validators.web_commit_import, { preparationId: id, targetName: 'Import', ownerId: other }, false);
+expect(validators.admin_update_account, { expectedRevision: '1', role: 'admin' }, true);
+expect(validators.admin_update_account, { role: 'admin' }, false);
+expect(validators.web_reauthenticate, { password: 'password', request: { operationId: 'web_delete_account', path: {}, query: { expectedRevision: '1' }, body: null } }, true);
+expect(validators.web_reauthenticate, { password: 'password', request: { operationId: 'arbitrary_sql', path: {}, query: {}, body: null } }, false);
+const exchange = { grant_type: 'authorization_code', client_id: 'https://chatgpt.com/oauth/client.json', code: 'secret', redirect_uri: 'https://chatgpt.com/connector_platform_oauth_redirect', resource: 'https://memory.example.org/mcp', code_verifier: 'a'.repeat(43) };
+expect(validators.oauth_token, exchange, true);
+expect(validators.oauth_token, { ...exchange, future_extension: 'ignored' }, true);
+expect(validators.oauth_token, { ...exchange, code_verifier: 'a'.repeat(42) }, false);
+expect(validators.oauth_token, { ...exchange, client_secret: 'not-supported' }, false);
+expect(validators.oauth_token, { grant_type: 'refresh_token', client_id: exchange.client_id, refresh_token: 'refresh', resource: exchange.resource }, true);
+expect(validators.oauth_token, { grant_type: 'refresh_token', client_id: exchange.client_id, refresh_token: 'refresh' }, false);
+expect(validators.oauth_token, { grant_type: 'password', username: 'user', password: 'pw' }, false);
+expect(validators.oauth_revoke, { client_id: exchange.client_id, token: 'token' }, true);
+expect(validators.web_decide_oauth_consent, { decision: 'deny' }, true);
+expect(validators.web_decide_oauth_consent, { decision: 'approve', name: 'ChatGPT', grants: [], scopes: ['memory:read'] }, false);
+expect(validators.web_decide_oauth_consent, { decision: 'approve', name: 'ChatGPT', grants: [{ vaultId: id, level: 'read' }], scopes: ['memory:read'] }, true);
+console.log(`${checks} positive/negative schema cases passed; all agent, browser and OAuth contracts validated. No application behavior tested.`);

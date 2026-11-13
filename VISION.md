@@ -491,8 +491,8 @@ Die technische Grundlage orientiert sich an planaffe:
 - PostgreSQL als Datenbank,
 - React für die Webapp.
 
-Die konkrete Architektur und gemeinsame Konventionen mit planaffe werden vor
-der Umsetzung in [ARCHITECTURE.md](ARCHITECTURE.md) festgelegt. Self-Hosting, kleine Mehrbenutzerinstallationen und
+Die konkrete Architektur und gemeinsame Konventionen mit planaffe sind in
+[ARCHITECTURE.md](ARCHITECTURE.md) festgelegt. Self-Hosting, kleine Mehrbenutzerinstallationen und
 der Betrieb ohne SMTP sind dabei grundlegende Anforderungen.
 
 ## Umfang der ersten Version
@@ -502,17 +502,21 @@ der hier festgelegten Berechtigungen, Versionierung, Suche, Papierkörbe,
 Kontoverwaltung und Datenmitnahme. Semantische Suche und zusätzliche
 Komfortfunktionen folgen später.
 
-## Offene Produkt- und Architekturentscheidungen
+## Planungsstand und ausstehende Abnahmen
 
 - **MCP-Kompatibilität:** ChatGPT wird als erster Client getestet, Claude
   anschließend. Anhand dieser Clients wird auch der Bedarf für eine zusätzliche
   lokale Prozessanbindung geprüft.
 - **Agentenauthentifizierung:** CLI-Tokens sowie eigene OAuth-Implementierung
-  mit CIMD sind beschlossen. Der genaue Protokollvertrag und dessen praktische
-  Kompatibilitätsprüfung stehen noch aus.
-- **Datenmitnahme und Betriebssicherung:** Das genaue ZIP- und Metadatenformat
-  sowie die technischen Backup- und Wiederherstellungsabläufe sind festzulegen.
-  Der Funktionsumfang von Export, Import und Installationssicherung steht fest.
+  mit CIMD sind beschlossen und im Protokollvertrag ausgearbeitet. Der Nutzer
+  hat den realen ChatGPT-Test ausdrücklich hinter den Prototypenbau verschoben;
+  der Bau darf vorher starten, Kompatibilität bleibt bis zum Test ungeprüft.
+- **Datenmitnahme und Betriebssicherung:** ZIP-/Metadatenformat, Importablauf
+  und Umfang der Installationssicherung stehen fest. Die praktische Backup- und
+  Wiederherstellungsprobe erfolgt während der Umsetzung.
+- **Autonome Umsetzung:** [AGENT_HANDOFF.md](AGENT_HANDOFF.md) bündelt Verträge,
+  Arbeitspakete und Abnahmen. Keine weiteren notwendigen Produktfragen vor dem
+  ersten Grundgerüst; die Anwendung ist noch zu implementieren und zu prüfen.
 
 ## Zielbild
 

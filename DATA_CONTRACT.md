@@ -41,9 +41,9 @@ Vault- und Tag-Namen werden außen getrimmt und auf NFC normalisiert.
 Eindeutigkeit wird mit sprachunabhängigem Unicode-Casefolding geprüft;
 Anzeigenamen behalten ihre Schreibweise. Akzente werden nicht entfernt.
 `Projekt` und `projekt` sind gleich, ebenso `Straße` und `STRASSE`;
-`für` und `fur` sind verschieden. Die dafür verwendete Unicode-Version und
-die genaue technische Abbildung werden vor dem Grundgerüst fixiert und dürfen
-bei Updates die Eindeutigkeit nicht unbemerkt verändern.
+`für` und `fur` sind verschieden. Unicode17.0.0, White_Space-Tabelle und
+Full-Casefold-Abbildung stehen in [SEARCH_UNICODE.md](docs/contracts/SEARCH_UNICODE.md).
+Updates dürfen die Eindeutigkeit nicht unbemerkt verändern.
 
 Titel werden außen getrimmt. Markdown und Zusammenfassungen werden nicht
 automatisch umformatiert. Insbesondere bleiben Markdown-Zeilenumbrüche
@@ -73,7 +73,7 @@ werden.
 | Tags | Ungeordnete Menge; doppelte Tag-IDs werden abgewiesen |
 
 Bei Teiländerungen bleibt jedes ausgelassene Feld unverändert.
-`summary: null` entfernt die Zusammenfassung, `tags: []` entfernt alle
+`summary: null` entfernt die Zusammenfassung, `tagIds: []` entfernt alle
 Tag-Zuordnungen. Die bestehenden Größen- und Berechtigungsregeln gelten weiter.
 
 ## Zeitpunkte

@@ -2,8 +2,9 @@
 
 Stand: 13. November 2026. Grundlage ist [VISION.md](VISION.md).
 Dieses Dokument legt die technische Arbeitsgrundlage fest; es beschreibt noch
-keine implementierte oder getestete Anwendung. Paketversionen, Kompatibilität
-und Lizenzen werden vor dem Grundgerüstbau geprüft und festgehalten.
+keine implementierte oder getestete Anwendung. Konkrete Versionen, Registry-
+Lizenzen und Prüfplan stehen in [OPERATIONS.md](docs/contracts/OPERATIONS.md).
+Restore-/Build-Nachweise und transitive Lizenzprüfung folgen beim Bootstrap.
 
 ## Entscheidungsstatus
 
@@ -62,9 +63,10 @@ Bestätigt sind außerdem die ergänzenden [Randfallentscheidungen](docs/contrac
 Lösch-Replay mit aktuellen Rechten, CIMD-Ausfall beim Refresh,
 technische Eingabegrenzen/Wartezeit, Tag-Verwaltung im Papierkorb und strikte
 Eingaben mit toleranten Clients für additive Antwortfelder.
-Weitere Konkretisierungen bleiben Entwurf,
-soweit sie nicht bereits ausdrücklich in der Produktvision beschlossen sind.
-Vor dem Grundgerüst werden alle weiteren Entscheidungsblöcke gemeinsam geklärt.
+Die Browserentscheidungen stehen in [WEB_CONTRACT.md](WEB_CONTRACT.md).
+Technische Konkretisierungen und die autonome Arbeitsfolge sind im
+[Agentenauftrag](AGENT_HANDOFF.md) zusammengeführt. Laut neuer Nutzerfreigabe
+darf der Prototyp vor dem realen ChatGPT-Test gebaut werden.
 
 ## Bezug zu planaffe
 
@@ -152,8 +154,8 @@ Vault auf und legt fehlende Tags an; die UI zeigt diese vorab in der Vorschau.
 Tag-Vergleiche ignorieren Groß-/Kleinschreibung und Rand-Leerzeichen und
 verwenden Unicode-Normalisierung. Anzeigenamen erhalten ihre Schreibweise;
 Akzente und Umlaute werden nicht entfernt. Der Datenvertrag legt NFC und
-sprachunabhängiges Unicode-Casefolding fest; Unicode-Version und technische
-Abbildung werden vor dem Grundgerüst fixiert.
+sprachunabhängiges Unicode-Casefolding fest. Unicode17.0.0 und technische
+Abbildung stehen in [SEARCH_UNICODE.md](docs/contracts/SEARCH_UNICODE.md).
 Umbenennen und Zusammenführen von Tags ändern aktuelle Zuordnungen und erzeugen
 für betroffene Datensätze neue Revisionen und historische Snapshots gemäß
 Vault-Limit. Alte Snapshots werden dabei nicht geändert.
@@ -308,12 +310,12 @@ DNS-Wechseln. Die erlaubte Client-URL ersetzt diese Prüfungen nicht.
 [Quellen: MCP-Autorisierung](https://modelcontextprotocol.io/specification/2025-11-25/basic/authorization),
 [offizielles C# SDK](https://github.com/modelcontextprotocol/csharp-sdk).
 
-Vor dem Grundgerüst werden der vollständige Protokollvertrag und eine isolierte
+Der vollständige Protokollvertrag ist ausgearbeitet; die isolierte echte
 ChatGPT-Kompatibilitätsprüfung einschließlich Fehler- und Widerrufsfällen
-abgeschlossen. CIMD-URL und Cache-Regeln sind im
+darf laut neuer Nutzerfreigabe nach dem Prototypenbau erfolgen. CIMD-URL und Cache-Regeln sind im
 [OAuth-/CIMD-Vertrag](OAUTH_CONTRACT.md) festgehalten; die ChatGPT-Adressen
-werden im realen Versuch abgeglichen. Paket-/Protokollversionen und vollständige
-Endpunktverträge werden ergänzt. Die gemeinsame Kompatibilität ist noch nicht
+werden im realen Versuch abgeglichen. Paket-/Protokollbasis und vollständige
+Endpunktverträge stehen in docs/contracts. Die gemeinsame Kompatibilität ist noch nicht
 praktisch nachgewiesen. CIMD benötigt zum Metadatenabruf Netzwerkzugriff;
 der rein lokale CLI-Betrieb bleibt davon unabhängig.
 
@@ -396,14 +398,15 @@ Agentenzugang, gemeinsam über HTTP und MCP. Änderung und gespeichertes Ergebni
 werden atomar abgeschlossen, auch bei konkurrierenden Aufrufen. Wiederholungen
 dürfen keine aktuellen Rechteprüfungen umgehen. Nach 24 Stunden besteht keine
 Wiederholungsgarantie. Weitere Transport- und Vergleichsdetails werden im
-[Schnittstellenvertrag](API_CONTRACT.md) vor dem Grundgerüst konkretisiert.
+[Schnittstellenvertrag](API_CONTRACT.md) und in docs/contracts konkretisiert.
 
 PostgreSQL-Volltextsuche mit gewichtetem Titel, Zusammenfassung und Inhalt
 sowie GIN-Index ist der Startpunkt. Pro Vault ist die Suchsprache Deutsch,
 Englisch oder sprachneutral wählbar, mit sprachneutral als Standard und
 unabhängig von der Oberflächensprache. Die konkrete Index-/Abfragekonfiguration
-und der Wechsel der Suchsprache werden vor dem Grundgerüst anhand eines
-Testkorpus festgelegt, einschließlich vaultübergreifender Suche.
+und der Wechsel der Suchsprache sind mit einem Abnahmekorpus in
+SEARCH_UNICODE.md festgelegt, einschließlich vaultübergreifender Suche.
+Die Ausführung gegen die implementierte PostgreSQL-Suche steht noch aus.
 Änderung der Suchsprache indexiert bestehende Inhalte neu. Bis zur vollständig
 abgeschlossenen Umstellung bleibt die bisherige Suche verfügbar.
 
@@ -429,7 +432,7 @@ zum Bauen erforderlich. Server-seitiges React-Rendering ist nicht vorgesehen.
 Tailwind CSS mit zentralen Designvariablen, Base UI mit eigenen Komponenten,
 React Router, CodeMirror sowie react-markdown mit remark-gfm bilden die UI-Basis.
 Vitest und Testing Library sind für Frontend-Tests vorgesehen. Versionen und
-gemeinsame Kompatibilität werden vor dem Grundgerüstbau geprüft.
+Peer-Metadaten sind geprüft; gemeinsame Build-/Laufzeitprüfung folgt beim Bootstrap.
 Keine ungefilterte HTML-Ausführung im Markdown.
 Navigation, Vault-Wechsel, Suche, Editor, Historie, Papierkorb und Einstellungen
 bilden den Nutzerbereich; Administration bekommt eigene Routen und Navigation.
@@ -524,15 +527,12 @@ deren Aufbewahrung verantwortet der Betreiber. Diagnose zeigt Version,
 Bereitschaft und Speicherverbrauch, ohne fremde Inhalte offenzulegen.
 Logs vermeiden Inhalte und Geheimnisse; Telemetrie wird nicht eingebaut.
 
-## Noch vor Implementierung zu konkretisieren
+## Ausführungsnachweise während der Umsetzung
 
-- OAuth-/CIMD-Protokollvertrag und isolierter ChatGPT-Kompatibilitätsnachweis.
-- Genaue Request-Schemas, Fehlercodes, technische Abbildung der beschlossenen
-  Limits/Wiederholungsregeln sowie verbleibende Betriebslimits.
-- Unicode-Version und technische Vergleichsabbildung, Volltext-Sprachkonfiguration
-  und maschinenlesbares ZIP-Manifest-Schema gemäß [Datenvertrag](DATA_CONTRACT.md).
-- Runtime-/Paketversionen und konkrete Build-/Testmatrix für die beschlossenen
-  Server- und CLI-Zielplattformen.
+- Reale ChatGPT-Kompatibilität nach dem Prototypenbau prüfen.
+- Schemas und Protokoll-/Betriebsregeln aus docs/contracts in Anwendungstests abnehmen.
+- Unicode17 und Volltext-Abnahmekorpus auf der gebauten Runtime/PostgreSQL prüfen.
+- Gepinnte Toolchains wiederherstellen, Buildmatrix ausführen, transitive Lizenzen prüfen.
 
-Diese Punkte werden vor dem Grundgerüstbau entschieden und dokumentiert.
-Der [Umsetzungsplan](IMPLEMENTATION.md) trennt diese Vorarbeit von der Umsetzung.
+Diese Punkte sind Implementierungs-/Prüfaufgaben auf festgelegter Planungsbasis.
+Der [Agentenauftrag](AGENT_HANDOFF.md) ordnet sie bis zum ersten guten Prototypen.

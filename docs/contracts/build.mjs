@@ -10,8 +10,8 @@ const ref = name => ({ $ref: `#/$defs/${name}` });
 const str = { type: 'string' };
 const array = items => ({ type: 'array', items });
 const enumeration = values => ({ type: 'string', enum: values });
-const id = { type: 'string', format: 'uuid', pattern: '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$' };
-const time = { type: 'string', format: 'date-time', pattern: '^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$' };
+const id = { type: 'string', format: 'uuid', pattern: '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$(?![\\s\\S])' };
+const time = { type: 'string', format: 'date-time', pattern: '^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$(?![\\s\\S])' };
 const title = { type: 'string', minLength: 1, maxLength: 200, description: 'Validate after outer trimming; must not be empty.' };
 const summary = { type: ['string', 'null'], maxLength: 1000, description: 'Empty string is normalized to null on input.' };
 const tagIds = { ...array(ref('Id')), uniqueItems: true, maxItems: 50 };
@@ -21,7 +21,7 @@ const page = { pageSize: { type: 'integer', minimum: 1, maximum: 100, default: 2
 const content = { title, markdown: { type: 'string', description: 'Preserve text including line endings; at most 1048576 UTF-8 bytes. Byte limit requires application validation.' }, summary, tagIds };
 const codes = ['validation_failed', 'authentication_required', 'permission_denied', 'not_found', 'revision_conflict', 'idempotency_conflict', 'name_conflict', 'request_in_progress', 'cursor_expired', 'payload_too_large', 'rate_limited', 'temporarily_unavailable', 'internal_error'];
 const defs = {
-  Id: id, Timestamp: time, Revision: { type: 'string', pattern: '^[1-9][0-9]*$' },
+  Id: id, Timestamp: time, Revision: { type: 'string', pattern: '^[1-9][0-9]*$(?![\\s\\S])' },
   Tag: obj({ id: ref('Id'), name: { type: 'string', minLength: 1, maxLength: 50 } }),
   Vault: obj({ id: ref('Id'), name: { type: 'string', minLength: 1, maxLength: 100 } }),
   WriteResult: obj({ id: ref('Id'), revision: ref('Revision'), updatedAt: ref('Timestamp') }),

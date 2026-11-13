@@ -2,8 +2,8 @@
 
 Stand: 13. November 2026. Die folgenden Regeln sind bestätigt. Sie ergänzen
 den [Datenvertrag](DATA_CONTRACT.md) und beschreiben geplantes, noch nicht
-implementiertes Verhalten. Konkrete Schemas und der ergänzende
-[OAuth-/CIMD-Vertrag](OAUTH_CONTRACT.md) werden vor dem Grundgerüst vervollständigt.
+implementiertes Verhalten. Konkrete Schemas stehen in docs/contracts;
+OAuth-/CIMD folgt dem ergänzenden [Vertrag](OAUTH_CONTRACT.md).
 
 ## Zugangswege
 
@@ -178,15 +178,14 @@ keine serverseitige Berechtigungsprüfung.
 Die JSON-Fehlerausgabe enthält zusätzlich den genauen Fehlercode, damit
 Skripte keine sprachabhängigen Meldungen auswerten müssen.
 
-## Noch zu vervollständigen
+## Maschinenlesbare Abbildung und Umsetzung
 
 Die [maschinelle Vertragsausarbeitung](docs/contracts/README.md) enthält
 OpenAPI für die acht Agentenoperationen, MCP-Ein-/Ausgabeschemas und gemeinsame
-Datentypen. Das Web-/Admin-Inventar ist angelegt; vollständige Schemas dafür
-stehen noch aus. Die fünf ergänzenden Randfallentscheidungen sind bestätigt.
+Datentypen sowie Web-/Admin- und OAuth-Schemas. Die fünf ergänzenden
+Randfallentscheidungen sind bestätigt.
 
-Vor dem Grundgerüst folgen vollständige maschinenlesbare Request-/Response-
-Schemas und die technische Umsetzung der festgelegten Cursor- und
-Wiederholungsregeln mit den festgelegten Grenzen. OAuth-/CIMD-Endpunkte
+Bei Implementierung folgen die technische Umsetzung und Anwendungsprüfung
+der festgelegten Cursor- und Wiederholungsregeln mit ihren Grenzen. OAuth-/CIMD-Endpunkte
 folgen dem eigenen [Protokollvertrag](OAUTH_CONTRACT.md); ihre Protokollfehler
 folgen nicht pauschal dem Produktformat.

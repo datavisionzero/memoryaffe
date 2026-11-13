@@ -1,0 +1,676 @@
+{
+  "openapi": "3.1.1",
+  "info": {
+    "title": "memoryaffe OAuth discovery and token wire contract",
+    "version": "0.1.0"
+  },
+  "security": [],
+  "paths": {
+    "/.well-known/oauth-authorization-server": {
+      "get": {
+        "operationId": "oauth_discovery",
+        "responses": {
+          "200": {
+            "description": "Configured public identities",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerMetadata"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/.well-known/oauth-protected-resource/mcp": {
+      "get": {
+        "operationId": "oauth_resource_metadata",
+        "responses": {
+          "200": {
+            "description": "Configured public identities",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResourceMetadata"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/oauth/authorize": {
+      "get": {
+        "operationId": "oauth_authorize",
+        "parameters": [
+          {
+            "name": "response_type",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "const": "code"
+            }
+          },
+          {
+            "name": "client_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uri",
+              "maxLength": 2048
+            }
+          },
+          {
+            "name": "redirect_uri",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uri"
+            }
+          },
+          {
+            "name": "resource",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uri"
+            }
+          },
+          {
+            "name": "scope",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Space-separated cumulative memory:read/write/delete; no OIDC scopes."
+            }
+          },
+          {
+            "name": "state",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048
+            }
+          },
+          {
+            "name": "code_challenge",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]{43}$(?![\\s\\S])"
+            }
+          },
+          {
+            "name": "code_challenge_method",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "const": "S256"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Local login/consent page; no redirect to unchecked client URI.",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "302": {
+            "description": "Validated callback: code or OAuth error, supplied state unchanged, always iss.",
+            "headers": {
+              "Location": {
+                "required": true,
+                "schema": {
+                  "type": "string",
+                  "format": "uri"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Local error page for invalid client/redirect",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "OAuth error, never the product Error envelope. No secret details.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuthError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/oauth/token": {
+      "post": {
+        "operationId": "oauth_token",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/TokenRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Token issued, Cache-Control:no-store and Pragma:no-cache",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TokenResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "OAuth error, never the product Error envelope. No secret details.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuthError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "OAuth error, never the product Error envelope. No secret details.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuthError"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "OAuth error, never the product Error envelope. No secret details.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuthError"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "OAuth error, never the product Error envelope. No secret details.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuthError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/oauth/revoke": {
+      "post": {
+        "operationId": "oauth_revoke",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/RevocationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Revoked or unknown token; empty body"
+          },
+          "400": {
+            "description": "OAuth error, never the product Error envelope. No secret details.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuthError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "OAuth error, never the product Error envelope. No secret details.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuthError"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "OAuth error, never the product Error envelope. No secret details.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuthError"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "OAuth error, never the product Error envelope. No secret details.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuthError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AuthorizationRequest": {
+        "type": "object",
+        "properties": {
+          "response_type": {
+            "const": "code"
+          },
+          "client_id": {
+            "type": "string",
+            "format": "uri",
+            "maxLength": 2048
+          },
+          "redirect_uri": {
+            "type": "string",
+            "format": "uri"
+          },
+          "resource": {
+            "type": "string",
+            "format": "uri"
+          },
+          "scope": {
+            "type": "string",
+            "description": "Space-separated cumulative memory:read/write/delete; no OIDC scopes."
+          },
+          "state": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2048
+          },
+          "code_challenge": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]{43}$(?![\\s\\S])"
+          },
+          "code_challenge_method": {
+            "const": "S256"
+          }
+        },
+        "required": [
+          "response_type",
+          "client_id",
+          "redirect_uri",
+          "resource",
+          "code_challenge",
+          "code_challenge_method"
+        ],
+        "additionalProperties": true
+      },
+      "TokenRequest": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "grant_type": {
+                "const": "authorization_code"
+              },
+              "client_id": {
+                "type": "string",
+                "format": "uri",
+                "maxLength": 2048
+              },
+              "code": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1024
+              },
+              "redirect_uri": {
+                "type": "string",
+                "format": "uri"
+              },
+              "resource": {
+                "type": "string",
+                "format": "uri"
+              },
+              "code_verifier": {
+                "type": "string",
+                "minLength": 43,
+                "maxLength": 128,
+                "pattern": "^[A-Za-z0-9._~-]+$(?![\\s\\S])"
+              }
+            },
+            "required": [
+              "grant_type",
+              "client_id",
+              "code",
+              "redirect_uri",
+              "resource",
+              "code_verifier"
+            ],
+            "additionalProperties": true,
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "client_secret"
+                  ]
+                },
+                {
+                  "required": [
+                    "client_assertion"
+                  ]
+                },
+                {
+                  "required": [
+                    "client_assertion_type"
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "type": "object",
+            "properties": {
+              "grant_type": {
+                "const": "refresh_token"
+              },
+              "client_id": {
+                "type": "string",
+                "format": "uri",
+                "maxLength": 2048
+              },
+              "refresh_token": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1024
+              },
+              "resource": {
+                "type": "string",
+                "format": "uri"
+              },
+              "scope": {
+                "type": "string",
+                "description": "Space-separated cumulative memory:read/write/delete; no OIDC scopes."
+              }
+            },
+            "required": [
+              "grant_type",
+              "client_id",
+              "refresh_token",
+              "resource"
+            ],
+            "additionalProperties": true,
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "client_secret"
+                  ]
+                },
+                {
+                  "required": [
+                    "client_assertion"
+                  ]
+                },
+                {
+                  "required": [
+                    "client_assertion_type"
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "TokenResponse": {
+        "type": "object",
+        "properties": {
+          "access_token": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1024
+          },
+          "token_type": {
+            "const": "Bearer"
+          },
+          "expires_in": {
+            "const": 900
+          },
+          "refresh_token": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1024
+          },
+          "scope": {
+            "type": "string",
+            "description": "Space-separated cumulative memory:read/write/delete; no OIDC scopes."
+          }
+        },
+        "required": [
+          "access_token",
+          "token_type",
+          "expires_in",
+          "refresh_token",
+          "scope"
+        ],
+        "additionalProperties": false
+      },
+      "OAuthError": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "enum": [
+              "invalid_request",
+              "invalid_client",
+              "invalid_grant",
+              "unauthorized_client",
+              "unsupported_grant_type",
+              "invalid_scope",
+              "invalid_target",
+              "access_denied",
+              "unsupported_response_type",
+              "server_error",
+              "temporarily_unavailable"
+            ]
+          },
+          "error_description": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "error"
+        ],
+        "additionalProperties": false
+      },
+      "ServerMetadata": {
+        "type": "object",
+        "properties": {
+          "issuer": {
+            "type": "string",
+            "format": "uri"
+          },
+          "authorization_endpoint": {
+            "type": "string",
+            "format": "uri"
+          },
+          "token_endpoint": {
+            "type": "string",
+            "format": "uri"
+          },
+          "revocation_endpoint": {
+            "type": "string",
+            "format": "uri"
+          },
+          "response_types_supported": {
+            "const": [
+              "code"
+            ]
+          },
+          "grant_types_supported": {
+            "const": [
+              "authorization_code",
+              "refresh_token"
+            ]
+          },
+          "code_challenge_methods_supported": {
+            "const": [
+              "S256"
+            ]
+          },
+          "token_endpoint_auth_methods_supported": {
+            "const": [
+              "none"
+            ]
+          },
+          "revocation_endpoint_auth_methods_supported": {
+            "const": [
+              "none"
+            ]
+          },
+          "scopes_supported": {
+            "const": [
+              "memory:read",
+              "memory:write",
+              "memory:delete"
+            ]
+          },
+          "authorization_response_iss_parameter_supported": {
+            "const": true
+          },
+          "client_id_metadata_document_supported": {
+            "const": true
+          }
+        },
+        "required": [
+          "issuer",
+          "authorization_endpoint",
+          "token_endpoint",
+          "revocation_endpoint",
+          "response_types_supported",
+          "grant_types_supported",
+          "code_challenge_methods_supported",
+          "token_endpoint_auth_methods_supported",
+          "revocation_endpoint_auth_methods_supported",
+          "scopes_supported",
+          "authorization_response_iss_parameter_supported",
+          "client_id_metadata_document_supported"
+        ],
+        "additionalProperties": false
+      },
+      "ResourceMetadata": {
+        "type": "object",
+        "properties": {
+          "resource": {
+            "type": "string",
+            "format": "uri"
+          },
+          "authorization_servers": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "minItems": 1,
+            "maxItems": 1
+          },
+          "scopes_supported": {
+            "const": [
+              "memory:read",
+              "memory:write",
+              "memory:delete"
+            ]
+          },
+          "bearer_methods_supported": {
+            "const": [
+              "header"
+            ]
+          }
+        },
+        "required": [
+          "resource",
+          "authorization_servers",
+          "scopes_supported",
+          "bearer_methods_supported"
+        ],
+        "additionalProperties": false
+      },
+      "RevocationRequest": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1024
+          },
+          "client_id": {
+            "type": "string",
+            "format": "uri",
+            "maxLength": 2048
+          },
+          "token_type_hint": {
+            "type": "string",
+            "enum": [
+              "access_token",
+              "refresh_token"
+            ]
+          }
+        },
+        "required": [
+          "token",
+          "client_id"
+        ],
+        "additionalProperties": true
+      }
+    }
+  }
+}

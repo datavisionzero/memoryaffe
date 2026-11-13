@@ -2,45 +2,47 @@
 
 Stand: 13. November 2026. Basis: [Vision](VISION.md) und
 [Architekturentwurf](ARCHITECTURE.md). Alle Etappen sind geplant, keine ist
-bereits umgesetzt. Der MVP ist erst nach Etappe 7 vollständig.
+bereits umgesetzt. Der MVP ist erst nach Etappe 7 vollständig. Der aktuelle
+[Agentenauftrag](AGENT_HANDOFF.md) macht daraus abhängig geordnete Arbeitspakete
+bis zum ersten guten Prototypen. Der echte ChatGPT-Test darf laut neuer
+Nutzerentscheidung nach dem Prototypenbau stattfinden.
 
 ## 0. Entscheidungen vor dem Grundgerüst abschließen
 
 Architektur/Toolchains sowie die Regeln zu Anmeldung und Sicherheit sind
 bestätigt, ebenso Kontowiederherstellung, Datenregeln, Suchverhalten,
 Datenmitnahme und zentrale UI-Abläufe. Der [Datenvertrag](DATA_CONTRACT.md)
-ist ebenfalls bestätigt. Seine maschinenlesbaren Schemas und die konkrete
-Unicode-Version werden noch vor dem Grundgerüst festgelegt.
+ist ebenfalls bestätigt. Maschinenlesbare Schemas und Unicode17.0.0 sind
+in docs/contracts festgelegt.
 Die Grundregeln des [Schnittstellenvertrags](API_CONTRACT.md) sind bestätigt;
 Feldkonventionen, Fehlercodes, Cursor-Gültigkeit, Wiederholungsvergleich und
-CLI-Exitcodes sind ebenfalls bestätigt. Vollständige maschinenlesbare Schemas
-und verbleibende technische Details folgen vor dem Grundgerüst.
-Weitere Vertragsdetails und Randfälle
-sowie technische Betriebs- und Lieferdetails werden noch gemeinsam entschieden.
+CLI-Exitcodes sind ebenfalls bestätigt. Agenten-, Web-/Admin- und OAuth-Schemas,
+Protokollabbildung, Persistenzplan und technische Betriebs-/Lieferdetails sind
+in docs/contracts ausgearbeitet. Ausführungsnachweise folgen bei Implementierung.
 Der grundsätzliche Betriebs- und Veröffentlichungsumfang ist bestätigt.
 Beschlossen ist eine begrenzte OAuth-
 Eigenimplementierung mit CIMD und einer betreiberverwalteten Liste erlaubter
 Client-URLs, zunächst ChatGPT, ohne DCR. ASP.NET Core Identity bleibt die
 Anmeldebasis. Die Grundregeln des [OAuth-/CIMD-Vertrags](OAUTH_CONTRACT.md)
 einschließlich Identitäten, Scopes, Fristen, CIMD-Limits und strikter Rotation
-sind bestätigt. Paketversionen und Lizenzen werden vorab geprüft. Der vollständige
-OAuth-/CIMD-Vertrag und ein isolierter ChatGPT-Test mit Fehler- und
-Widerrufsfällen werden vor dem Grundgerüst abgeschlossen; dieser Versuch ist
-kein Beginn des Produktbaus. Externe Testvoraussetzungen aus Etappe 2 gelten
-bereits hier. Fehlender realer Clientnachweis bleibt eine offene Voraussetzung.
+sind bestätigt. Direkte Paketversionen und Registry-Lizenzen sind erfasst;
+Restore, Build und transitive Lizenzprüfung sind Bootstrap-/Lieferaufgaben.
+Der Nutzer hat den isolierten realen ChatGPT-Test ausdrücklich auf später
+verschoben und Grundgerüst/Prototyp vorher erlaubt. Fehlender Clientnachweis
+blockiert den Bau nicht mehr, bleibt aber vor Kompatibilitätsbehauptung nötig.
 
 **Abnahme:** Keine offenen wesentlichen Produkt- oder Architekturentscheidungen.
 Verträge, Abhängigkeiten und Abnahmekriterien sind verbindlich dokumentiert.
-Erst danach beginnt Etappe 1. Für die spätere autonome Arbeit mit Subagenten
-werden Aufgaben, Zuständigkeiten, Abhängigkeiten und Integrationsprüfungen
-festgelegt. Wesentliche Entscheidungen werden nicht an die Umsetzung delegiert.
+Diese Planungsbasis ist im Agentenauftrag zusammengeführt; Etappe1 darf beginnen.
+Aufgaben, Zuständigkeiten, Abhängigkeiten und Integrationsprüfungen sind dort
+festgelegt. Wesentliche Produktänderungen werden nicht an die Umsetzung delegiert.
 
 ## 1. Grundgerüst und Vertragskonventionen
 
 Vorarbeit: Unter [docs/contracts](docs/contracts/README.md) liegen geprüfte
-Schemas für die acht Agentenoperationen und das Exportmanifest. Diese
-Schema-Prüfung ersetzt keine Anwendungstests. Web-/Admin-/OAuth-Verträge,
-offene Entscheidungen und realer ChatGPT-Nachweis aus Etappe 0 bleiben offen.
+Schemas für Agenten, Web/Admin, OAuth und Exportmanifest. Diese Schema-Prüfung
+ersetzt keine Anwendungstests. Der reale ChatGPT-Nachweis bleibt ausdrücklich
+ausstehend, ist aber keine Vorbedingung für das Grundgerüst mehr.
 
 Vier .NET-Projekte, React-Webapp, Go-CLI, PostgreSQL-Entwicklungskonfiguration
 und CI nach den Entscheidungen aus Etappe 0 aufbauen. Festgelegte Toolchains
@@ -52,7 +54,7 @@ Datenbankausfall korrekt. Noch keine Produktvollständigkeit behaupten.
 
 ## 2. Früher ChatGPT-Durchstich
 
-Das in Etappe 0 geprüfte MCP-SDK und die eigene OAuth-Implementierung integrieren.
+Das festgelegte MCP-SDK und die eigene OAuth-Implementierung integrieren.
 Discovery, Anmeldung/Consent, Tokenprüfung und ein authentifiziertes Lesetool
 mit minimalem Testdatensatz implementieren. Registrierungsmethode anhand der
 realen ChatGPT-Verbindung gegen die festgelegte Architektur überprüfen.
@@ -74,8 +76,9 @@ sperrt vorhandene Verbindungen sofort. Issuer-/Resource-Bindung, `iss` in
 Weiterleitungen, lokale Fehler bei ungültigen Redirects, kumulative Scopes und
 mindestens ein ausdrücklich gewählter Vault bei neuer Verbindung werden geprüft.
 Die vorgesehenen ChatGPT-Client-/Redirect-Adressen werden real abgeglichen.
-Bereits vor dem Grundgerüst geprüfte Abläufe werden als integrierte
-Produktfunktionen erneut abgenommen.
+Automatisierte SDK-/Protokolltests können vor dem echten ChatGPT-Test laufen;
+die Produktintegration muss dieselben Fälle bestehen. Der reale Test darf nach
+dem Prototypenbau nachgeholt werden und bleibt als offen markiert.
 
 **Externe Voraussetzung:** erreichbarer Testendpunkt und Zugriff auf ein
 ChatGPT-Konto mit erlaubten eigenen MCP-Verbindungen. Fehlen diese, wird der

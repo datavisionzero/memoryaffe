@@ -2,7 +2,10 @@
 
 Stand: 13. November 2026. Die folgenden Entscheidungen sind bestätigt.
 Sie beschreiben geplantes Verhalten; ein realer ChatGPT-Kompatibilitätsnachweis
-steht noch aus und ist vor dem Grundgerüst erforderlich.
+steht noch aus. Der Nutzer hat ausdrücklich freigegeben, diesen Test auf später
+zu verschieben und Grundgerüst/Prototyp vorher zu bauen (13. November 2026).
+Wire-Vertrag und Fehlerabbildung stehen in
+[OAUTH_PROTOCOL.md](docs/contracts/OAUTH_PROTOCOL.md).
 
 ## Umfang
 
@@ -103,10 +106,10 @@ Jeder Zugriff und Refresh prüft die aktuellen Sperr-, Rechte- und
 Widerrufszustände unabhängig von den Tokenlaufzeiten.
 
 Der reale ChatGPT-Test prüft ausdrücklich parallele Erneuerung und verlorene
-Antworten. Notwendige Abweichungen von der strikten Rotation werden vor der
-Produktimplementierung entschieden, nicht stillschweigend eingebaut.
+Antworten. Notwendige Abweichungen von der strikten Rotation werden ausdrücklich
+entschieden, nicht stillschweigend eingebaut. Bis dahin gilt die beschlossene Regel.
 
-## Abnahme vor dem Grundgerüst
+## Reale Abnahme nach dem Prototypenbau
 
 Der isolierte Test verwendet einen öffentlich erreichbaren HTTPS-Endpunkt,
 ein geeignetes ChatGPT-Konto und ausschließlich Testdaten. Er prüft Discovery,
@@ -117,9 +120,10 @@ Metadaten und interne Abrufziele. Code-/Ablauffristen, Cache-Grenzen und
 Entfernung aus der Betreiberfreigabe werden ebenfalls geprüft.
 
 Ein MCP-Inspector-Test ersetzt keinen realen ChatGPT-Nachweis. Paket- und
-Protokollversionen, vollständige Endpunkt-/Parameterverträge sowie Ergebnisse
-des Kompatibilitätsversuchs werden vor dem Grundgerüst ergänzt. Claude folgt
-später und blockiert die erste ChatGPT-Abnahme nicht.
+Protokollbasis sowie Endpunkt-/Parameterverträge sind in docs/contracts ergänzt.
+Der echte Versuch wird mit Ergebnisprotokoll nachgeholt; bis dahin keine
+bestätigte ChatGPT-Kompatibilität behaupten. Claude folgt später und blockiert
+die erste ChatGPT-Abnahme nicht.
 
 ## Referenzen
 

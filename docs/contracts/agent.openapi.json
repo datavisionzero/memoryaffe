@@ -660,16 +660,16 @@
       "Id": {
         "type": "string",
         "format": "uuid",
-        "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+        "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$(?![\\s\\S])"
       },
       "Timestamp": {
         "type": "string",
         "format": "date-time",
-        "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+        "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$(?![\\s\\S])"
       },
       "Revision": {
         "type": "string",
-        "pattern": "^[1-9][0-9]*$"
+        "pattern": "^[1-9][0-9]*$(?![\\s\\S])"
       },
       "Tag": {
         "type": "object",

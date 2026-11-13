@@ -1,12 +1,13 @@
 # Web- und Administrationsoberfläche: Vertragsinventar
 
-Stand: 13. November 2026. Technischer Routenentwurf zur Vervollständigung der
-Verträge, **noch keine vollständige OpenAPI-Abdeckung**. Die Fachfunktionen
-sind bereits beschlossen. Einzelne Routen sind keine neuen Produktfähigkeiten.
+Stand: 13. November 2026. Lesbare Routenübersicht. Die vollständige Feldabbildung
+steht in [web.openapi.json](web.openapi.json), die Semantik in
+[WEB_PROTOCOL.md](WEB_PROTOCOL.md). Die Fachfunktionen sind beschlossen;
+die Anwendung ist noch nicht implementiert.
 Alle Produktpfade verwenden das Präfix `/api/v1`.
 
 Die fünf Ablaufentscheidungen im [Web-/Administrationsvertrag](../../WEB_CONTRACT.md)
-sind bestätigt; die Routenabbildung bleibt ein technischer Entwurf.
+sind bestätigt; die Routenabbildung konkretisiert sie für die Umsetzung.
 
 Die Agenten-OpenAPI beschreibt bewusst nur Agententokens. Die Web-API erhält
 einen getrennten Cookie-/CSRF-Vertrag. Administratorrechte erweitern niemals
@@ -41,14 +42,15 @@ dürfen keinen der folgenden nutzervorbehaltenen Anwendungsfälle aufrufen.
 | Admin-Einladungen | GET/POST `/admin/invitations`, DELETE `/admin/invitations/{id}` | Manueller Link, optional SMTP, Ablauf/Widerruf |
 | Admin-Wiederherstellung | POST `/admin/accounts/{id}/password-reset`, `/admin/accounts/{id}/account-recovery` | Zwei getrennte Prozesse, erneute Authentifizierung bei umfassender Wiederherstellung |
 | Diagnose | GET `/admin/diagnostics` | Version/Bereitschaft/Speicher, keine fremden Inhalte oder Geheimnisse |
+| OAuth-Zustimmung | GET `/oauth/requests/{id}`, POST `/oauth/requests/{id}/decision` | Eigener browsergebundener Ablauf, ausdrückliche Vaultauswahl, geprüfte Rückleitung |
 
 CSRF wird über einen Request-Header transportiert. Aktionsnachweise gelten fünf
 Minuten für genau einen vorbereiteten Auftrag. Der 2FA-Zwischenzustand gilt
 fünf Minuten mit maximal fünf Fehlversuchen; die Einrichtung zehn Minuten.
 Zehn Recovery-Codes sind einzeln verwendbar. Verwaltungsänderungen verlangen
 Revisionen, ausgenommen Theme und Anzeigesprache. Geprüfte Importvorbereitungen
-gelten 30 Minuten und werden höchstens einmal übernommen. Vollständige Schemas
-für diese Abläufe und die übrigen Routen stehen noch aus.
+gelten 30 Minuten und werden höchstens einmal übernommen. Die maschinenlesbaren
+Schemas ergänzen Einzelabruf des Vaults, Tokenlisten und Restore-Vorschau.
 Unveröffentlichte Geheimnisse gehören nicht in URLs oder
 normale Diagnoseausgaben. Öffentliche Liveness/Readiness und OAuth/MCP werden
 außerhalb dieses Produktpräfixes getrennt beschrieben.
