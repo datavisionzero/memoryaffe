@@ -24,6 +24,8 @@ import {
   History,
   FileText,
   Download,
+  Sun,
+  Moon,
 } from "lucide-react";
 import { api, all, refreshCsrf, ApiError, operation } from "./api";
 import { PasswordField } from "./password-field";
@@ -50,11 +52,18 @@ type Draft = Pick<Memory, "title" | "summary" | "markdown"> & {
   tagIds: string[];
 };
 let initialToken = "";
-const initialTokenRoute = ["/invite", "/reset-password", "/recover-account"].includes(location.pathname)
-  ? location.pathname : "";
+const initialTokenRoute = [
+  "/invite",
+  "/reset-password",
+  "/recover-account",
+].includes(location.pathname)
+  ? location.pathname
+  : "";
 try {
   if (initialTokenRoute)
-    initialToken = decodeURIComponent(location.hash.replace(/^#(?:token=)?/, ""));
+    initialToken = decodeURIComponent(
+      location.hash.replace(/^#(?:token=)?/, ""),
+    );
 } catch {
   initialToken = "";
 }
@@ -128,6 +137,14 @@ function App() {
     [restore, setRestore] = useState<Obj | null>(null),
     [modal, setModal] = useState<Obj | null>(null),
     [mobile, setMobile] = useState(false),
+    [compact, setCompact] = useState(
+      () => matchMedia("(max-width: 800px)").matches,
+    ),
+    [systemLight, setSystemLight] = useState(
+      () => matchMedia("(prefers-color-scheme: light)").matches,
+    ),
+    [authTheme, setAuthTheme] = useState<"dark" | "light">("dark"),
+    [editorPanel, setEditorPanel] = useState<"edit" | "preview">("edit"),
     [factor, setFactor] = useState(false),
     [accessNeedsLogin, setAccessNeedsLogin] = useState(false),
     [secret, setSecret] = useState("");
@@ -136,11 +153,15 @@ function App() {
   const current = vaults.find((v) => v.id === vaultId);
   const editing = route.endsWith("/edit") || route.endsWith("/new");
   const flowToken = route === initialTokenRoute ? initialToken : "";
-  const passwordFlow = route === "/reset-password" || route === "/recover-account";
+  const passwordFlow =
+    route === "/reset-password" || route === "/recover-account";
   const pending = useRef(new Map<symbol, () => boolean>());
   const authGeneration = useRef(0);
   const searchGeneration = useRef(0);
-  const updateBusy = () => setBusy([...pending.current.values()].some(isCurrent => isCurrent()));
+  const menuTrigger = useRef<HTMLButtonElement>(null);
+  const searchInput = useRef<HTMLInputElement>(null);
+  const updateBusy = () =>
+    setBusy([...pending.current.values()].some((isCurrent) => isCurrent()));
   function go(path: string, force = false) {
     if (
       dirty &&
@@ -169,10 +190,15 @@ function App() {
     setVersion(null);
     setRestore(null);
     setMobile(false);
+    setEditorPanel("edit");
     navigate(path + (vaultId ? "?vault=" + vaultId : ""));
     setRoute(path);
   }
-  async function run(fn: () => Promise<void>, clearError = true, isCurrent = () => true) {
+  async function run(
+    fn: () => Promise<void>,
+    clearError = true,
+    isCurrent = () => true,
+  ) {
     if (clearError) setError("");
     const requestId = Symbol();
     pending.current.set(requestId, isCurrent);
@@ -255,11 +281,26 @@ function App() {
     })();
   }, []);
   useEffect(() => {
+    const viewport = matchMedia("(max-width: 800px)");
+    const scheme = matchMedia("(prefers-color-scheme: light)");
+    const viewportChanged = () => {
+      setCompact(viewport.matches);
+      setMobile(false);
+    };
+    const schemeChanged = () => setSystemLight(scheme.matches);
+    viewport.addEventListener("change", viewportChanged);
+    scheme.addEventListener("change", schemeChanged);
+    return () => {
+      viewport.removeEventListener("change", viewportChanged);
+      scheme.removeEventListener("change", schemeChanged);
+    };
+  }, []);
+  useEffect(() => {
     if (profile) {
       document.documentElement.lang = profile.language;
       document.documentElement.dataset.theme = profile.theme;
-    }
-  }, [profile]);
+    } else document.documentElement.dataset.theme = authTheme;
+  }, [profile, authTheme]);
   useEffect(() => {
     searchGeneration.current++;
     setHits([]);
@@ -422,12 +463,7 @@ function App() {
     return (
       <label>
         {label}
-        <input
-          name={name}
-          type={type}
-          required
-          defaultValue={value}
-        />
+        <input name={name} type={type} required defaultValue={value} />
       </label>
     );
   }
@@ -464,6 +500,22 @@ function App() {
           <small>Selbst gehostet. Offen. Unter deiner Kontrolle.</small>
         </aside>
         <main className="auth-main">
+          <div className="auth-appearance" aria-label="Darstellung">
+            <button
+              aria-label="Snow – hell"
+              aria-pressed={authTheme === "light"}
+              onClick={() => setAuthTheme("light")}
+            >
+              <Sun size={16} /> Snow
+            </button>
+            <button
+              aria-label="Monokai – dunkel"
+              aria-pressed={authTheme === "dark"}
+              onClick={() => setAuthTheme("dark")}
+            >
+              <Moon size={16} /> Monokai
+            </button>
+          </div>
           <div className="auth-card">
             <span className="eyebrow">WILLKOMMEN BEI MEMORYAFFE</span>
             <h2>
@@ -589,9 +641,17 @@ function App() {
                     field("Betreibersecret", "setupSecret", "password")}
                   {(!passwordFlow || !!flowToken) && (
                     <PasswordField
-                      label={flowToken ? "Neues Passwort (mindestens 15 Zeichen)" : "Passwort"}
+                      label={
+                        flowToken
+                          ? "Neues Passwort (mindestens 15 Zeichen)"
+                          : "Passwort"
+                      }
                       name={passwordFlow ? "newPassword" : "password"}
-                      isNew={route === "/setup" || route === "/invite" || passwordFlow}
+                      isNew={
+                        route === "/setup" ||
+                        route === "/invite" ||
+                        passwordFlow
+                      }
                     />
                   )}
                   {route === "/invite" &&
@@ -621,13 +681,20 @@ function App() {
               </button>
             </form>
             {factor && (
-              <button className="text-button" onClick={() => {
-                setFactor(false);
-                authGeneration.current++;
-                updateBusy();
-                setError("");
-                setNotice("Bitte mit E-Mail-Adresse und Passwort neu anmelden.");
-              }}>Anmeldung neu beginnen</button>
+              <button
+                className="text-button"
+                onClick={() => {
+                  setFactor(false);
+                  authGeneration.current++;
+                  updateBusy();
+                  setError("");
+                  setNotice(
+                    "Bitte mit E-Mail-Adresse und Passwort neu anmelden.",
+                  );
+                }}
+              >
+                Anmeldung neu beginnen
+              </button>
             )}
             <p className="trust">
               <Shield size={16} /> Der Infrastrukturbetreiber kann gespeicherte
@@ -657,142 +724,227 @@ function App() {
     ],
   ] as const;
   const admin = route.startsWith("/admin");
-  return (
-    <div className="shell">
-      <a className="sr-only focus:not-sr-only" href="#main-content">
-        Zum Inhalt
+  const sidebar = (
+    <div className="sidebar-inner">
+      {compact && (
+        <button
+          className="drawer-close"
+          aria-label={t("Navigation schließen", "Close navigation")}
+          onClick={() => setMobile(false)}
+        >
+          <X size={20} />
+        </button>
+      )}
+      <a
+        className="brand"
+        href="/app/search"
+        onClick={(e) => {
+          e.preventDefault();
+          go("/app/search");
+        }}
+      >
+        <span className="brand-mark">m</span>memoryaffe
+        <span className="beta">BETA</span>
       </a>
-      <aside className={"sidebar " + (mobile ? "open" : "")}>
-        <a
-          className="brand"
-          href="/app/search"
-          onClick={(e) => {
-            e.preventDefault();
-            go("/app/search");
+      {!admin && (
+        <button
+          className="primary compose"
+          onClick={() => go("/app/memories/new")}
+          disabled={!vaultId}
+        >
+          <Plus size={19} />
+          {t("Neue Erinnerung", "New memory")}
+        </button>
+      )}
+      <div className="vault-switch">
+        <label>{t("AKTUELLER VAULT", "CURRENT VAULT")}</label>
+        <select
+          aria-label="Vault"
+          value={vaultId}
+          onChange={(e) => {
+            if (dirty && !confirm(t("Entwurf verwerfen?", "Discard draft?")))
+              return;
+            setDirty(false);
+            setVaultId(e.target.value);
+            go("/app/search", true);
+            history.replaceState(
+              null,
+              "",
+              "/app/search?vault=" + e.target.value,
+            );
           }}
         >
-          <span className="brand-mark">m</span>memoryaffe
-          <span className="beta">BETA</span>
-        </a>
-        <div className="vault-switch">
-          <label>{t("AKTUELLER VAULT", "CURRENT VAULT")}</label>
-          <select
-            aria-label="Vault"
-            value={vaultId}
-            onChange={(e) => {
-              if (dirty && !confirm(t("Entwurf verwerfen?", "Discard draft?")))
-                return;
-              setDirty(false);
-              setVaultId(e.target.value);
-              go("/app/search", true);
-              history.replaceState(
-                null,
-                "",
-                "/app/search?vault=" + e.target.value,
-              );
-            }}
-          >
-            {vaults.map((v) => (
-              <option key={v.id} value={v.id}>
-                {v.name}
-              </option>
-            ))}
-          </select>
-          <button
-            className="text-button"
-            onClick={() => setModal({ kind: "vault" })}
-          >
-            <Plus size={13} />
-            {t("Neuer Vault", "New vault")}
-          </button>
-        </div>
-        <span className="nav-caption">
-          {admin ? "ADMINISTRATION" : t("DEIN WISSEN", "YOUR KNOWLEDGE")}
-        </span>
-        <nav>
-          {admin ? (
-            <>
-              {[
-                ["/admin/accounts", t("Konten", "Accounts")],
-                ["/admin/invitations", t("Einladungen", "Invitations")],
-                ["/admin/diagnostics", t("Diagnose", "Diagnostics")],
-              ].map(([p, l]) => (
-                <button
-                  className={route === p ? "active" : ""}
-                  key={p}
-                  onClick={() => go(p)}
-                >
-                  <Shield size={18} />
-                  {l}
-                </button>
-              ))}
-              <button onClick={() => go("/app/search")}>
-                <ArrowLeft size={18} />
-                {t("Zurück zum Wissen", "Back to knowledge")}
-              </button>
-            </>
-          ) : (
-            nav.map(([p, Icon, label]) => (
+          {vaults.map((v) => (
+            <option key={v.id} value={v.id}>
+              {v.name}
+            </option>
+          ))}
+        </select>
+        <button
+          className="text-button"
+          onClick={() => setModal({ kind: "vault" })}
+        >
+          <Plus size={13} />
+          {t("Neuer Vault", "New vault")}
+        </button>
+      </div>
+      <span className="nav-caption">
+        {admin ? "ADMINISTRATION" : t("DEIN WISSEN", "YOUR KNOWLEDGE")}
+      </span>
+      <nav>
+        {admin ? (
+          <>
+            {[
+              ["/admin/accounts", t("Konten", "Accounts")],
+              ["/admin/invitations", t("Einladungen", "Invitations")],
+              ["/admin/diagnostics", t("Diagnose", "Diagnostics")],
+            ].map(([p, l]) => (
               <button
-                key={p}
                 className={route === p ? "active" : ""}
+                aria-current={route === p ? "page" : undefined}
+                key={p}
                 onClick={() => go(p)}
               >
-                <Icon size={18} />
-                {label}
+                <Shield size={18} />
+                {l}
               </button>
-            ))
-          )}
-        </nav>
-        <div className="sidebar-bottom">
-          <div className="private-note">
-            <Shield size={17} />
-            <div>
-              {t("Dein Wissen gehört dir.", "Your knowledge is yours.")}
-              <small>
-                {t(
-                  "Privat in deiner Infrastruktur.",
-                  "Private on your infrastructure.",
-                )}
-              </small>
-            </div>
-          </div>
-          {profile.role === "admin" && !admin && (
-            <button onClick={() => go("/admin/accounts")}>
-              <Shield size={16} />
-              {t("Administration", "Administration")}
+            ))}
+            <button onClick={() => go("/app/search")}>
+              <ArrowLeft size={18} />
+              {t("Zurück zum Wissen", "Back to knowledge")}
             </button>
-          )}
-          <button className="account" onClick={() => go("/app/profile")}>
-            <span className="avatar">
-              {profile.email.slice(0, 1).toUpperCase()}
-            </span>
-            <span>
-              {profile.email}
-              <small>{t("Profil & Einstellungen", "Profile & settings")}</small>
-            </span>
-            <Settings size={15} />
-          </button>
+          </>
+        ) : (
+          nav.map(([p, Icon, label]) => (
+            <button
+              key={p}
+              className={route === p ? "active" : ""}
+              aria-current={route === p ? "page" : undefined}
+              onClick={() => go(p)}
+            >
+              <Icon size={18} />
+              {label}
+            </button>
+          ))
+        )}
+      </nav>
+      <div className="sidebar-bottom">
+        <div className="private-note">
+          <Shield size={17} />
+          <div>
+            {t("Dein Wissen gehört dir.", "Your knowledge is yours.")}
+            <small>
+              {t(
+                "Privat in deiner Infrastruktur.",
+                "Private on your infrastructure.",
+              )}
+            </small>
+          </div>
         </div>
-      </aside>
+        {profile.role === "admin" && !admin && (
+          <button onClick={() => go("/admin/accounts")}>
+            <Shield size={16} />
+            {t("Administration", "Administration")}
+          </button>
+        )}
+        <button className="account" onClick={() => go("/app/profile")}>
+          <span className="avatar">
+            {profile.email.slice(0, 1).toUpperCase()}
+          </span>
+          <span>
+            {profile.email}
+            <small>{t("Profil & Einstellungen", "Profile & settings")}</small>
+          </span>
+          <Settings size={15} />
+        </button>
+      </div>
+    </div>
+  );
+  return (
+    <div className="shell">
+      <a className="skip-link" href="#main-content">
+        {t("Zum Inhalt", "Skip to content")}
+      </a>
+      {compact ? (
+        <BaseDialog.Root open={mobile} onOpenChange={setMobile}>
+          <BaseDialog.Portal>
+            <BaseDialog.Backdrop className="drawer-backdrop" />
+            <BaseDialog.Popup
+              className="sidebar drawer"
+              aria-label={t("Navigation", "Navigation")}
+              finalFocus={menuTrigger}
+            >
+              {sidebar}
+            </BaseDialog.Popup>
+          </BaseDialog.Portal>
+        </BaseDialog.Root>
+      ) : (
+        <aside className="sidebar">{sidebar}</aside>
+      )}
       <div className="workspace">
         <header className="topbar">
-          <button className="mobile-toggle" onClick={() => setMobile(!mobile)}>
+          <button
+            ref={menuTrigger}
+            className="mobile-toggle"
+            aria-label={t("Navigation öffnen", "Open navigation")}
+            aria-expanded={mobile}
+            onClick={() => setMobile(!mobile)}
+          >
             <Menu size={20} />
           </button>
-          <div className="breadcrumb">
-            <span>{current?.name || "memoryaffe"}</span>
-            <ChevronRight size={13} />
-            {admin
-              ? "Admin"
-              : route.includes("/memories")
-                ? t("Erinnerungen", "Memories")
-                : nav.find((x) => x[0] === route)?.[2] ||
-                  t("Profil", "Profile")}
-          </div>
+          <form
+            className="search-box"
+            role="search"
+            onSubmit={(e) => {
+              e.preventDefault();
+              if (route !== "/app/search") go("/app/search");
+              searchInput.current?.focus();
+            }}
+          >
+            <Search size={20} />
+            <input
+              ref={searchInput}
+              aria-label={t("Erinnerungen durchsuchen", "Search memories")}
+              placeholder={t(
+                "Erinnerungen durchsuchen …",
+                "Search your memories …",
+              )}
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+            />
+            {query && (
+              <button
+                type="button"
+                aria-label={t("Suche leeren", "Clear search")}
+                onClick={() => {
+                  setQuery("");
+                  searchInput.current?.focus();
+                }}
+              >
+                <X size={17} />
+              </button>
+            )}
+            <kbd>Ctrl K</kbd>
+          </form>
           <div className="top-right">
-            <span className="status-dot" />
-            <span>{t("Dein privates Gedächtnis", "Your private memory")}</span>
+            {!admin && (
+              <button
+                className="primary mobile-compose"
+                aria-label={t("Neue Erinnerung", "New memory")}
+                disabled={!vaultId}
+                onClick={() => go("/app/memories/new")}
+              >
+                <Plus size={20} />
+              </button>
+            )}
+            <span className="top-account">
+              <strong>{profile.email}</strong>
+              <small>
+                {admin
+                  ? t("Administration", "Administration")
+                  : t("Dein privates Gedächtnis", "Your private memory")}
+              </small>
+            </span>
             <button
               className="avatar"
               aria-label="Profil"
@@ -802,7 +954,31 @@ function App() {
             </button>
           </div>
         </header>
-        <main className="content" id="main-content">
+        <main
+          className={
+            "content " + (route === "/app/search" ? "search-content" : "")
+          }
+          id="main-content"
+          tabIndex={-1}
+        >
+          <div className="breadcrumb">
+            <span>
+              {admin
+                ? t("Administration", "Administration")
+                : current?.name || "memoryaffe"}
+            </span>
+            <ChevronRight size={13} />
+            {admin
+              ? {
+                  accounts: t("Konten", "Accounts"),
+                  invitations: t("Einladungen", "Invitations"),
+                  diagnostics: t("Diagnose", "Diagnostics"),
+                }[route.split("/")[2]]
+              : route.includes("/memories")
+                ? t("Erinnerungen", "Memories")
+                : nav.find((x) => x[0] === route)?.[2] ||
+                  t("Profil", "Profile")}
+          </div>
           {error && (
             <div className="error" role="alert">
               {error}
@@ -866,9 +1042,6 @@ function App() {
             <>
               <div className="page-heading">
                 <div>
-                  <span className="eyebrow">
-                    {t("RAUM FÜR DEINE GEDANKEN", "SPACE FOR YOUR THOUGHTS")}
-                  </span>
                   <h1>
                     {t(
                       "Was möchtest du wiederfinden?",
@@ -877,44 +1050,16 @@ function App() {
                   </h1>
                   <p>
                     {t(
-                      "Dein gesammeltes Wissen. Immer einen Gedanken entfernt.",
-                      "Your collected knowledge. Always a thought away.",
+                      "Notizen, Entscheidungen und Wissen in deinem Vault.",
+                      "Notes, decisions and knowledge in your vault.",
                     )}
                   </p>
                 </div>
-                <button
-                  className="primary"
-                  onClick={() => go("/app/memories/new")}
-                  disabled={!vaultId}
-                >
-                  <Plus size={17} />
-                  {t("Neue Erinnerung", "New memory")}
-                </button>
-              </div>
-              <div className="search-box">
-                <Search size={23} />
-                <input
-                  aria-label={t("Erinnerungen durchsuchen", "Search memories")}
-                  placeholder={t(
-                    "Erinnerungen durchsuchen …",
-                    "Search your memories …",
-                  )}
-                  value={query}
-                  onChange={(e) => setQuery(e.target.value)}
-                />
-                {query && (
-                  <button
-                    aria-label="Suche leeren"
-                    onClick={() => setQuery("")}
-                  >
-                    <X size={18} />
-                  </button>
-                )}
-                <kbd>↵</kbd>
               </div>
               <div className="filter-row">
                 <button
                   className={!tagFilter ? "chip selected" : "chip"}
+                  aria-pressed={!tagFilter}
                   onClick={() => setTagFilter("")}
                 >
                   {t("Alle Erinnerungen", "All memories")}
@@ -922,6 +1067,7 @@ function App() {
                 {tags.map((tag) => (
                   <button
                     key={tag.id}
+                    aria-pressed={tagFilter === tag.id}
                     className={
                       "chip " + (tagFilter === tag.id ? "selected" : "")
                     }
@@ -952,36 +1098,34 @@ function App() {
                       key={h.id}
                       onClick={() => go("/app/memories/" + h.id)}
                     >
-                      <div className="card-top">
-                        <span className="document-icon">
-                          <FileText size={20} />
+                      <span className="document-icon">
+                        <FileText size={19} />
+                      </span>
+                      <span className="memory-text">
+                        <span className="memory-title">{h.title}</span>
+                        <span className="memory-summary">
+                          {h.summary ||
+                            h.snippet ||
+                            t(
+                              "Öffnen, um die Erinnerung zu lesen.",
+                              "Open to read this memory.",
+                            )}
                         </span>
-                        <span>
-                          {new Date(h.updatedAt).toLocaleDateString(
-                            en ? "en-GB" : "de-DE",
-                            { day: "numeric", month: "short" },
-                          )}
-                        </span>
-                      </div>
-                      <h3>{h.title}</h3>
-                      <p>
-                        {h.summary ||
-                          h.snippet ||
-                          t(
-                            "Öffnen, um die Erinnerung zu lesen.",
-                            "Open to read this memory.",
-                          )}
-                      </p>
-                      <div className="card-footer">
-                        <div>
-                          {h.tags.map((tag: Obj) => (
-                            <span className="tag" key={tag.id}>
-                              # {tag.name}
-                            </span>
-                          ))}
-                        </div>
-                        <ChevronRight size={16} />
-                      </div>
+                      </span>
+                      <span className="memory-tags">
+                        {h.tags.map((tag: Obj) => (
+                          <span className="tag" key={tag.id}>
+                            # {tag.name}
+                          </span>
+                        ))}
+                      </span>
+                      <time className="memory-date" dateTime={h.updatedAt}>
+                        {new Date(h.updatedAt).toLocaleDateString(
+                          en ? "en-GB" : "de-DE",
+                          { day: "numeric", month: "short" },
+                        )}
+                      </time>
+                      <ChevronRight className="memory-chevron" size={16} />
                     </button>
                   ))}
                 </div>
@@ -989,35 +1133,50 @@ function App() {
                 <div className="empty">
                   <BookOpen size={38} />
                   <h3>
-                    {query
-                      ? t("Noch kein Treffer.", "No results yet.")
-                      : t(
-                          "Ein guter Ort für deinen ersten Gedanken.",
-                          "A good place for your first thought.",
-                        )}
+                    {!vaultId
+                      ? t(
+                          "Dein Wissen beginnt mit einem Vault.",
+                          "Your knowledge starts with a vault.",
+                        )
+                      : query || tagFilter
+                        ? t("Noch kein Treffer.", "No results yet.")
+                        : t(
+                            "Ein guter Ort für deinen ersten Gedanken.",
+                            "A good place for your first thought.",
+                          )}
                   </h3>
                   <p>
-                    {query
+                    {!vaultId
                       ? t(
-                          "Versuche einen anderen Suchbegriff oder entferne einen Tagfilter.",
-                          "Try another search or remove a tag filter.",
+                          "Lege einen eigenen Bereich für deine Erinnerungen an.",
+                          "Create a space for your memories.",
                         )
-                      : t(
-                          "Speichere Notizen, Entscheidungen und Wissen als Markdown.",
-                          "Save notes, decisions and knowledge as Markdown.",
-                        )}
+                      : query || tagFilter
+                        ? t(
+                            "Versuche einen anderen Suchbegriff oder entferne einen Tagfilter.",
+                            "Try another search or remove a tag filter.",
+                          )
+                        : t(
+                            "Speichere Notizen, Entscheidungen und Wissen als Markdown.",
+                            "Save notes, decisions and knowledge as Markdown.",
+                          )}
                   </p>
-                  {!query && (
+                  {!query && !tagFilter && (
                     <button
                       className="primary"
-                      onClick={() => go("/app/memories/new")}
-                      disabled={!vaultId}
+                      onClick={() =>
+                        vaultId
+                          ? go("/app/memories/new")
+                          : setModal({ kind: "vault" })
+                      }
                     >
                       <Plus size={16} />
-                      {t(
-                        "Erste Erinnerung anlegen",
-                        "Create your first memory",
-                      )}
+                      {!vaultId
+                        ? t("Vault anlegen", "Create vault")
+                        : t(
+                            "Erste Erinnerung anlegen",
+                            "Create your first memory",
+                          )}
                     </button>
                   )}
                 </div>
@@ -1094,30 +1253,6 @@ function App() {
                           }}
                         />
                       </label>
-                      <div className="filter-row">
-                        {tags.map((tag) => (
-                          <button
-                            className={
-                              "chip " +
-                              (draft.tagIds.includes(tag.id) ? "selected" : "")
-                            }
-                            key={tag.id}
-                            onClick={() => {
-                              setDraft({
-                                ...draft,
-                                tagIds: draft.tagIds.includes(tag.id)
-                                  ? draft.tagIds.filter(
-                                      (id: string) => id !== tag.id,
-                                    )
-                                  : [...draft.tagIds, tag.id],
-                              });
-                              setDirty(true);
-                            }}
-                          >
-                            # {tag.name}
-                          </button>
-                        ))}
-                      </div>
                     </div>
                     {conflict && (
                       <div className="conflict">
@@ -1160,8 +1295,25 @@ function App() {
                         </button>
                       </div>
                     )}
-                    <div className="editor-split">
-                      <section>
+                    <div
+                      className="editor-tabs"
+                      aria-label={t("Editoransicht", "Editor view")}
+                    >
+                      <button
+                        aria-pressed={editorPanel === "edit"}
+                        onClick={() => setEditorPanel("edit")}
+                      >
+                        {t("Markdown bearbeiten", "Edit Markdown")}
+                      </button>
+                      <button
+                        aria-pressed={editorPanel === "preview"}
+                        onClick={() => setEditorPanel("preview")}
+                      >
+                        {t("Vorschau", "Preview")}
+                      </button>
+                    </div>
+                    <div className={"editor-split panel-" + editorPanel}>
+                      <section className="editor-source">
                         <div className="panel-label">
                           MARKDOWN{" "}
                           {dirty && (
@@ -1177,7 +1329,12 @@ function App() {
                         >
                           <CodeMirror
                             value={draft.markdown}
-                            theme={profile.theme === "light" ? "light" : "dark"}
+                            theme={
+                              profile.theme === "light" ||
+                              (profile.theme === "system" && systemLight)
+                                ? "light"
+                                : "dark"
+                            }
                             onChange={(value) => {
                               setDraft({ ...draft, markdown: value });
                               setDirty(true);
@@ -1185,12 +1342,38 @@ function App() {
                           />
                         </React.Suspense>
                       </section>
-                      <section>
+                      <section className="editor-preview">
                         <div className="panel-label">
                           {t("VORSCHAU", "PREVIEW")}
                         </div>
+
                         <Preview text={draft.markdown} />
                       </section>
+                    </div>
+                    <div className="filter-row editor-tags">
+                      {tags.map((tag) => (
+                        <button
+                          className={
+                            "chip " +
+                            (draft.tagIds.includes(tag.id) ? "selected" : "")
+                          }
+                          key={tag.id}
+                          aria-pressed={draft.tagIds.includes(tag.id)}
+                          onClick={() => {
+                            setDraft({
+                              ...draft,
+                              tagIds: draft.tagIds.includes(tag.id)
+                                ? draft.tagIds.filter(
+                                    (id: string) => id !== tag.id,
+                                  )
+                                : [...draft.tagIds, tag.id],
+                            });
+                            setDirty(true);
+                          }}
+                        >
+                          # {tag.name}
+                        </button>
+                      ))}
                     </div>
                   </>
                 )
@@ -1532,8 +1715,12 @@ function App() {
                       )
                     }
                   >
-                    <option value="dark">{t("Dunkel", "Dark")}</option>
-                    <option value="light">{t("Hell", "Light")}</option>
+                    <option value="dark">
+                      {t("Monokai · Dunkel", "Monokai · Dark")}
+                    </option>
+                    <option value="light">
+                      {t("Snow · Hell", "Snow · Light")}
+                    </option>
                     <option value="system">System</option>
                   </select>
                 </label>

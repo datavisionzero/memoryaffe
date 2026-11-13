@@ -22,6 +22,44 @@ Planungs-/Vertragswerk. Start, Konfiguration und Betreiberbefehle stehen in der
 
 ## Reproduzierbare Prüfpunkte
 
+### Überarbeitete Oberfläche am 13. November 2026
+
+Die Webapp verwendet jetzt durchgängige semantische Farbtokens für Snow (hell)
+und Monokai (dunkel), einschließlich Formularen, Fehlern, Dialogen, Markdown und
+CodeMirror. Die gespeicherten Vertragswerte bleiben `light`, `dark`, `system`.
+Eine schmale Navigation mit fester Neu-Aktion und die Suche in der oberen Leiste
+ersetzen die bisherige Suchstartfläche. Erinnerungen erscheinen in kompakten
+Zeilen mit Trennlinien; auf breiten Bildschirmen stehen Titel, Ausschnitt, Tags
+und Datum nebeneinander. Mobile Navigation verwendet einen modalen Drawer mit
+Fokusführung und Escape; der Editor schaltet mobil zwischen Markdown und
+Vorschau um. Die Tags bleiben unter dem Editor erreichbar. Ohne Vault führt der
+Leerzustand direkt zur Vaultanlage.
+
+Nachweise: Web-Produktionsbuild, TypeScript und Clientdrift bestanden;
+25 Playwright-Tests gemeinsam in 26,4 s gegen isolierte echte API/PostgreSQL
+bestanden. Darunter die 17 bestehenden Auth-/Kernfälle, sechs Ansichten mit
+langen Titeln, Texten, Code und Tabellen bei 390/1440/1920 px in beiden Themes,
+die Anmeldethemes und ein laufender Systemfarbwechsel einschließlich CodeMirror.
+Die Bildschirmbreite wird bei Editor, Vorschau, Lesen und Profil geprüft;
+mobile Dialoge geben den Fokus zurück. Bestehende Markdown-Sicherheitsprüfungen
+bleiben erfolgreich. Suche, Editor, Login, Vault-Einstellungen und Profil wurden
+zusätzlich anhand echter Screenshots visuell geprüft. Eine gequetschte
+Tabellenspalte wurde dabei korrigiert und nachgeprüft.
+
+Zusätzlich bestanden 13 API-/PostgreSQL-Prüfgruppen einschließlich acht echter
+CLI-Operationen, der OAuth-/MCP-SDK-Korpus, 26 .NET-Unit-Tests, Go-Tests/vet und
+94 Vertragsfälle. Der zusätzliche Admin-Race und die fest an einen anderen
+Container gebundene Zeitstempelfixture wurden in diesem lokalen Designlauf nicht
+erneut ausgeführt; die früheren Nachweise oben bleiben davon getrennt.
+Alle neuen Tests und Screenshots verwenden synthetische Daten in einer eigenen
+Testinstallation; die bestehende Entwicklungsdatenbank wurde nicht verändert.
+
+Aktuelle Beispiele: [Snow Desktop](screenshots/desktop-light.png),
+[Monokai Desktop](screenshots/desktop-dark.png) und
+[mobile Leseansicht](screenshots/mobile-reading.png). Der Build meldet weiterhin
+den bekannten Vite-Hinweis auf große JavaScript-Chunks; eine Performanceabnahme
+oder vollständige Plattformprüfung wird daraus nicht abgeleitet.
+
 ### Korrektur der Kontoformulare am 13. November 2026
 
 Setup, Einladung, Reset und Passwortänderung zeigen die unveränderte Regel

@@ -27,6 +27,7 @@ test("echter Browserablauf: Setup/Login, Vault, Markdown, Historie, Konflikt, Pa
   const vault = "Browsertest " + Date.now();
   await dialog.getByLabel("Name", { exact: true }).fill(vault);
   await dialog.getByRole("button", { name: "Bestätigen" }).click();
+  await expect(dialog).toHaveCount(0);
   await expect(page.getByLabel("Vault", { exact: true })).toHaveValue(/.+/);
   await page
     .getByRole("button", { name: "Neue Erinnerung", exact: true })
@@ -202,6 +203,7 @@ test("Einladung ohne SMTP, mobile Redaktion, Dialogfokus, externe Bilder und fre
   await expect(
     user.getByRole("heading", { name: "Was möchtest du wiederfinden?" }),
   ).toBeVisible();
+  await expect(user.getByRole("button", { name: "Vault anlegen", exact: true })).toBeVisible();
   await user.locator(".mobile-toggle").click();
   const trigger = user.getByRole("button", {
     name: "Neuer Vault",
@@ -240,6 +242,7 @@ test("Einladung ohne SMTP, mobile Redaktion, Dialogfokus, externe Bilder und fre
         "langeswort".repeat(80) +
         "\n```",
     );
+  await user.getByRole("button", { name: "Vorschau", exact: true }).click();
   await expect(
     user.getByRole("button", { name: "Bild laden: Fremdes Bild" }),
   ).toBeVisible();
