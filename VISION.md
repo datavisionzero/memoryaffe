@@ -185,13 +185,34 @@ entscheidet das jüngste Änderungsdatum, danach die ID.
 ## Export, Import und Backups
 
 Bereits im MVP können Nutzer einen Vault als ZIP mit Markdown-Dateien und
-strukturierten Metadaten exportieren und wieder importieren. Der Export
-umfasst zunächst die aktuellen Fassungen einschließlich Tags. Der Import
-erstellt einen neuen Vault und überschreibt keine bestehenden Inhalte.
+strukturierten Metadaten exportieren und wieder importieren. Das ZIP enthält
+eine Markdown-Datei je Datensatz unter `records/<id>.md` und eine zentrale
+`manifest.json` mit Formatversion, Titeln, Zusammenfassungen, Tags, Zeitpunkten
+und Vault-Einstellungen. Der Export umfasst alle aktuellen aktiven Datensätze
+und vorhandenen Tags eines Vaults, ohne Historie, Papierkorb, Kontodaten oder
+Agentenzugänge. Er bildet auch bei gleichzeitigen Änderungen einen konsistenten
+Datenstand ab.
+
+Der Import erstellt einen neuen Vault mit neuen IDs und überschreibt keine
+bestehenden Inhalte. Nutzer können vorab den Vault-Namen ändern;
+Namenskollisionen werden angezeigt. Suchsprache und Versionslimit werden
+übernommen. Ursprüngliche Erstellungs- und Änderungszeitpunkte bleiben erhalten;
+Importzeitpunkt und importierender Nutzer werden zusätzlich festgehalten.
+Frühere Agentenidentitäten erzeugen keine lokalen Zugänge.
+
+Vor dem Import wird das gesamte Archiv geprüft. Fehler führen zu einer
+verständlichen Fehlerliste und Ablehnung des gesamten Imports, ohne stilles
+Abschneiden oder Teilimport. Grenzen sind 100 MiB ZIP-Datei, 500 MiB entpackt
+und 10.000 Datensätze; zusätzlich gelten die Grenzen pro Datensatz. Im MVP
+wird nur das dokumentierte memoryaffe-ZIP-Format unterstützt, kein allgemeiner
+Import beliebiger Markdown-Ordner.
 
 Zusätzlich wird ein Weg zur Sicherung und Wiederherstellung der gesamten
 Installation dokumentiert. Diese Sicherung umfasst auch Konten, Einstellungen
-und die noch aufbewahrten Versionen.
+und die noch aufbewahrten Versionen. Dokumentierte Betreiberbefehle sichern
+Datenbank, erforderliche Konfiguration und Schlüssel. Wiederherstellung auf
+einer frischen Installation wird getestet. Die automatische Zeitplanung
+übernimmt zunächst der Betreiber; die Webapp enthält keinen Backup-Planer.
 
 ## Zugriff durch KI-Agenten
 

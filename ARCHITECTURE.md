@@ -24,6 +24,9 @@ Wiederholungsschlüsseln, Seitengrößen, einzelnen Schreiboperationen und
 nicht zugänglichen IDs sind ebenfalls bestätigt.
 Die Suchregeln zu Vault-Sprache, Suchsyntax, Gewichtung, Tag-Filtern,
 leerer Suche, Suchumfang und Trefferanzeige sind bestätigt.
+Bestätigt sind außerdem Exportformat und -umfang, konsistenter Export,
+Importziel und Herkunftsdaten, vollständige Importprüfung, Importgrenzen,
+Beschränkung auf memoryaffe-Archive und betreibergeführte Datensicherung.
 Die übrigen technischen Konkretisierungen dieses Dokuments bleiben Entwurf,
 soweit sie nicht bereits ausdrücklich in der Produktvision beschlossen sind.
 Vor dem Grundgerüst werden alle weiteren Entscheidungsblöcke gemeinsam geklärt.
@@ -348,14 +351,30 @@ gesichert. Ein fehlgeschlagener Start meldet nicht bereit. Upgrades sind
 betreibergeführt; Rückkehr erfolgt über passende Vorversion und vorheriges
 Backup statt über ungeprüfte Rückwärtsmigrationen.
 
-ZIP-Export enthält aktuelle aktive Datensätze als Markdown und ein versioniertes
-Manifest mit Metadaten/Tags. Import validiert Größe, Anzahl, Pfade und Schema,
-erstellt neue IDs in einem neuen Vault und übernimmt keine Agentenrechte.
-Fehler hinterlassen keinen halbfertigen sichtbaren Vault. Historie und Papierkorb
-gehören zur vollständigen Installationssicherung, nicht zum MVP-Vault-Export.
+ZIP-Export enthält alle aktuellen aktiven Datensätze als `records/<id>.md`
+und eine zentrale `manifest.json` mit Formatversion, Titeln, Zusammenfassungen,
+allen vorhandenen Vault-Tags, Zeitpunkten und Vault-Einstellungen. Der Export
+bildet einen konsistenten Datenstand auch bei parallelen Schreibzugriffen ab.
+Historie, Papierkorb, Kontodaten und Agentenzugänge werden nicht exportiert.
+
+Import erstellt neue IDs in einem neuen Vault ohne Agentenrechte. Der Nutzer
+kann den Zielnamen vorab ändern; Namenskollisionen werden angezeigt.
+Suchsprache und Versionslimit sowie ursprüngliche Erstellungs- und
+Änderungszeitpunkte werden übernommen. Importzeitpunkt und importierendes
+Konto werden zusätzlich gespeichert, ohne frühere Agentenidentitäten als
+lokale Zugänge anzulegen.
+
+Das gesamte Archiv wird vor dem Import auf Größe, Anzahl, Pfade, Schema und
+Datensatzgrenzen geprüft. Fehler führen zur Ablehnung mit verständlicher
+Fehlerliste, ohne Teilimport oder stilles Abschneiden. Verbindliche Grenzen:
+100 MiB komprimiert, 500 MiB entpackt und 10.000 Datensätze pro Import.
+Nur das dokumentierte memoryaffe-ZIP-Format ist im MVP unterstützt.
+Historie und Papierkorb gehören zur vollständigen Installationssicherung.
 
 Backups umfassen PostgreSQL, erforderliche Konfiguration und persistente
-Schlüssel. Wiederherstellung wird auf einer frischen Instanz geprobt.
+Schlüssel. Dafür werden Betreiberbefehle dokumentiert; automatische Zeitplanung
+liegt beim Betreiber, ohne Backup-Planer in der Webapp. Wiederherstellung wird
+auf einer frischen Instanz geprobt.
 Bereinigung in der Live-Datenbank entfernt keine externen alten Backups;
 deren Aufbewahrung verantwortet der Betreiber. Diagnose zeigt Version,
 Bereitschaft und Speicherverbrauch, ohne fremde Inhalte offenzulegen.
@@ -365,7 +384,7 @@ Logs vermeiden Inhalte und Geheimnisse; Telemetrie wird nicht eingebaut.
 
 - OAuth-/CIMD-Protokollvertrag und isolierter ChatGPT-Kompatibilitätsnachweis.
 - Genaue Request-Schemas, Fehlercodes, technische Abbildung der beschlossenen
-  Limits/Wiederholungsregeln sowie verbleibende Betriebs- und Importlimits.
+  Limits/Wiederholungsregeln sowie verbleibende Betriebslimits.
 - Tag-Normalisierung, Volltext-Sprachkonfiguration und ZIP-Manifest.
 - Runtime-/Paketversionen, CLI-Zielarchitekturen und Release-Matrix.
 

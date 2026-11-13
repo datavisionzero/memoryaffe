@@ -148,12 +148,22 @@ Vault kann gelöscht werden, ohne automatisch ersetzt zu werden.
 Export/Import erhält aktuelle
 Inhalte und Metadaten, erstellt neue IDs und überschreibt nichts. Ungültige,
 überdimensionierte und pfadmanipulierte ZIPs werden ohne Teilimport abgewiesen.
+Der Export bleibt bei parallelen Schreibzugriffen konsistent und enthält
+`records/<id>.md`, `manifest.json`, alle vorhandenen Tags und Vault-Einstellungen,
+aber keine Historie, Papierkorbinhalte, Kontodaten oder Agentenzugänge.
+Import übernimmt Suchsprache, Versionslimit und ursprüngliche Zeitpunkte,
+speichert zusätzliche Importherkunft und zeigt Namenskollisionen vorab an.
+Grenzwerte von 100 MiB ZIP, 500 MiB entpackt und 10.000 Datensätzen werden
+zusammen mit den Einzelgrenzen geprüft. Fehler ergeben eine verständliche
+Fehlerliste ohne stilles Abschneiden. Fremde Archivformate werden abgewiesen.
 
 ## 7. Installation, Betrieb und erste Veröffentlichung
 
 Compose-Beispiele für Internet und LAN, HTTPS-Anleitung, optionale SMTP-
 Konfiguration, Release-Artefakte mit Prüfsummen und Versionshinweise erstellen.
 Upgrade-, Backup- und Wiederherstellungsanleitung praktisch erproben.
+Betreiberbefehle sichern Datenbank, erforderliche Konfiguration und Schlüssel;
+Zeitplanung bleibt beim Betreiber, ohne Backup-Planer in der Webapp.
 
 **Abnahme:** Frische Installation und Ersteinrichtung gelingen anhand der
 Dokumentation. LAN-Betrieb funktioniert nach Bereitstellung der Artefakte ohne
