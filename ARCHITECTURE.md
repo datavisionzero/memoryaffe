@@ -49,6 +49,9 @@ restriktive Startwerte für Agenten und Einstieg bei fehlendem letztem Vault.
 Der [Datenvertrag](DATA_CONTRACT.md) ist bestätigt: UUIDv4-IDs,
 Revisionsregeln, Unicode-Codepunktlimits und Namensvergleich, leere Werte und
 Teiländerungen, UTC-Zeitformat sowie die Regeln für Vault-Archive in Format 1.
+Der [Schnittstellenvertrag](API_CONTRACT.md) bestätigt API-Versionierung,
+PATCH mit erwarteter Revision, gemeinsame fachliche Fehler, Cursor-Pagination,
+adapterübergreifende atomare Wiederholungen und Ergebnis-/Tool-Grenzen.
 Die übrigen technischen Konkretisierungen dieses Dokuments bleiben Entwurf,
 soweit sie nicht bereits ausdrücklich in der Produktvision beschlossen sind.
 Vor dem Grundgerüst werden alle weiteren Entscheidungsblöcke gemeinsam geklärt.
@@ -376,10 +379,12 @@ einen Datensatz; ZIP-Import ist der Weg für größere Übernahmen.
 Anlegen, Ändern und Löschen unterstützen einen optionalen Wiederholungsschlüssel:
 Identische Aufträge mit demselben Schlüssel erzeugen innerhalb von 24 Stunden
 keine zweite Änderung. Abweichende Aufträge mit demselben Schlüssel werden
-abgewiesen. Die genaue Abbildung in HTTP/MCP, Schlüsselbereich, atomare
-Speicherung und Verhalten bei konkurrierenden Wiederholungen werden im
-Schnittstellenvertrag vor dem Grundgerüst konkretisiert. Wiederholungen dürfen
-keine aktuellen Rechteprüfungen umgehen.
+abgewiesen. Der Schlüsselbereich ist der handelnde Nutzer beziehungsweise
+Agentenzugang, gemeinsam über HTTP und MCP. Änderung und gespeichertes Ergebnis
+werden atomar abgeschlossen, auch bei konkurrierenden Aufrufen. Wiederholungen
+dürfen keine aktuellen Rechteprüfungen umgehen. Nach 24 Stunden besteht keine
+Wiederholungsgarantie. Weitere Transport- und Vergleichsdetails werden im
+[Schnittstellenvertrag](API_CONTRACT.md) vor dem Grundgerüst konkretisiert.
 
 PostgreSQL-Volltextsuche mit gewichtetem Titel, Zusammenfassung und Inhalt
 sowie GIN-Index ist der Startpunkt. Pro Vault ist die Suchsprache Deutsch,

@@ -11,6 +11,8 @@ bestätigt, ebenso Kontowiederherstellung, Datenregeln, Suchverhalten,
 Datenmitnahme und zentrale UI-Abläufe. Der [Datenvertrag](DATA_CONTRACT.md)
 ist ebenfalls bestätigt. Seine maschinenlesbaren Schemas und die konkrete
 Unicode-Version werden noch vor dem Grundgerüst festgelegt.
+Die Grundregeln des [Schnittstellenvertrags](API_CONTRACT.md) sind bestätigt;
+konkrete Schemas, Fehlercodes und Wiederholungsdetails folgen vor dem Grundgerüst.
 Weitere Vertragsdetails und Randfälle
 sowie technische Betriebs- und Lieferdetails werden noch gemeinsam entschieden.
 Der grundsätzliche Betriebs- und Veröffentlichungsumfang ist bestätigt.
@@ -159,6 +161,13 @@ erzeugen innerhalb von 24 Stunden keine zweite Änderung; abweichende Aufträge
 werden abgewiesen. Listen-/Suchseitengrößen entsprechen Standard 20 und Maximum
 100. Fremde und unbekannte IDs liefern dieselbe Antwort, fehlende Schreibrechte
 auf sichtbare Datensätze dagegen einen Berechtigungsfehler.
+HTTP und MCP verwenden dieselben fachlichen Fehlercodes. Fehlende erwartete
+Revisionen ergeben Eingabefehler, veraltete Revisionen Konflikte. Cursor sind
+an die Suchparameter gebunden; jede Seite prüft aktuelle Rechte ohne dauerhaften
+Such-Snapshot. Gleichzeitige und adapterübergreifende Wiederholungen im selben
+Schlüsselbereich erzeugen höchstens eine Änderung und speichern das Ergebnis
+atomar. Rechteentzug greift auch bei Wiederholungen. Tag-Zuordnung über IDs
+erstellt keine Tags implizit.
 Profile wechseln die Verbindung korrekt. Tokens erscheinen nicht als
 Kommandozeilenargument; lokale Speicherung erfolgt nur ausdrücklich.
 Datei-/stdin-Eingaben erhalten Markdown unverändert. JSON auf stdout bleibt
