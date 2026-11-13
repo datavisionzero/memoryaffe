@@ -95,11 +95,30 @@ Der Auftragsvergleich umfasst Aktion, Ziel, erwartete Revision und übergebene
 Felder. JSON-Feldreihenfolge und Tag-Reihenfolge sind irrelevant; ausgelassene
 und ausdrücklich geleerte Felder bleiben unterscheidbar.
 
-Läuft derselbe Auftrag noch, wartet der Server begrenzt auf dessen Ergebnis.
-Danach meldet er `409/request_in_progress` mit Wiederholungshinweis.
+Läuft derselbe Auftrag noch, wartet der Server höchstens fünf Sekunden auf das
+Ergebnis. Danach meldet er `409/request_in_progress` mit `retryAfterSeconds: 1`
+und über HTTP zusätzlich `Retry-After: 1`.
 Validierungsfehler und Versionskonflikte verbrauchen den Schlüssel nicht.
 Erfolgreiche Änderungen und erfolgreiche unveränderte Speicherungen erhalten
 ein gespeichertes Ergebnis.
+
+Ein erfolgreicher Löschauftrag kann trotz inzwischen unsichtbarem Datensatz
+wiederholt werden: Der Eintrag speichert ursprünglichen Vault und Akteur.
+Replay prüft aktuelle Konto-/Zugangsgültigkeit, Scopes und erforderliche Rechte
+auf diesen Vault und liefert nur das gespeicherte kompakte Schreibergebnis.
+Gelöschter Vault oder entzogene Rechte verhindern Replay. Bei noch vorhandenen
+Datensätzen wird zusätzlich aktuelle Sichtbarkeit geprüft, damit Verschieben
+keine Daten offenlegt. Papierkorbinhalte werden nicht zugänglich gemacht.
+
+## Technische Eingabegrenzen
+
+Suchtext ist auf 4.096 Unicode-Codepunkte, Suchfilter auf 100 Tag-IDs begrenzt.
+Pro Datensatz bleiben maximal 50 Tags erlaubt. Cursor enthalten höchstens
+8.192 ASCII-Zeichen. Wiederholungsschlüssel enthalten 1 bis 128 ASCII-Zeichen
+aus Buchstaben, Ziffern, `-`, `_`, `.`, `:`. Die CLI erzeugt dafür UUIDv4.
+Unbekannte Eingabefelder werden abgewiesen; Clients tolerieren zusätzliche
+Antwortfelder. Ungültiges Unicode und U+0000 werden semantisch abgewiesen,
+nicht durch Ersatzzeichen oder Abschneiden repariert.
 
 ## Ergebnisse und MCP-Werkzeuge
 
@@ -158,10 +177,10 @@ Skripte keine sprachabhängigen Meldungen auswerten müssen.
 Die [maschinelle Vertragsausarbeitung](docs/contracts/README.md) enthält
 OpenAPI für die acht Agentenoperationen, MCP-Ein-/Ausgabeschemas und gemeinsame
 Datentypen. Das Web-/Admin-Inventar ist angelegt; vollständige Schemas dafür
-stehen noch aus. Neue Entscheidungsvorschläge sind dort ausdrücklich getrennt.
+stehen noch aus. Die fünf ergänzenden Randfallentscheidungen sind bestätigt.
 
 Vor dem Grundgerüst folgen vollständige maschinenlesbare Request-/Response-
 Schemas und die technische Umsetzung der festgelegten Cursor- und
-Wiederholungsregeln einschließlich konkreter Wartezeit. OAuth-/CIMD-Endpunkte
+Wiederholungsregeln mit den festgelegten Grenzen. OAuth-/CIMD-Endpunkte
 folgen dem eigenen [Protokollvertrag](OAUTH_CONTRACT.md); ihre Protokollfehler
 folgen nicht pauschal dem Produktformat.

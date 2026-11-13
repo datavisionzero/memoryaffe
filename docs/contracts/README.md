@@ -17,8 +17,8 @@ Bestätigte Fachregeln stehen in [API_CONTRACT.md](../../API_CONTRACT.md),
 
 Dies ist der ausgearbeitete **Agenten-Datenvertrag**, nicht die vollständige
 Web-/Admin-API. Die noch ausstehenden Bereiche sind unten ausdrücklich benannt.
-Feldnamen und Routen konkretisieren bestätigte Regeln. Offene Entscheidungen
-werden nicht durch Schemas als beschlossen ausgegeben.
+Feldnamen und Routen konkretisieren bestätigte Regeln. Die fünf ergänzenden
+[Randfallentscheidungen](DECISIONS.md) sind ebenfalls bestätigt.
 
 ## HTTP-Abbildung
 
@@ -64,6 +64,9 @@ JSON Schema allein ersetzt keine Anwendungsvalidierung. Verpflichtend bleiben:
 - Titel nach Trimming nicht leer, Namen normalisiert/eindeutig; Unicode-Version
   und genaue White-Space-Regel werden noch festgelegt.
 - Markdown maximal 1.048.576 UTF-8-Bytes; keine Änderung von Zeilenumbrüchen.
+- Ungültiges Unicode, isolierte Surrogate und U+0000 abweisen, nicht ersetzen.
+  Das ist zusätzliche semantische Validierung, noch kein implementierter Test
+  der Anwendung. Clients tolerieren additive Antwortfelder; Eingaben bleiben strikt.
 - UUIDs vor Mengen-/Identitätsvergleichen kanonisieren, damit unterschiedliche
   Großschreibung derselben ID keine doppelten Tags zulässt.
 - Jeder Tag gehört zum Ziel-Vault; IDs, Rechte und Revisionen werden serverseitig
@@ -111,12 +114,13 @@ Berechtigungen, Byte-Limits, ZIP-Sicherheit oder echte Clientkompatibilität.
 2. OAuth-Endpunktparameter, Discovery-Dokumente und Fehler-/Challenge-Matrix;
    CIMD-Methodenauswahl anhand des realen ChatGPT-Dokuments.
 3. Suchkorpus/SQL-Abbildung, genaue Unicode-Normalisierung und White-Space-Tabelle.
-4. Verbleibende Betriebsgrenzen (Suchtext, Cursor, Schlüssel, Ratelimits,
-   Wartezeiten) und Freigabe der unten verlinkten Entscheidungsvorschläge.
+4. Verbleibende Betriebsgrenzen für Authentifizierungs-Ratelimits und
+   Import-/Exportressourcen. Suchtext-, Cursor-, Schlüsselgrenzen und
+   Wiederholungswartezeit sind entschieden und in den Verträgen festgehalten.
 5. Paket-/Lizenzmatrix, Zielplattformprüfungen und realer ChatGPT-Versuch.
 
-Neue fachliche Entscheidungen sind in [DECISIONS_PENDING.md](DECISIONS_PENDING.md)
-gebündelt. Diese Bereiche sind keine erledigte Implementierungsvoraussetzung.
+Die fünf ergänzenden fachlichen Entscheidungen stehen in [DECISIONS.md](DECISIONS.md).
+Die oben noch ausstehenden Bereiche bleiben Voraussetzungen vor dem Grundgerüst.
 
 ## Primärquellen
 

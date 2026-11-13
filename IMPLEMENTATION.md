@@ -284,6 +284,26 @@ Hardware und begründen veröffentlichte Leistungsangaben.
 
 ## Lieferregel je Etappe
 
+Ergänzende verbindliche Abnahmefälle aus der Vertragsausarbeitung:
+
+- Erfolgreiche Löschung per gleichem Schlüssel wiederholen, ohne Papierkorbinhalte
+  freizugeben; entzogene Rechte, gelöschten Vault und zwischenzeitliches Verschieben
+  berücksichtigen.
+- CIMD-Abruffehler bei abgelaufenem Cache verhindert Refresh ohne Tokenverbrauch;
+  bestehende Access-Tokens bleiben unter den aktuellen Rechteprüfungen bis Ablauf
+  gültig. Entfernen des Clients aus der Freigabeliste sperrt weiterhin sofort.
+- Grenzwerte 4.096 Such-Codepunkte, 100 Filter-Tag-IDs, 128 Schlüsselzeichen und
+  8.192 Cursorzeichen jeweils am Limit und darüber prüfen; Schlüsselzeichensatz
+  prüfen. Maximal fünf Sekunden Warten und eine Sekunde Wiederholungshinweis.
+- Tag-Verwaltung aktualisiert auch Papierkorb-Zuordnungen mit Revision/Version,
+  ohne Fristverlängerung oder Änderung alter Snapshots. Gelöschte Vaults bleiben
+  unbearbeitbar, Inhaltsrestore verlangt einen aktiven Datensatz.
+- Unbekannte Eingabefelder, ungültiges Unicode und U+0000 ablehnen; keine stille
+  Reparatur. Generierte Clients müssen zusätzliche Antwortfelder tolerieren.
+
+Die vorhandenen Schema-Prüfungen decken Struktur und ausdrückbare Grenzen ab;
+semantische Anwendungs- und Integrationstests folgen erst bei Implementierung.
+
 Änderungen werden mit passenden Tests und aktualisierten Verträgen/Dokumenten
 geliefert, committed, gepusht und gemäß Repository-Workflow integriert.
 Dokumentationsänderungen benötigen Diff-/Link- und Konsistenzprüfung;

@@ -57,6 +57,22 @@ expect(inputs.search_memories, { allVaults: true, pageSize: 101 }, false);
 expect(inputs.search_memories, { allVaults: true, tagIds: manyTags }, true);
 expect(inputs.list_tags, { vaultId: id, pageSize: 0 }, false);
 expect(inputs.create_tag, { vaultId: id, name: 'x'.repeat(51) }, false);
+for (const [length, valid] of [[4096, true], [4097, false]]) expect(inputs.search_memories, { allVaults: true, query: '😀'.repeat(length) }, valid);
+const searchTags = Array.from({ length: 101 }, (_, n) => `10000000-0000-4000-8000-${String(n).padStart(12, '0')}`);
+expect(inputs.search_memories, { allVaults: true, tagIds: searchTags.slice(0, 100) }, true);
+expect(inputs.search_memories, { allVaults: true, tagIds: searchTags }, false);
+for (const [value, valid] of [['a'.repeat(128), true], ['a'.repeat(129), false], ['', false], ['uuid:abc-DEF_1.2', true], ['ä', false], ['a b', false], ['a\n', false]]) {
+  expect(inputs.create_memory, { ...create, idempotencyKey: value }, valid);
+}
+for (const [value, valid] of [['a'.repeat(8192), true], ['a'.repeat(8193), false], ['ä', false], ['\u0000', false]]) {
+  expect(inputs.list_vaults, { cursor: value }, valid);
+}
+const modelDefinitions = load('models.schema.json');
+const error = ajv.compile({ ...modelDefinitions, $ref: '#/$defs/Error' });
+const running = { code: 'request_in_progress', message: 'Running', requestId: 'test' };
+expect(error, running, false);
+expect(error, { ...running, retryAfterSeconds: 1 }, true);
+expect(error, { ...running, retryAfterSeconds: 2 }, false);
 const manifest = ajv.compile(load('vault-manifest.schema.json'));
 const example = load('manifest.example.json');
 expect(manifest, example, true);

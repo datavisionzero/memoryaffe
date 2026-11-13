@@ -117,6 +117,10 @@
             ],
             "additionalProperties": false
           }
+        },
+        "retryAfterSeconds": {
+          "type": "integer",
+          "minimum": 1
         }
       },
       "required": [
@@ -124,7 +128,31 @@
         "message",
         "requestId"
       ],
-      "additionalProperties": false
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "code": {
+                "const": "request_in_progress"
+              }
+            },
+            "required": [
+              "code"
+            ]
+          },
+          "then": {
+            "required": [
+              "retryAfterSeconds"
+            ],
+            "properties": {
+              "retryAfterSeconds": {
+                "const": 1
+              }
+            }
+          }
+        }
+      ]
     },
     "ListVaultsInput": {
       "type": "object",
@@ -137,7 +165,9 @@
         },
         "cursor": {
           "type": "string",
-          "minLength": 1
+          "minLength": 1,
+          "maxLength": 8192,
+          "pattern": "^[\\x01-\\x7F]+$"
         }
       },
       "required": [],
@@ -157,7 +187,9 @@
         },
         "cursor": {
           "type": "string",
-          "minLength": 1
+          "minLength": 1,
+          "maxLength": 8192,
+          "pattern": "^[\\x01-\\x7F]+$"
         }
       },
       "required": [
@@ -304,6 +336,7 @@
         },
         "query": {
           "type": "string",
+          "maxLength": 4096,
           "default": ""
         },
         "tagIds": {
@@ -311,7 +344,8 @@
           "items": {
             "$ref": "#/$defs/Id"
           },
-          "uniqueItems": true
+          "uniqueItems": true,
+          "maxItems": 100
         },
         "tagMatch": {
           "type": "string",
@@ -336,7 +370,9 @@
         },
         "cursor": {
           "type": "string",
-          "minLength": 1
+          "minLength": 1,
+          "maxLength": 8192,
+          "pattern": "^[\\x01-\\x7F]+$"
         }
       },
       "required": [],
@@ -491,7 +527,9 @@
             "string",
             "null"
           ],
-          "minLength": 1
+          "minLength": 1,
+          "maxLength": 8192,
+          "pattern": "^[\\x01-\\x7F]+$"
         }
       },
       "required": [
@@ -514,7 +552,9 @@
             "string",
             "null"
           ],
-          "minLength": 1
+          "minLength": 1,
+          "maxLength": 8192,
+          "pattern": "^[\\x01-\\x7F]+$"
         }
       },
       "required": [
@@ -537,7 +577,9 @@
             "string",
             "null"
           ],
-          "minLength": 1
+          "minLength": 1,
+          "maxLength": 8192,
+          "pattern": "^[\\x01-\\x7F]+$"
         }
       },
       "required": [

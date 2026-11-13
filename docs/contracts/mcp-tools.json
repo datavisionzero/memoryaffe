@@ -15,7 +15,9 @@
           },
           "cursor": {
             "type": "string",
-            "minLength": 1
+            "minLength": 1,
+            "maxLength": 8192,
+            "pattern": "^[\\x01-\\x7F]+$"
           }
         },
         "required": [],
@@ -37,7 +39,9 @@
               "string",
               "null"
             ],
-            "minLength": 1
+            "minLength": 1,
+            "maxLength": 8192,
+            "pattern": "^[\\x01-\\x7F]+$"
           }
         },
         "required": [
@@ -96,7 +100,9 @@
           },
           "cursor": {
             "type": "string",
-            "minLength": 1
+            "minLength": 1,
+            "maxLength": 8192,
+            "pattern": "^[\\x01-\\x7F]+$"
           }
         },
         "required": [
@@ -126,7 +132,9 @@
               "string",
               "null"
             ],
-            "minLength": 1
+            "minLength": 1,
+            "maxLength": 8192,
+            "pattern": "^[\\x01-\\x7F]+$"
           }
         },
         "required": [
@@ -182,6 +190,7 @@
           },
           "query": {
             "type": "string",
+            "maxLength": 4096,
             "default": ""
           },
           "tagIds": {
@@ -189,7 +198,8 @@
             "items": {
               "$ref": "#/$defs/Id"
             },
-            "uniqueItems": true
+            "uniqueItems": true,
+            "maxItems": 100
           },
           "tagMatch": {
             "type": "string",
@@ -214,7 +224,9 @@
           },
           "cursor": {
             "type": "string",
-            "minLength": 1
+            "minLength": 1,
+            "maxLength": 8192,
+            "pattern": "^[\\x01-\\x7F]+$"
           }
         },
         "required": [],
@@ -264,7 +276,9 @@
               "string",
               "null"
             ],
-            "minLength": 1
+            "minLength": 1,
+            "maxLength": 8192,
+            "pattern": "^[\\x01-\\x7F]+$"
           }
         },
         "required": [
@@ -531,6 +545,8 @@
           "idempotencyKey": {
             "type": "string",
             "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9_.:-]+$(?![\\s\\S])",
             "description": "Optional retry key, retained for 24 hours. Same actor and logical request across HTTP/MCP."
           }
         },
@@ -634,6 +650,8 @@
           "idempotencyKey": {
             "type": "string",
             "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9_.:-]+$(?![\\s\\S])",
             "description": "Optional retry key, retained for 24 hours. Same actor and logical request across HTTP/MCP."
           }
         },
@@ -714,6 +732,8 @@
           "idempotencyKey": {
             "type": "string",
             "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9_.:-]+$(?![\\s\\S])",
             "description": "Optional retry key, retained for 24 hours. Same actor and logical request across HTTP/MCP."
           }
         },
@@ -796,6 +816,8 @@
           "idempotencyKey": {
             "type": "string",
             "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9_.:-]+$(?![\\s\\S])",
             "description": "Optional retry key, retained for 24 hours. Same actor and logical request across HTTP/MCP."
           }
         },

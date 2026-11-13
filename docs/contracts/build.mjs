@@ -15,7 +15,9 @@ const time = { type: 'string', format: 'date-time', pattern: '^\\d{4}-\\d{2}-\\d
 const title = { type: 'string', minLength: 1, maxLength: 200, description: 'Validate after outer trimming; must not be empty.' };
 const summary = { type: ['string', 'null'], maxLength: 1000, description: 'Empty string is normalized to null on input.' };
 const tagIds = { ...array(ref('Id')), uniqueItems: true, maxItems: 50 };
-const page = { pageSize: { type: 'integer', minimum: 1, maximum: 100, default: 20 }, cursor: { type: 'string', minLength: 1 } };
+const cursor = { type: 'string', minLength: 1, maxLength: 8192, pattern: '^[\\x01-\\x7F]+$' };
+const retryKey = { type: 'string', minLength: 1, maxLength: 128, pattern: '^[A-Za-z0-9_.:-]+$(?![\\s\\S])' };
+const page = { pageSize: { type: 'integer', minimum: 1, maximum: 100, default: 20 }, cursor };
 const content = { title, markdown: { type: 'string', description: 'Preserve text including line endings; at most 1048576 UTF-8 bytes. Byte limit requires application validation.' }, summary, tagIds };
 const codes = ['validation_failed', 'authentication_required', 'permission_denied', 'not_found', 'revision_conflict', 'idempotency_conflict', 'name_conflict', 'request_in_progress', 'cursor_expired', 'payload_too_large', 'rate_limited', 'temporarily_unavailable', 'internal_error'];
 const defs = {
@@ -23,7 +25,7 @@ const defs = {
   Tag: obj({ id: ref('Id'), name: { type: 'string', minLength: 1, maxLength: 50 } }),
   Vault: obj({ id: ref('Id'), name: { type: 'string', minLength: 1, maxLength: 100 } }),
   WriteResult: obj({ id: ref('Id'), revision: ref('Revision'), updatedAt: ref('Timestamp') }),
-  Error: obj({ code: enumeration(codes), message: str, requestId: { type: 'string', minLength: 1 }, fields: array(obj({ field: str, message: str })) }, ['code', 'message', 'requestId']),
+  Error: obj({ code: enumeration(codes), message: str, requestId: { type: 'string', minLength: 1 }, fields: array(obj({ field: str, message: str })), retryAfterSeconds: { type: 'integer', minimum: 1 } }, ['code', 'message', 'requestId']),
   ListVaultsInput: obj(page, []),
   ListTagsInput: obj({ vaultId: ref('Id'), ...page }, ['vaultId']),
   GetMemoryInput: obj({ id: ref('Id') }),
@@ -32,18 +34,19 @@ const defs = {
   DeleteMemoryInput: obj({ id: ref('Id'), expectedRevision: ref('Revision') }),
   CreateTagInput: obj({ vaultId: ref('Id'), name: { type: 'string', minLength: 1, maxLength: 50 } }),
   SearchInput: {
-    ...obj({ vaultId: ref('Id'), allVaults: { const: true }, query: { type: 'string', default: '' }, tagIds: { ...tagIds },
+    ...obj({ vaultId: ref('Id'), allVaults: { const: true }, query: { type: 'string', maxLength: 4096, default: '' }, tagIds: { ...tagIds },
       tagMatch: { ...enumeration(['all', 'any']), default: 'all' }, sort: enumeration(['relevance', 'updatedAt']), ...page }, []),
     oneOf: [{ required: ['vaultId'], not: { required: ['allVaults'] } }, { required: ['allVaults'], not: { required: ['vaultId'] } }]
   }
 };
 // The record tag limit is not a search-filter limit.
-delete defs.SearchInput.properties.tagIds.maxItems;
+defs.SearchInput.properties.tagIds.maxItems = 100;
+defs.Error.allOf = [{ if: { properties: { code: { const: 'request_in_progress' } }, required: ['code'] }, then: { required: ['retryAfterSeconds'], properties: { retryAfterSeconds: { const: 1 } } } }];
 const metadata = { id: ref('Id'), vaultId: ref('Id'), title, summary, tags: { ...array(ref('Tag')), maxItems: 50 }, revision: ref('Revision'), createdAt: ref('Timestamp'), updatedAt: ref('Timestamp') };
 defs.Memory = obj({ ...metadata, markdown: content.markdown });
 defs.SearchHit = obj({ ...metadata, snippet: str });
 for (const [name, item] of [['VaultPage', 'Vault'], ['TagPage', 'Tag'], ['SearchPage', 'SearchHit']]) {
-  defs[name] = obj({ items: array(ref(item)), nextCursor: { type: ['string', 'null'], minLength: 1 } });
+  defs[name] = obj({ items: array(ref(item)), nextCursor: { ...cursor, type: ['string', 'null'] } });
 }
 // Clone before transformations; shared schema objects must not be mutated.
 const clone = value => structuredClone(value);
@@ -86,7 +89,7 @@ const descriptions = {
 };
 const tools = operations.map(([name, input, output, , , read]) => {
   const inputSchema = bundle(input);
-  if (!read) inputSchema.properties.idempotencyKey = { type: 'string', minLength: 1, description: 'Optional retry key, retained for 24 hours. Same actor and logical request across HTTP/MCP.' };
+  if (!read) inputSchema.properties.idempotencyKey = { ...retryKey, description: 'Optional retry key, retained for 24 hours. Same actor and logical request across HTTP/MCP.' };
   return { name, description: descriptions[name], inputSchema, outputSchema: bundle(output),
     annotations: { readOnlyHint: read, destructiveHint: name === 'update_memory' || name === 'delete_memory', idempotentHint: read, openWorldHint: false } };
 });
@@ -111,10 +114,11 @@ for (const [name, input, output, method, path, read] of operations) {
   if (method === 'get' || method === 'delete') {
     for (const [key, value] of Object.entries(schema.properties)) parameters.push({ name: key, in: 'query', required: schema.required.includes(key), schema: value });
   }
-  if (!read) parameters.push({ name: 'Idempotency-Key', in: 'header', required: false, schema: { type: 'string', minLength: 1 } });
+  if (!read) parameters.push({ name: 'Idempotency-Key', in: 'header', required: false, schema: retryKey });
   const response = name === 'create_memory' || name === 'create_tag' ? '201' : '200';
   const operation = { operationId: name, description: descriptions[name], parameters,
     responses: { [response]: { description: 'Success', content: { 'application/json': { schema: { $ref: `#/components/schemas/${output}` } } } }, default: { description: 'Product error; see API_CONTRACT.md for status/code mapping.', content: { 'application/json': { schema: { $ref: '#/components/schemas/Error' } } } } } };
+  operation.responses.default.headers = { 'Retry-After': { description: 'For request_in_progress: 1 second; mirrors retryAfterSeconds.', schema: { type: 'integer', minimum: 1 } } };
   if (method !== 'get' && method !== 'delete') operation.requestBody = { required: true, content: { 'application/json': { schema } } };
   (api.paths[path] ??= {})[method] = apiRefs(operation);
 }

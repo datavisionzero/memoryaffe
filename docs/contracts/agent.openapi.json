@@ -33,7 +33,9 @@
             "required": false,
             "schema": {
               "type": "string",
-              "minLength": 1
+              "minLength": 1,
+              "maxLength": 8192,
+              "pattern": "^[\\x01-\\x7F]+$"
             }
           }
         ],
@@ -54,6 +56,15 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "For request_in_progress: 1 second; mirrors retryAfterSeconds.",
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1
                 }
               }
             }
@@ -91,7 +102,9 @@
             "required": false,
             "schema": {
               "type": "string",
-              "minLength": 1
+              "minLength": 1,
+              "maxLength": 8192,
+              "pattern": "^[\\x01-\\x7F]+$"
             }
           }
         ],
@@ -112,6 +125,15 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "For request_in_progress: 1 second; mirrors retryAfterSeconds.",
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1
                 }
               }
             }
@@ -136,7 +158,9 @@
             "required": false,
             "schema": {
               "type": "string",
-              "minLength": 1
+              "minLength": 1,
+              "maxLength": 128,
+              "pattern": "^[A-Za-z0-9_.:-]+$(?![\\s\\S])"
             }
           }
         ],
@@ -157,6 +181,15 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "For request_in_progress: 1 second; mirrors retryAfterSeconds.",
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1
                 }
               }
             }
@@ -209,6 +242,15 @@
                   "$ref": "#/components/schemas/Error"
                 }
               }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "For request_in_progress: 1 second; mirrors retryAfterSeconds.",
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              }
             }
           }
         },
@@ -227,6 +269,7 @@
                   },
                   "query": {
                     "type": "string",
+                    "maxLength": 4096,
                     "default": ""
                   },
                   "tagIds": {
@@ -234,7 +277,8 @@
                     "items": {
                       "$ref": "#/components/schemas/Id"
                     },
-                    "uniqueItems": true
+                    "uniqueItems": true,
+                    "maxItems": 100
                   },
                   "tagMatch": {
                     "type": "string",
@@ -259,7 +303,9 @@
                   },
                   "cursor": {
                     "type": "string",
-                    "minLength": 1
+                    "minLength": 1,
+                    "maxLength": 8192,
+                    "pattern": "^[\\x01-\\x7F]+$"
                   }
                 },
                 "required": [],
@@ -325,6 +371,15 @@
                   "$ref": "#/components/schemas/Error"
                 }
               }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "For request_in_progress: 1 second; mirrors retryAfterSeconds.",
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              }
             }
           }
         }
@@ -347,7 +402,9 @@
             "required": false,
             "schema": {
               "type": "string",
-              "minLength": 1
+              "minLength": 1,
+              "maxLength": 128,
+              "pattern": "^[A-Za-z0-9_.:-]+$(?![\\s\\S])"
             }
           }
         ],
@@ -368,6 +425,15 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "For request_in_progress: 1 second; mirrors retryAfterSeconds.",
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1
                 }
               }
             }
@@ -445,7 +511,9 @@
             "required": false,
             "schema": {
               "type": "string",
-              "minLength": 1
+              "minLength": 1,
+              "maxLength": 128,
+              "pattern": "^[A-Za-z0-9_.:-]+$(?![\\s\\S])"
             }
           }
         ],
@@ -468,6 +536,15 @@
                   "$ref": "#/components/schemas/Error"
                 }
               }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "For request_in_progress: 1 second; mirrors retryAfterSeconds.",
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              }
             }
           }
         }
@@ -484,7 +561,9 @@
             "required": false,
             "schema": {
               "type": "string",
-              "minLength": 1
+              "minLength": 1,
+              "maxLength": 128,
+              "pattern": "^[A-Za-z0-9_.:-]+$(?![\\s\\S])"
             }
           }
         ],
@@ -505,6 +584,15 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "For request_in_progress: 1 second; mirrors retryAfterSeconds.",
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1
                 }
               }
             }
@@ -685,6 +773,10 @@
               ],
               "additionalProperties": false
             }
+          },
+          "retryAfterSeconds": {
+            "type": "integer",
+            "minimum": 1
           }
         },
         "required": [
@@ -692,7 +784,31 @@
           "message",
           "requestId"
         ],
-        "additionalProperties": false
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "code": {
+                  "const": "request_in_progress"
+                }
+              },
+              "required": [
+                "code"
+              ]
+            },
+            "then": {
+              "required": [
+                "retryAfterSeconds"
+              ],
+              "properties": {
+                "retryAfterSeconds": {
+                  "const": 1
+                }
+              }
+            }
+          }
+        ]
       },
       "ListVaultsInput": {
         "type": "object",
@@ -705,7 +821,9 @@
           },
           "cursor": {
             "type": "string",
-            "minLength": 1
+            "minLength": 1,
+            "maxLength": 8192,
+            "pattern": "^[\\x01-\\x7F]+$"
           }
         },
         "required": [],
@@ -725,7 +843,9 @@
           },
           "cursor": {
             "type": "string",
-            "minLength": 1
+            "minLength": 1,
+            "maxLength": 8192,
+            "pattern": "^[\\x01-\\x7F]+$"
           }
         },
         "required": [
@@ -872,6 +992,7 @@
           },
           "query": {
             "type": "string",
+            "maxLength": 4096,
             "default": ""
           },
           "tagIds": {
@@ -879,7 +1000,8 @@
             "items": {
               "$ref": "#/components/schemas/Id"
             },
-            "uniqueItems": true
+            "uniqueItems": true,
+            "maxItems": 100
           },
           "tagMatch": {
             "type": "string",
@@ -904,7 +1026,9 @@
           },
           "cursor": {
             "type": "string",
-            "minLength": 1
+            "minLength": 1,
+            "maxLength": 8192,
+            "pattern": "^[\\x01-\\x7F]+$"
           }
         },
         "required": [],
@@ -1059,7 +1183,9 @@
               "string",
               "null"
             ],
-            "minLength": 1
+            "minLength": 1,
+            "maxLength": 8192,
+            "pattern": "^[\\x01-\\x7F]+$"
           }
         },
         "required": [
@@ -1082,7 +1208,9 @@
               "string",
               "null"
             ],
-            "minLength": 1
+            "minLength": 1,
+            "maxLength": 8192,
+            "pattern": "^[\\x01-\\x7F]+$"
           }
         },
         "required": [
@@ -1105,7 +1233,9 @@
               "string",
               "null"
             ],
-            "minLength": 1
+            "minLength": 1,
+            "maxLength": 8192,
+            "pattern": "^[\\x01-\\x7F]+$"
           }
         },
         "required": [

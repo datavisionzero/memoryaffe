@@ -84,6 +84,12 @@ OAuth-Verbindung mit ungeprüften alten Metadaten aufgebaut.
 Die Entfernung einer Client-Adresse aus der Betreiberfreigabe sperrt auch
 bereits vorhandene Verbindungen dieses Clients unmittelbar.
 
+Refresh benötigt gültige gecachte oder erfolgreich neu geladene Metadaten.
+Ein vorübergehender Abruffehler lehnt den Refresh vorübergehend ab, ohne das
+Refresh-Token zu verbrauchen. Bereits ausgegebene Access-Tokens gelten bis zum
+normalen Ablauf weiter, sofern Konto, Freigabeliste und Vault-Rechte passen.
+Die Entfernung aus der lokalen Freigabeliste wirkt weiterhin sofort.
+
 ## Tokenlaufzeiten, Rotation und Widerruf
 
 Access-Tokens gelten 15 Minuten. Refresh-Tokens erlauben Erneuerung bis zu

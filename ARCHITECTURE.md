@@ -58,7 +58,11 @@ Auftragsvergleich und Verhalten laufender Wiederholungen sowie CLI-Exitcodes.
 Der [OAuth-/CIMD-Vertrag](OAUTH_CONTRACT.md) bestätigt feste Issuer-/Resource-
 Identitäten, ChatGPT-Adressen mit Issuer-Identifikation, drei kumulative Scopes,
 Zustimmung, Code-/Ablauffristen, CIMD-Abruf-/Cache-Limits und strikte Rotation.
-Die übrigen technischen Konkretisierungen dieses Dokuments bleiben Entwurf,
+Bestätigt sind außerdem die ergänzenden [Randfallentscheidungen](docs/contracts/DECISIONS.md):
+Lösch-Replay mit aktuellen Rechten, CIMD-Ausfall beim Refresh,
+technische Eingabegrenzen/Wartezeit, Tag-Verwaltung im Papierkorb und strikte
+Eingaben mit toleranten Clients für additive Antwortfelder.
+Weitere Konkretisierungen bleiben Entwurf,
 soweit sie nicht bereits ausdrücklich in der Produktvision beschlossen sind.
 Vor dem Grundgerüst werden alle weiteren Entscheidungsblöcke gemeinsam geklärt.
 

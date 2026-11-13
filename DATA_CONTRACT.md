@@ -49,6 +49,19 @@ Titel werden außen getrimmt. Markdown und Zusammenfassungen werden nicht
 automatisch umformatiert. Insbesondere bleiben Markdown-Zeilenumbrüche
 unverändert; Größenprüfung und Export verwenden die UTF-8-Darstellung dieses
 Inhalts. Passwörter werden weder getrimmt noch normalisiert.
+Ungültiges Unicode einschließlich isolierter Surrogate sowie U+0000 werden
+abgewiesen, nicht ersetzt oder abgeschnitten. Texttreue gilt für akzeptierte
+Eingaben; diese semantische Prüfung ergänzt die JSON-Schemas.
+
+## Tags und Papierkorb
+
+Tag-Umbenennung, Zusammenführung und vollständige Löschung ändern auch aktuelle
+Zuordnungen von Datensätzen im Papierkorb desselben aktiven Vaults. Dabei gelten
+dieselben Revisions- und Inhaltsversionsregeln wie für aktive Datensätze.
+Löschfristen und alte Snapshots bleiben unverändert. Vaults im Papierkorb sind
+nicht bearbeitbar. Historische Inhaltswiederherstellung setzt einen aktiven
+Datensatz voraus; gegebenenfalls muss zuerst aus dem Papierkorb wiederhergestellt
+werden.
 
 ## Leere Werte und Teiländerungen
 
