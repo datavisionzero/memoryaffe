@@ -34,6 +34,10 @@ Bestätigt sind Kontoverwaltung und Wiederherstellung: mehrere Admins mit Schutz
 des letzten aktiven Admins, E-Mail-Bindung der Einladung, E-Mail-Änderung,
 2FA-Verwaltung, getrennter Passwort-Reset und umfassende Kontowiederherstellung,
 endgültige Kontolöschung sowie erneute Authentifizierung für Sicherheitsaktionen.
+Der Betriebs- und Veröffentlichungsumfang ist bestätigt: eine Anwendungsinstanz,
+HTTPS, feste Basis-URL, Infrastrukturkonfiguration, bewusste Updates,
+Zielplattformen, GitHub-Veröffentlichung, getrennte Zustandsprüfungen und
+dokumentierte Leistungsmessungen.
 Die übrigen technischen Konkretisierungen dieses Dokuments bleiben Entwurf,
 soweit sie nicht bereits ausdrücklich in der Produktvision beschlossen sind.
 Vor dem Grundgerüst werden alle weiteren Entscheidungsblöcke gemeinsam geklärt.
@@ -391,15 +395,35 @@ mit nachvollziehbarer Fokusführung nach Dialogen und Aktionen.
 
 ## Betrieb und Datenmitnahme
 
-Compose startet Anwendung und PostgreSQL; ein optionaler Reverse Proxy nach
-planaffe-Vorbild übernimmt HTTPS. PostgreSQL erhält keinen öffentlichen Port.
+Compose startet genau eine Anwendungsinstanz und PostgreSQL. Clusterbetrieb
+und Hochverfügbarkeitsversprechen gehören nicht zum MVP. HTTPS wird mit einem
+optionalen mitgelieferten Reverse Proxy oder einem vorhandenen Proxy
+dokumentiert. PostgreSQL erhält keinen öffentlichen Port. HTTPS gilt auch
+im LAN; unverschlüsseltes HTTP bleibt auf lokale Entwicklung beschränkt.
 LAN-Betrieb dokumentiert lokale Zertifikate und Vertrauensstellung ohne
 öffentlichen Zertifikatsdienst. Secrets liegen außerhalb des Images.
+Eine feste Basis-URL gilt für Webapp, Links und OAuth; ein Domainwechsel
+verlangt erneute Verbindung der MCP-Clients. Datenbank, Basis-URL und SMTP
+werden über Umgebungsvariablen beziehungsweise Secret-Dateien konfiguriert.
+Persönliche Einstellungen verwalten Nutzer in der Webapp.
 
 Migrationen laufen vor Annahme von Requests, gegen parallele Ausführung
 gesichert. Ein fehlgeschlagener Start meldet nicht bereit. Upgrades sind
 betreibergeführt; Rückkehr erfolgt über passende Vorversion und vorheriges
 Backup statt über ungeprüfte Rückwärtsmigrationen.
+Containerimages sind versioniert, Versionen ausdrücklich gewählt und Updates
+nicht automatisch. Linux-Serverimages werden für `amd64` und `arm64` gebaut.
+Eigenständige CLI-Downloads mit Prüfsummen gibt es für Windows, Linux und macOS,
+jeweils `amd64` und `arm64`. GitHub Releases enthalten CLI und Versionshinweise,
+GitHub Container Registry die Images. Veröffentlichung setzt erfolgreiche
+automatisierte Prüfungen voraus; zusätzliche Paketmanager-Repositories sind
+zunächst nicht vorgesehen.
+
+Liveness und Readiness prüfen getrennt laufenden Prozess und Betriebsbereitschaft.
+Öffentliche Antworten enthalten keine internen Details; weitergehende Diagnose
+liegt im Adminbereich. Suche, Import und Versionierung werden vor Veröffentlichung
+mit dokumentiertem Testdatenbestand und angegebener Hardware gemessen; es gibt
+keine ungeprüften Leistungszusagen.
 
 ZIP-Export enthält alle aktuellen aktiven Datensätze als `records/<id>.md`
 und eine zentrale `manifest.json` mit Formatversion, Titeln, Zusammenfassungen,
@@ -436,7 +460,8 @@ Logs vermeiden Inhalte und Geheimnisse; Telemetrie wird nicht eingebaut.
 - Genaue Request-Schemas, Fehlercodes, technische Abbildung der beschlossenen
   Limits/Wiederholungsregeln sowie verbleibende Betriebslimits.
 - Tag-Normalisierung, Volltext-Sprachkonfiguration und ZIP-Manifest.
-- Runtime-/Paketversionen, CLI-Zielarchitekturen und Release-Matrix.
+- Runtime-/Paketversionen und konkrete Build-/Testmatrix für die beschlossenen
+  Server- und CLI-Zielplattformen.
 
 Diese Punkte werden vor dem Grundgerüstbau entschieden und dokumentiert.
 Der [Umsetzungsplan](IMPLEMENTATION.md) trennt diese Vorarbeit von der Umsetzung.

@@ -413,14 +413,39 @@ Docker Compose ist der primäre Installationsweg mit Anwendung und PostgreSQL.
 Eine dokumentierte Beispielkonfiguration gehört zum MVP. Im laufenden Betrieb
 sind keine Cloud-Dienste verpflichtend; es gibt keine Telemetrie und keine
 eigene KI-Anbindung. Rein lokale Nutzung erfordert keinen Internetzugriff.
+Der MVP betreibt genau eine Anwendungsinstanz plus PostgreSQL, ohne
+Clusterbetrieb oder Hochverfügbarkeitsversprechen. Dokumentiert werden Betrieb
+mit optionalem mitgeliefertem Reverse Proxy und hinter einem vorhandenen Proxy.
+HTTPS gilt auch im LAN; unverschlüsseltes HTTP ist nur für lokale Entwicklung
+vorgesehen.
+
+Eine fest konfigurierte Basis-URL gilt für Webapp, Links und OAuth. Ein
+Domainwechsel ist eine bewusste Betreiberaktion und erfordert erneutes
+Verbinden der MCP-Clients. Datenbank, Basis-URL und SMTP werden über
+Umgebungsvariablen beziehungsweise Secret-Dateien konfiguriert, persönliche
+Nutzereinstellungen über die Webapp.
 
 Updates werden bewusst vom Betreiber durchgeführt. Zum Veröffentlichungsprozess
 gehören Versionshinweise, Datenbankmigrationen und eine Anleitung zur vorherigen
 Sicherung.
+Containerimages sind versioniert und Versionen werden ausdrücklich gewählt;
+automatische Updates gibt es nicht. Migrationen laufen beim Start; bei Fehlern
+bleibt die Anwendung nicht bereit.
+
+Serverimages werden als Linux-Container für `amd64` und `arm64` ausgeliefert.
+Die CLI erscheint als eigenständiger Download für Windows, Linux und macOS,
+jeweils für `amd64` und `arm64`, mit Prüfsummen. GitHub Releases enthalten CLI
+und Versionshinweise, die GitHub Container Registry die Images. Veröffentlichung
+erfolgt erst nach erfolgreichen automatisierten Prüfungen. Zusätzliche
+Paketmanager-Repositories gehören zunächst nicht zum Umfang.
 
 Der separate Adminbereich zeigt Anwendungsversion, Systemzustand und
 Speicherverbrauch. Betriebslogs enthalten standardmäßig keine Markdown-Inhalte,
 Passwörter oder Zugangsschlüssel.
+Getrennte Zustandsprüfungen melden laufenden Prozess und Betriebsbereitschaft;
+öffentliche Antworten enthalten keine internen Details. Vor Veröffentlichung
+werden Suche, Import und Versionierung mit dokumentiertem Testdatenbestand
+und angegebener Hardware gemessen. Ungeprüfte Leistungszusagen gibt es nicht.
 
 ## Technische Ausrichtung
 
@@ -430,8 +455,8 @@ Die technische Grundlage orientiert sich an planaffe:
 - PostgreSQL als Datenbank,
 - React für die Webapp.
 
-Die konkrete Architektur und gemeinsame Konventionen mit planaffe werden bei
-der Umsetzung festgelegt. Self-Hosting, kleine Mehrbenutzerinstallationen und
+Die konkrete Architektur und gemeinsame Konventionen mit planaffe werden vor
+der Umsetzung in [ARCHITECTURE.md](ARCHITECTURE.md) festgelegt. Self-Hosting, kleine Mehrbenutzerinstallationen und
 der Betrieb ohne SMTP sind dabei grundlegende Anforderungen.
 
 ## Umfang der ersten Version
@@ -446,9 +471,9 @@ Komfortfunktionen folgen später.
 - **MCP-Kompatibilität:** ChatGPT wird als erster Client getestet, Claude
   anschließend. Anhand dieser Clients wird auch der Bedarf für eine zusätzliche
   lokale Prozessanbindung geprüft.
-- **Agentenauthentifizierung:** Wie werden Zugangsdaten technisch ausgegeben
-  und der Widerruf umgesetzt? Die benannten Zugänge und Berechtigungsstufen
-  pro Vault sind festgelegt.
+- **Agentenauthentifizierung:** CLI-Tokens sowie eigene OAuth-Implementierung
+  mit CIMD sind beschlossen. Der genaue Protokollvertrag und dessen praktische
+  Kompatibilitätsprüfung stehen noch aus.
 - **Datenmitnahme und Betriebssicherung:** Das genaue ZIP- und Metadatenformat
   sowie die technischen Backup- und Wiederherstellungsabläufe sind festzulegen.
   Der Funktionsumfang von Export, Import und Installationssicherung steht fest.

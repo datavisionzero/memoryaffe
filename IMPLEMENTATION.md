@@ -9,7 +9,8 @@ bereits umgesetzt. Der MVP ist erst nach Etappe 7 vollständig.
 Architektur/Toolchains sowie die Regeln zu Anmeldung und Sicherheit sind
 bestätigt, ebenso Kontowiederherstellung, Datenregeln, Suchverhalten,
 Datenmitnahme und zentrale UI-Abläufe. Weitere Vertragsdetails und Randfälle
-sowie Betrieb und Lieferung werden noch gemeinsam entschieden.
+sowie technische Betriebs- und Lieferdetails werden noch gemeinsam entschieden.
+Der grundsätzliche Betriebs- und Veröffentlichungsumfang ist bestätigt.
 Beschlossen ist eine begrenzte OAuth-
 Eigenimplementierung mit CIMD und einer betreiberverwalteten Liste erlaubter
 Client-URLs, zunächst ChatGPT, ohne DCR. ASP.NET Core Identity bleibt die
@@ -191,6 +192,10 @@ Konfiguration, Release-Artefakte mit Prüfsummen und Versionshinweise erstellen.
 Upgrade-, Backup- und Wiederherstellungsanleitung praktisch erproben.
 Betreiberbefehle sichern Datenbank, erforderliche Konfiguration und Schlüssel;
 Zeitplanung bleibt beim Betreiber, ohne Backup-Planer in der Webapp.
+Linux-Container für `amd64`/`arm64` in der GitHub Container Registry und
+eigenständige CLI-Downloads für Windows/Linux/macOS jeweils `amd64`/`arm64`
+mit Prüfsummen in GitHub Releases bereitstellen. Versionen werden ausdrücklich
+gewählt; keine automatischen Updates und zunächst keine Paketmanager-Repositories.
 
 **Abnahme:** Frische Installation und Ersteinrichtung gelingen anhand der
 Dokumentation. LAN-Betrieb funktioniert nach Bereitstellung der Artefakte ohne
@@ -198,6 +203,15 @@ Internetzugriff. Upgrade erhält Daten; Wiederherstellung auf frischer Instanz
 stellt Konten, Einstellungen und Versionen wieder her. Logs enthalten keine
 Inhalte oder Zugangsdaten. Finaler ChatGPT-Test und sämtliche erforderlichen
 CI-Prüfungen sind erfolgreich. Erst dann Release als vollständigen MVP markieren.
+Die dokumentierten Installationen verwenden genau eine Anwendungsinstanz;
+HTTPS wird sowohl mit optionalem mitgeliefertem als auch vorhandenem Proxy
+und im LAN geprüft. HTTP bleibt lokaler Entwicklung vorbehalten. Feste Basis-URL,
+Domainwechsel mit MCP-Neuverbindung und Infrastrukturkonfiguration über
+Umgebungsvariablen/Secret-Dateien sind dokumentiert. Migrationsfehler verhindern
+Readiness. Getrennte Liveness-/Readiness-Antworten enthalten keine internen Details.
+Alle Zielartefakte werden gebaut und nach der vorab festgelegten Testmatrix
+geprüft. Messungen für Suche, Import und Versionierung nennen Testdaten und
+Hardware und begründen veröffentlichte Leistungsangaben.
 
 ## Lieferregel je Etappe
 
