@@ -137,8 +137,10 @@ function App() {
   const editing = route.endsWith("/edit") || route.endsWith("/new");
   const flowToken = route === initialTokenRoute ? initialToken : "";
   const passwordFlow = route === "/reset-password" || route === "/recover-account";
-  const pending = useRef(0);
+  const pending = useRef(new Map<symbol, () => boolean>());
+  const authGeneration = useRef(0);
   const searchGeneration = useRef(0);
+  const updateBusy = () => setBusy([...pending.current.values()].some(isCurrent => isCurrent()));
   function go(path: string, force = false) {
     if (
       dirty &&
@@ -152,6 +154,8 @@ function App() {
     )
       return;
     if (path !== route) {
+      authGeneration.current++;
+      updateBusy();
       initialToken = "";
       setFactor(false);
     }
@@ -168,13 +172,15 @@ function App() {
     navigate(path + (vaultId ? "?vault=" + vaultId : ""));
     setRoute(path);
   }
-  async function run(fn: () => Promise<void>, clearError = true) {
+  async function run(fn: () => Promise<void>, clearError = true, isCurrent = () => true) {
     if (clearError) setError("");
-    pending.current++;
+    const requestId = Symbol();
+    pending.current.set(requestId, isCurrent);
     setBusy(true);
     try {
       await fn();
     } catch (e) {
+      if (!isCurrent()) return;
       if (e instanceof ApiError && e.code === "flow_expired" && factor)
         setFactor(false);
       if (e instanceof ApiError && e.code === "csrf_failed" && profile) {
@@ -193,8 +199,8 @@ function App() {
         setAccessNeedsLogin(true);
       setError(e instanceof Error ? e.message : String(e));
     } finally {
-      pending.current--;
-      setBusy(pending.current > 0);
+      pending.current.delete(requestId);
+      updateBusy();
     }
   }
   async function loadVaults() {
@@ -295,6 +301,8 @@ function App() {
       }
       setDirty(false);
       if (location.pathname !== route) {
+        authGeneration.current++;
+        updateBusy();
         initialToken = "";
         setFactor(false);
       }
@@ -336,12 +344,14 @@ function App() {
     const timer = setTimeout(() => void run(() => search(), false), 220);
     return () => clearTimeout(timer);
   }, [query, tagFilter, route, vaultId, !!profile]);
-  async function authenticated(p: Profile) {
+  async function authenticated(p: Profile, isCurrent = () => true) {
+    if (!isCurrent()) return;
     initialToken = "";
     setFactor(false);
     setAccessNeedsLogin(false);
     setProfile(p);
     await refreshCsrf();
+    if (!isCurrent()) return;
     go(
       location.pathname.startsWith("/oauth/consent/")
         ? location.pathname
@@ -396,6 +406,15 @@ function App() {
       e.preventDefault();
       const data = new FormData(e.currentTarget);
       void run(() => fn(data));
+    };
+  const submitAuth =
+    (fn: (data: FormData, isCurrent: () => boolean) => Promise<void>) =>
+    (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      const data = new FormData(e.currentTarget);
+      const generation = authGeneration.current;
+      const isCurrent = () => generation === authGeneration.current;
+      void run(() => fn(data, isCurrent), true, isCurrent);
     };
   function field(label: string, name: string, type = "text", value?: string) {
     if (name === "newPassword")
@@ -473,10 +492,13 @@ function App() {
             )}
             <form
               key={route + (factor ? ":factor" : ":password")}
-              onSubmit={submit(async (d) => {
+              onSubmit={submitAuth(async (d, isCurrent) => {
                 const val = (k: string) => String(d.get(k) || "");
+                const acceptProfile = async (p: Profile) => {
+                  if (isCurrent()) await authenticated(p, isCurrent);
+                };
                 if (factor) {
-                  await authenticated(
+                  await acceptProfile(
                     await api("/auth/login/second-factor", "POST", {
                       factor: { kind: val("factorKind"), code: val("code") },
                     }),
@@ -484,7 +506,7 @@ function App() {
                   return;
                 }
                 if (route === "/setup") {
-                  await authenticated(
+                  await acceptProfile(
                     await api("/setup", "POST", {
                       email: val("email"),
                       password: val("password"),
@@ -494,7 +516,7 @@ function App() {
                   return;
                 }
                 if (route === "/invite") {
-                  await authenticated(
+                  await acceptProfile(
                     await api("/auth/invitations/redeem", "POST", {
                       token: flowToken || val("token"),
                       password: val("password"),
@@ -514,6 +536,7 @@ function App() {
                       "POST",
                       { token: flowToken, newPassword: val("newPassword") },
                     );
+                    if (!isCurrent()) return;
                     initialToken = "";
                     go("/login");
                     setNotice("Passwort gespeichert. Bitte anmelden.");
@@ -521,6 +544,7 @@ function App() {
                     await api("/auth/password-reset/request", "POST", {
                       email: val("email"),
                     });
+                    if (!isCurrent()) return;
                     setNotice(
                       "Wenn ein E-Mail-Versand möglich ist, erhältst du weitere Informationen.",
                     );
@@ -532,10 +556,11 @@ function App() {
                   password: val("password"),
                   rememberMe: d.get("rememberMe") === "on",
                 });
+                if (!isCurrent()) return;
                 if (r.status === "secondFactorRequired") {
                   setFactor(true);
                   await refreshCsrf();
-                } else await authenticated(r.profile);
+                } else await acceptProfile(r.profile);
               })}
             >
               {factor ? (
@@ -598,6 +623,8 @@ function App() {
             {factor && (
               <button className="text-button" onClick={() => {
                 setFactor(false);
+                authGeneration.current++;
+                updateBusy();
                 setError("");
                 setNotice("Bitte mit E-Mail-Adresse und Passwort neu anmelden.");
               }}>Anmeldung neu beginnen</button>

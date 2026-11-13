@@ -46,6 +46,19 @@ Fehler sowie ASCII-/Emoji-Grenzen 14/15/128/129 und unveränderte Leerzeichen.
 Clientdrift und der echte OAuth-/MCP-SDK-Korpus bestanden ebenfalls.
 Bestehende Entwicklungsdaten wurden für die Tests nicht geändert.
 
+Der erste Linux-CI-Lauf dieser Korrektur bestand alle 14 API-/PG-Prüfgruppen
+und den MCP-SDK-Korpus, deckte im erweiterten Browsertest aber zusätzlich ein
+Navigationsrennen auf: Eine noch ausstehende Loginantwort konnte nach einem
+Routenwechsel erneut das Faktorformular aktivieren. Authantworten sind nun
+an die aktuelle Navigation gebunden, einschließlich verzögerter Fehler und
+CSRF-Aktualisierung. Die Ladeanzeige verwaltet einzelne laufende Anfragen;
+veraltete Authanfragen blockieren keine neue Form und geben neuere Anfragen
+beim Abschluss nicht vorzeitig frei. Sechs weitere deterministische
+Browserregressionen prüfen verzögerte Antworten, Zurücknavigation, parallele
+Anfragen und den CSRF-Abschluss. Ein erneuter unabhängiger Nachreview bestand
+neun gezielte Prüfgruppen. Der abschließende Windows-Browserlauf bestand
+alle 17 Tests gemeinsam in 16,6 s; Webbuild und Typ-/Vertragsdrift waren grün.
+
 ### Bestehende Prototypnachweise
 
 - `dotnet restore memoryaffe.sln --locked-mode` und

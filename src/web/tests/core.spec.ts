@@ -289,6 +289,7 @@ test("Einladung ohne SMTP, mobile Redaktion, Dialogfokus, externe Bilder und fre
   await user.getByLabel("E-Mail-Adresse", { exact: true }).fill(invitedEmail);
   await user.getByLabel("Passwort", { exact: true }).fill(password);
   await user.getByRole("button", { name: "Anmelden", exact: true }).click();
+  await expect(user.getByLabel("Code", { exact: true })).toBeVisible();
   await user.getByRole("button", { name: "Passwort vergessen?", exact: true }).click();
   await expect(user.getByLabel("E-Mail-Adresse", { exact: true })).toBeVisible();
   await expect(user.getByLabel("Code", { exact: true })).toHaveCount(0);
