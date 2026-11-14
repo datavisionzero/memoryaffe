@@ -1312,12 +1312,6 @@ export interface components {
         };
         ActionRequest: {
             /** @constant */
-            operationId: "web_update_profile";
-            path: Record<string, never>;
-            query: Record<string, never>;
-            body: components["schemas"]["ProfilePatch"];
-        } | {
-            /** @constant */
             operationId: "web_delete_account";
             path: Record<string, never>;
             query: {
@@ -1332,48 +1326,6 @@ export interface components {
             body: Record<string, never>;
         } | {
             /** @constant */
-            operationId: "web_disable_totp";
-            path: Record<string, never>;
-            query: Record<string, never>;
-            body: Record<string, never>;
-        } | {
-            /** @constant */
-            operationId: "web_replace_recovery_codes";
-            path: Record<string, never>;
-            query: Record<string, never>;
-            body: Record<string, never>;
-        } | {
-            /** @constant */
-            operationId: "web_create_agent_access";
-            path: Record<string, never>;
-            query: Record<string, never>;
-            body: components["schemas"]["AgentCreate"];
-        } | {
-            /** @constant */
-            operationId: "web_update_agent_access";
-            path: {
-                id: components["schemas"]["Id"];
-            };
-            query: Record<string, never>;
-            body: components["schemas"]["AgentPatch"];
-        } | {
-            /** @constant */
-            operationId: "web_issue_token";
-            path: {
-                id: components["schemas"]["Id"];
-            };
-            query: Record<string, never>;
-            body: components["schemas"]["TokenCreate"];
-        } | {
-            /** @constant */
-            operationId: "admin_update_account";
-            path: {
-                id: components["schemas"]["Id"];
-            };
-            query: Record<string, never>;
-            body: components["schemas"]["AccountPatch"];
-        } | {
-            /** @constant */
             operationId: "admin_delete_account";
             path: {
                 id: components["schemas"]["Id"];
@@ -1382,29 +1334,6 @@ export interface components {
                 expectedRevision: components["schemas"]["Revision"];
             };
             body: null;
-        } | {
-            /** @constant */
-            operationId: "admin_invite";
-            path: Record<string, never>;
-            query: Record<string, never>;
-            body: {
-                /** Format: email */
-                email: string;
-                /** @enum {string} */
-                role: "user" | "admin";
-                sendEmail?: boolean;
-            };
-        } | {
-            /** @constant */
-            operationId: "admin_issue_recovery";
-            path: {
-                id: components["schemas"]["Id"];
-            };
-            query: Record<string, never>;
-            body: {
-                expectedRevision: components["schemas"]["Revision"];
-                sendEmail?: boolean;
-            };
         };
     };
     responses: never;
@@ -2017,7 +1946,7 @@ export interface operations {
                 expectedRevision: components["schemas"]["Revision"];
             };
             header: {
-                /** @description Required for the sensitive action or rights expansion; see WEB_PROTOCOL.md. */
+                /** @description Required before account deletion or TOTP setup; see WEB_PROTOCOL.md. */
                 "X-Action-Proof": string;
             };
             path?: never;
@@ -2048,10 +1977,7 @@ export interface operations {
     web_update_profile: {
         parameters: {
             query?: never;
-            header?: {
-                /** @description Required for the sensitive action or rights expansion; see WEB_PROTOCOL.md. */
-                "X-Action-Proof"?: string;
-            };
+            header?: never;
             path?: never;
             cookie?: never;
         };
@@ -2226,7 +2152,6 @@ export interface operations {
         requestBody: {
             content: {
                 "application/json": {
-                    currentPassword: string;
                     /** Format: email */
                     newEmail: string;
                 };
@@ -2436,7 +2361,7 @@ export interface operations {
         parameters: {
             query?: never;
             header: {
-                /** @description Required for the sensitive action or rights expansion; see WEB_PROTOCOL.md. */
+                /** @description Required before account deletion or TOTP setup; see WEB_PROTOCOL.md. */
                 "X-Action-Proof": string;
             };
             path?: never;
@@ -2514,10 +2439,7 @@ export interface operations {
     web_disable_totp: {
         parameters: {
             query?: never;
-            header: {
-                /** @description Required for the sensitive action or rights expansion; see WEB_PROTOCOL.md. */
-                "X-Action-Proof": string;
-            };
+            header?: never;
             path?: never;
             cookie?: never;
         };
@@ -2550,10 +2472,7 @@ export interface operations {
     web_replace_recovery_codes: {
         parameters: {
             query?: never;
-            header: {
-                /** @description Required for the sensitive action or rights expansion; see WEB_PROTOCOL.md. */
-                "X-Action-Proof": string;
-            };
+            header?: never;
             path?: never;
             cookie?: never;
         };
@@ -3219,10 +3138,7 @@ export interface operations {
     web_create_agent_access: {
         parameters: {
             query?: never;
-            header: {
-                /** @description Required for the sensitive action or rights expansion; see WEB_PROTOCOL.md. */
-                "X-Action-Proof": string;
-            };
+            header?: never;
             path?: never;
             cookie?: never;
         };
@@ -3319,10 +3235,7 @@ export interface operations {
     web_update_agent_access: {
         parameters: {
             query?: never;
-            header?: {
-                /** @description Required for the sensitive action or rights expansion; see WEB_PROTOCOL.md. */
-                "X-Action-Proof"?: string;
-            };
+            header?: never;
             path: {
                 id: components["schemas"]["Id"];
             };
@@ -3394,10 +3307,7 @@ export interface operations {
     web_issue_token: {
         parameters: {
             query?: never;
-            header: {
-                /** @description Required for the sensitive action or rights expansion; see WEB_PROTOCOL.md. */
-                "X-Action-Proof": string;
-            };
+            header?: never;
             path: {
                 id: components["schemas"]["Id"];
             };
@@ -3674,7 +3584,7 @@ export interface operations {
                 expectedRevision: components["schemas"]["Revision"];
             };
             header: {
-                /** @description Required for the sensitive action or rights expansion; see WEB_PROTOCOL.md. */
+                /** @description Required before account deletion or TOTP setup; see WEB_PROTOCOL.md. */
                 "X-Action-Proof": string;
             };
             path: {
@@ -3707,10 +3617,7 @@ export interface operations {
     admin_update_account: {
         parameters: {
             query?: never;
-            header?: {
-                /** @description Required for the sensitive action or rights expansion; see WEB_PROTOCOL.md. */
-                "X-Action-Proof"?: string;
-            };
+            header?: never;
             path: {
                 id: components["schemas"]["Id"];
             };
@@ -3780,10 +3687,7 @@ export interface operations {
     admin_invite: {
         parameters: {
             query?: never;
-            header?: {
-                /** @description Required for the sensitive action or rights expansion; see WEB_PROTOCOL.md. */
-                "X-Action-Proof"?: string;
-            };
+            header?: never;
             path?: never;
             cookie?: never;
         };
@@ -3894,10 +3798,7 @@ export interface operations {
     admin_issue_recovery: {
         parameters: {
             query?: never;
-            header: {
-                /** @description Required for the sensitive action or rights expansion; see WEB_PROTOCOL.md. */
-                "X-Action-Proof": string;
-            };
+            header?: never;
             path: {
                 id: components["schemas"]["Id"];
             };

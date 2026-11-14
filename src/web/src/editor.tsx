@@ -15,6 +15,11 @@ export default function Editor({
       theme={theme}
       extensions={[markdown()]}
       height="450px"
+      onCreateEditor={(view) => {
+        view.contentDOM.setAttribute("aria-label", "Markdown");
+        view.contentDOM.setAttribute("data-1p-ignore", "true");
+        view.contentDOM.setAttribute("data-lpignore", "true");
+      }}
       onChange={onChange}
     />
   );

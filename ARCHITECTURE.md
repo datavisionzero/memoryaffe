@@ -201,7 +201,7 @@ den letzten aktiven Admin entfernen; dies gilt auch bei konkurrierenden
 Operationen. Einladungen sind an die vom Admin angegebene, beim Einlösen
 unveränderbare E-Mail-Adresse gebunden. Ohne SMTP dient diese als Anmeldename
 ohne behauptete Mailbox-Verifizierung. Mit SMTP erfordert eine E-Mail-Änderung
-das Passwort des Nutzers und Bestätigung der neuen Adresse per Link; ohne SMTP
+die angemeldete Sitzung und Bestätigung der neuen Adresse per Link; ohne SMTP
 nimmt der Admin die Änderung nach persönlicher Abstimmung vor.
 
 Passwörter haben 15 bis 128 Zeichen; Leerzeichen, Einfügen und Passwortmanager
@@ -228,7 +228,8 @@ Sie wird ausschließlich später im Profil angeboten. Weder Ersteinrichtung noch
 Einladung/Kontoanlage enthalten einen 2FA-Schritt oder eine Aufforderung dazu.
 Passkeys und externe Loginanbieter sind zunächst nicht vorgesehen.
 Aktivierung erfordert das aktuelle Passwort und einen erfolgreichen TOTP-Test.
-Abschalten oder Ersetzen erfordert Passwort plus TOTP oder Wiederherstellungscode.
+Ersetzen erfordert Passwort plus TOTP oder Wiederherstellungscode.
+Abschalten und neue Recovery-Codes benötigen keine erneute Authentifizierung.
 Neue Wiederherstellungscodes machen sämtliche alten Codes ungültig.
 
 Für einen vollständig verlorenen zweiten Faktor erzeugt der Admin einen
@@ -241,8 +242,7 @@ noch einen zweiten Admin.
 
 Nutzer können das eigene Konto löschen, Admins andere Konten. Nach ausdrücklicher
 Bestätigung werden Konto, Vaults, Historie und Zugänge endgültig entfernt,
-ohne Kontopapierkorb. Kontolöschung, Rollenänderungen und umfassende
-Kontowiederherstellung verlangen eine erneute Passwortbestätigung des
+ohne Kontopapierkorb. Kontolöschungen verlangen eine erneute Passwortbestätigung des
 Handelnden und bei aktivierter 2FA zusätzlich den zweiten Faktor. Der
 Container-Wiederherstellungsweg setzt stattdessen Infrastrukturzugriff voraus.
 Extern aufbewahrte Backups bleiben in Verantwortung des Betreibers.

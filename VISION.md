@@ -366,7 +366,7 @@ die reguläre Anmeldung mit E-Mail-Adresse und Passwort.
 Einladungen sind an die vom Admin angegebene E-Mail-Adresse gebunden; beim
 Einlösen ist diese nicht änderbar. Ohne SMTP dient sie als Anmeldename, ohne
 behauptete Bestätigung der Mailbox-Inhaberschaft. Mit SMTP können Nutzer ihre
-Adresse nach Passwortbestätigung und Bestätigung der neuen Adresse per Link
+Adresse in einer angemeldeten Sitzung nach Bestätigung der neuen Adresse per Link
 ändern. Ohne SMTP ändert der Admin sie nach persönlicher Abstimmung.
 
 Mehrere Admins sind erlaubt. Der letzte aktive Admin darf weder gesperrt noch
@@ -381,7 +381,7 @@ funktioniert ohne SMTP. Die Aktivierung erfolgt ausschließlich später im Profi
 Bei der Ersteinrichtung und der Kontoanlage gibt es weder einen 2FA-Schritt
 noch eine Aufforderung zur Einrichtung.
 Die Aktivierung verlangt das aktuelle Passwort und einen erfolgreichen
-TOTP-Test. Abschalten oder Ersetzen verlangt Passwort plus TOTP oder einen
+TOTP-Test. Ersetzen verlangt Passwort plus TOTP oder einen
 Wiederherstellungscode. Neue Wiederherstellungscodes machen alte ungültig.
 
 Die gesamte Anwendung muss ohne SMTP-Server betreibbar sein. Ohne SMTP erzeugt
@@ -402,8 +402,7 @@ Der Admin kann Konten sperren. Dadurch enden bestehende Sitzungen und die
 Agentenzugänge des Kontos werden sofort unbrauchbar. Inhalte bleiben erhalten.
 Nutzer können ihr eigenes Konto löschen; Admins können andere Konten löschen.
 Nach ausdrücklicher Bestätigung werden Konto, Vaults, Historie und Zugänge
-endgültig entfernt, ohne zusätzlichen Kontopapierkorb. Kontolöschung,
-Rollenänderungen und umfassende Kontowiederherstellung verlangen erneut das
+endgültig entfernt, ohne zusätzlichen Kontopapierkorb. Kontolöschungen verlangen erneut das
 Passwort des Handelnden und bei aktivierter 2FA zusätzlich den zweiten Faktor.
 Der Container-Wiederherstellungsweg setzt stattdessen Infrastrukturzugriff voraus.
 

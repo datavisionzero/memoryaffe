@@ -48,6 +48,9 @@ Die Module prüfen:
   erklärende Passwortvalidierung für Setup/Einladung mit Unicodegrenzen,
   strikte Eingabe, parallele Revisionen, Noop/Historie, Idempotenz/Löschreplay,
   einmalige aktionsgebundene Bestätigung und alle acht echten Go-CLI-Operationen.
+- `account-actions.mjs`: Admin-Einladung, Rollen-/E-Mail-Änderung und Recovery
+  ohne erneute Anmeldung; Passwortänderung sowie eigene/administrative
+  Kontolöschung bleiben geschützt, einschließlich CSRF und Nachweisbindung.
 - `lifecycle.mjs`: Versionslimit0/2 und Senkung im Papierkorb, Tagaktionen auf
   Papierkorbinhalten mit unveränderten alten Snapshots, Moves mit ID/Historie,
   unmittelbare Agentenrechte, Vaultlöschung/Restore ohne wiederbelebte Grants,

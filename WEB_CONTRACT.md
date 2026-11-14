@@ -49,8 +49,8 @@ Faktors; dabei gibt es naturgemäß keinen bisherigen zweiten Faktor.
 
 Es werden zehn einzeln verwendbare Wiederherstellungscodes ausgegeben. Codes
 werden nicht im Klartext gespeichert oder nachträglich angezeigt. Ihr Verbrauch
-ist atomar. Neue Codes entwerten sämtliche alten Codes. Die bestehenden
-Anforderungen an Passwort und vorhandenen zweiten Faktor gelten weiterhin.
+ist atomar. Neue Codes entwerten sämtliche alten Codes. Die Ausgabe neuer Codes und das Abschalten von 2FA verlangen innerhalb einer
+angemeldeten Sitzung keine erneute Passwort- oder Faktorbestätigung.
 Ersteinrichtung und Kontoanlage enthalten weder 2FA-Pflicht noch Aufforderung
 zur Einrichtung, auch nicht für Administratoren.
 
@@ -60,14 +60,16 @@ Erneut erforderlich sind das Passwort des Handelnden und, falls eingerichtet,
 dessen TOTP- oder Wiederherstellungscode bei:
 
 - eigener oder administrativer Kontolöschung;
-- Änderung von Adminrollen und umfassender Kontowiederherstellung;
-- Einrichtung, Ersetzung oder Abschaltung von 2FA sowie neuen Recovery-Codes;
-- Erstellung neuer CLI-Tokens einschließlich Tokenwechsel;
-- Erweiterung von Agentenrechten.
+- Vorbereitung der Einrichtung oder Ersetzung von 2FA.
+
+Bei Passwortänderung wird das aktuelle Passwort direkt im Änderungsauftrag geprüft.
+Alle anderen Aktionen angemeldeter Nutzer benötigen kein erneutes Passwort,
+insbesondere CLI-Zugänge/Tokens, Rechteerweiterungen, Tag-Erlaubnis,
+Adminrollen, E-Mail-Änderungen und administrative Kontowiederherstellung.
+Sitzungs-, CSRF-, Rollen-, Eigentümer- und Revisionsprüfungen bleiben erforderlich.
 
 Der Nachweis gilt fünf Minuten und ist an die aktuelle Sitzung, die konkrete
-Aktion, ihr Ziel und die vorbereiteten Angaben gebunden. Eine Bestätigung für
-Zugang A kann keine erweiterten Rechte für Zugang B freigeben. Änderung des
+Aktion, ihr Ziel und die vorbereiteten Angaben gebunden. Ein Setup-Nachweis kann keine Kontolöschung freigeben. Änderung des
 Auftrags verlangt einen neuen Nachweis. Die Aktion prüft Rechte, Revision und
 Kontostatus erneut. Der Nachweis schaltet keine allgemeine Adminsitzung frei.
 Erfolgreiche Ausführung verbraucht ihn atomar; technische Ergebniswiederholung
@@ -76,7 +78,7 @@ darf keine zweite Aktion auslösen. Nachweise gehören nicht in URLs oder Logs.
 Rechtereduzierung und Widerruf bleiben ohne zusätzliche Passwortabfrage möglich.
 Normales Suchen, Bearbeiten und Löschen von Markdown benötigt ebenfalls keine
 solche Abfrage; vorgesehene Löschdialoge bleiben bestehen. Bestehende Regeln für
-Passwort-/E-Mail-Änderung und der beschlossene Betreiberweg zur Adminrettung
+Passwortänderung und der beschlossene Betreiberweg zur Adminrettung
 gelten weiter. Erstmalige OAuth-Zustimmung folgt dem eigenen OAuth-Vertrag.
 
 ## 4. Konkurrenzschutz außerhalb von Markdown
@@ -145,3 +147,17 @@ oder Dokumentationsprüfungen ersetzen diese Integrationsprüfungen nicht.
 - [OWASP: erneute Authentifizierung](https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html)
 
 Konkrete Fristen, Mengen und Aktionsgrenzen sind memoryaffe-Entscheidungen.
+
+## Kontonavigation und Formularsemantik
+
+Profileinstellungen sind ausschließlich oben rechts erreichbar. Unter `/app/profile`
+steht die Darstellung; obere Navigation führt zu getrennten Ansichten
+`appearance`, `password`, `two-factor`, `sessions`, `agents` und `delete`.
+Deep-Links, Neuladen und Browser-Zurück erhalten das gewählte Thema. Themes
+heißen Dark, Light und System. Seiten tragen sachliche Überschriften ohne Werbetexte.
+
+Fachliche Textfelder tragen eindeutige Namen und `autocomplete=off`, ergänzt um
+Ignore-Hinweise für Passwortmanager. Loginadresse verwendet `username`, bestehende
+Passwörter `current-password`, neue Passwörter `new-password`, Einmalcodes
+`one-time-code`. Betreibersecret und Einladungs-/Ausgabetokens sind keine
+Loginpasswörter. Passwortmanager können diese Hinweise durch eigene Heuristiken übergehen.

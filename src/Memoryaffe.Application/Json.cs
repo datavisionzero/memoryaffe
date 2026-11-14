@@ -109,7 +109,9 @@ public abstract class Service(IDataStore store, ISecurity security, ProductOptio
     protected void Proof(Actor a, Operation op)
     {
         User(a);
-        var fingerprint = J.Hash(J.Canonical(J.Obj(new { operationId = op.Id, path = op.Path, query = op.Query, body = op.Body })));
+        // DELETE action contracts have no body; transport uses an empty object internally.
+        JsonObject? body = op.Id is "web_delete_account" or "admin_delete_account" ? null : op.Body;
+        var fingerprint = J.Hash(J.Canonical(J.Obj(new { operationId = op.Id, path = op.Path, query = op.Query, body })));
         var h = J.Hash(op.Proof ?? "");
         var flow = Db.Flows.SingleOrDefault(x => x.Kind == "proof" && x.Hash == h && x.OwnerId == a.Account.Id && x.SessionId == a.Session!.Id);
         J.Require(flow != null && !flow.Consumed && flow.ExpiresAt > Clock.Now && flow.Data == fingerprint, 403, "reauthentication_required", "Bitte diese Aktion erneut mit Passwort bestätigen.");

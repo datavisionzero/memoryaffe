@@ -39,8 +39,11 @@ export async function runTotp({ owner, Browser, adminEmail, adminPassword, check
     const lifetime = Date.parse(current.expiresAt) - Date.parse(current.createdAt);
     check(Math.abs(lifetime - days * 86400000) < 1000, 'Second-factor server session lifetime differs from cookie');
   }
-  const request = { operationId: 'web_disable_totp', path: {}, query: {}, body: {} };
-  const proof = await owner.ok('POST', '/api/v1/me/reauthenticate', { password: adminPassword, factor: { kind: 'recoveryCode', code: recovery.codes[1] }, request }); secrets.add(proof.proof);
-  await owner.ok('POST', '/api/v1/me/totp/disable', {}, { headers: { 'X-Action-Proof': proof.proof } });
+  const replacements = await owner.ok('POST', '/api/v1/me/totp/recovery-codes', {});
+  check(replacements.codes.length === 10, 'Recovery codes can be replaced without reauthentication');
+  for (const c of replacements.codes) secrets.add(c);
+  const oldCodeLogin = await login();
+  expect(await oldCodeLogin.request('POST', '/api/v1/auth/login/second-factor', { factor: { kind: 'recoveryCode', code: recovery.codes[1] } }), 401, 'authentication_required');
+  await owner.ok('POST', '/api/v1/me/totp/disable', {});
   const disabled = await owner.ok('GET', '/api/v1/me'); check(disabled.totpEnabled === false, 'TOTP disable failed');
 }

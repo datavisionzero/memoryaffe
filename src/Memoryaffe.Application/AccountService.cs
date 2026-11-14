@@ -91,7 +91,7 @@ public class AccountService(IDataStore db, ISecurity security, ProductOptions op
             case "web_get_profile": result = Profile(account); break;
             case "web_logout": a.Session!.Revoked = true; result = new BrowserResult(J.Ok, ClearSession: true); break;
             case "web_update_profile":
-                if (b.ContainsKey("allowAgentTagCreation")) { J.Revision(b, account.Revision); if (account.AllowAgentTagCreation != b.Bool("allowAgentTagCreation")) { if (b.Bool("allowAgentTagCreation")) Proof(a, op); account.AllowAgentTagCreation = b.Bool("allowAgentTagCreation"); account.Revision++; } }
+                if (b.ContainsKey("allowAgentTagCreation")) { J.Revision(b, account.Revision); if (account.AllowAgentTagCreation != b.Bool("allowAgentTagCreation")) { account.AllowAgentTagCreation = b.Bool("allowAgentTagCreation"); account.Revision++; } }
                 account.Theme = b.Str("theme", account.Theme); account.Language = b.Str("language", account.Language); result = Profile(account); break;
             case "web_list_sessions": result = Page(Db.Sessions.Where(x => x.OwnerId == account.Id && !x.Revoked && x.ExpiresAt > Clock.Now).ToList().Where(x => x.LastActiveAt.Add(x.Remembered ? TimeSpan.FromDays(7) : TimeSpan.FromHours(12)) > Clock.Now).OrderByDescending(x => x.LastActiveAt).Select(s => (object)new { s.Id, browser = s.Device, device = s.Device, createdAt = J.Time(s.CreatedAt), lastActiveAt = J.Time(s.LastActiveAt), expiresAt = J.Time(s.ExpiresAt), current = s.Id == a.Session!.Id }), a, op); break;
             case "web_revoke_session": var session = Db.Sessions.SingleOrDefault(x => x.Id == p.Id("id") && x.OwnerId == account.Id) ?? throw J.Fail(404, "not_found", "Sitzung nicht gefunden."); session.Revoked = true; result = J.Ok; break;
@@ -109,8 +109,8 @@ public class AccountService(IDataStore db, ISecurity security, ProductOptions op
                 J.Require(pending != null && !pending.Consumed && pending.ExpiresAt > Clock.Now, 410, "flow_expired", "Einrichtung ist abgelaufen.");
                 var step = Security.VerifyTotp(Security.Unprotect(pending!.Data, "totp"), b.Str("code"), -1); J.Require(step.HasValue, 400, "validation_failed", "Ungültiger Testcode.");
                 pending.Consumed = true; account.TotpSecret = pending.Data; account.LastTotpStep = step!.Value; account.Revision++; result = Codes(account); break;
-            case "web_disable_totp": Proof(a, op); account.TotpSecret = null; account.LastTotpStep = -1; account.RecoveryHashes = []; account.Revision++; result = J.Ok; break;
-            case "web_replace_recovery_codes": Proof(a, op); J.Require(account.TotpSecret != null, 400, "validation_failed", "2FA ist nicht aktiviert."); result = Codes(account); break;
+            case "web_disable_totp": account.TotpSecret = null; account.LastTotpStep = -1; account.RecoveryHashes = []; account.Revision++; result = J.Ok; break;
+            case "web_replace_recovery_codes": J.Require(account.TotpSecret != null, 400, "validation_failed", "2FA ist nicht aktiviert."); result = Codes(account); break;
             default: throw J.Fail(404, "not_found", "Operation nicht gefunden.");
         }
         return Task.FromResult(result);

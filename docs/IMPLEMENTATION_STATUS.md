@@ -22,6 +22,44 @@ Planungs-/Vertragswerk. Start, Konfiguration und Betreiberbefehle stehen in der
 
 ## Reproduzierbare Prüfpunkte
 
+### Kontoeinstellungen und Aktionsbestätigung am 14. November 2026
+
+Nach Nutzerentscheidung verlangen angemeldete Sitzungen nur noch bei
+Passwortänderung, eigener/administrativer Kontolöschung und vor dem TOTP-Setup
+(einschließlich Ersetzung) ein erneutes Passwort. Ein vorhandener zweiter Faktor
+bleibt bei Setup und Löschung erforderlich. CLI-Zugänge/Tokens, Rechte,
+Agenten-Tag-Erlaubnis, Adminrollen/E-Mail/Recovery, neue Recovery-Codes und
+2FA-Abschaltung verwenden Sitzung/CSRF ohne zusätzlichen Passwortdialog.
+Eigentümer-, Admin-, Revisions- und letzter-Admin-Prüfungen bleiben erhalten.
+Der gezielte Löschtest deckte einen bestehenden Unterschied zwischen `null`
+im Vertragsnachweis und internem leerem DELETE-Body auf; die Prüfung verwendet
+jetzt dieselbe kanonische Darstellung, ohne die Aktionsbindung aufzuheben.
+
+Die Kontoseite besitzt eine obere Navigation mit je einer Ansicht für
+Darstellung, Passwort, Zwei-Faktor-Schutz, Sitzungen, Agenteneinstellungen und
+Kontolöschung. Deep-Links, Reload und Zurücknavigation sind geprüft;
+Passwortfelder werden beim Themenwechsel geleert. Der Einstieg bleibt nur
+oben rechts. Themes heißen Dark/Light/System; werbliche Untertitel und
+Seitenüberschriften sind entfernt. Sitzungen zeigen Browser, Betriebssystem
+und letzte Aktivität statt doppelter roher User-Agent-Zeilen.
+
+Sachfelder haben fachliche Namen, `autocomplete=off` und Ignore-Hinweise für
+Passwortmanager; Zugangsdaten verwenden username/current-password/new-password
+und Einmalcodes one-time-code. Echte Passwortmanager-Erweiterungen wurden nicht
+getestet; eigene Heuristiken können diese Hinweise übergehen.
+
+Nachweise: frischer Windows-Lauf mit Node24.22.3 gegen separate echte
+PostgreSQL-Datenbank, 12 API-/CLI-Prüfgruppen erfolgreich, einschließlich acht
+Go-CLI-Operationen, Kontolöschung, Passwortwechsel, Recovery, CSRF,
+Aktionsbindung/-verbrauch und TOTP-Replay. 27 Playwright-Tests gemeinsam in
+26,5 s bestanden, einschließlich mobiler/desktop Kontonavigation, Autofill,
+Agentenaktionen ohne Passwort, Auth-, Markdown-, ZIP- und OAuth-Abläufen.
+Screenshots der Kontoseiten auf Desktop/Mobil wurden visuell geprüft.
+26 .NET-Unit-Tests und 94 Vertragsfälle bestanden; Webbuild und Clientdrift
+waren erfolgreich. Der OAuth-/MCP-SDK-Korpus bestand ebenfalls. Die bestehenden
+Such-/Archiv-Grenzkorpora und der separate Admin-Race wurden für diese Änderung
+lokal nicht erneut ausgeführt. Der bekannte Vite-Chunkhinweis bleibt bestehen.
+
 ### Überarbeitete Oberfläche am 13. November 2026
 
 Die Webapp verwendet jetzt durchgängige semantische Farbtokens für Snow (hell)

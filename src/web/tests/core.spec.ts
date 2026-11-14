@@ -20,7 +20,7 @@ test("echter Browserablauf: Setup/Login, Vault, Markdown, Historie, Konflikt, Pa
     await page.getByRole("button", { name: "Anmelden", exact: true }).click();
   }
   await expect(
-    page.getByRole("heading", { name: "Was möchtest du wiederfinden?" }),
+    page.getByRole("heading", { name: "Suche" }),
   ).toBeVisible();
   await page.getByRole("button", { name: "Neuer Vault", exact: true }).click();
   const dialog = page.getByRole("dialog");
@@ -126,7 +126,7 @@ test("echter Browserablauf: Setup/Login, Vault, Markdown, Historie, Konflikt, Pa
   await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
   await page.getByLabel("Anzeigesprache", { exact: true }).selectOption("en");
   await expect(
-    page.getByRole("heading", { name: "Just the way you like it." }),
+    page.getByRole("heading", { name: "Account" }),
   ).toBeVisible();
   await page.getByLabel("Theme", { exact: true }).selectOption("system");
   await expect(page.locator("html")).toHaveAttribute("data-theme", "system");
@@ -136,7 +136,7 @@ test("echter Browserablauf: Setup/Login, Vault, Markdown, Historie, Konflikt, Pa
   await page.locator(".mobile-toggle").click();
   await page.getByRole("button", { name: "Suche", exact: true }).click();
   await expect(
-    page.getByRole("heading", { name: "Was möchtest du wiederfinden?" }),
+    page.getByRole("heading", { name: "Suche" }),
   ).toBeVisible();
   expect(
     await page.evaluate(
@@ -201,7 +201,7 @@ test("Einladung ohne SMTP, mobile Redaktion, Dialogfokus, externe Bilder und fre
     .getByRole("button", { name: "Einladung annehmen", exact: true })
     .click();
   await expect(
-    user.getByRole("heading", { name: "Was möchtest du wiederfinden?" }),
+    user.getByRole("heading", { name: "Suche" }),
   ).toBeVisible();
   await expect(user.getByRole("button", { name: "Vault anlegen", exact: true })).toBeVisible();
   await user.locator(".mobile-toggle").click();
@@ -261,8 +261,9 @@ test("Einladung ohne SMTP, mobile Redaktion, Dialogfokus, externe Bilder und fre
     .locator(".top-right")
     .getByRole("button", { name: "Profil", exact: true })
     .click();
+  await user.getByRole("link", { name: "Zwei-Faktor-Schutz", exact: true }).click();
   await user
-    .getByLabel("Aktuelles Passwort zur Aktionsbestätigung", { exact: true })
+    .getByLabel("Aktuelles Passwort vor dem 2FA-Setup", { exact: true })
     .fill(password);
   await user
     .getByRole("button", { name: "Einrichtung vorbereiten", exact: true })
@@ -322,7 +323,7 @@ test("Einladung ohne SMTP, mobile Redaktion, Dialogfokus, externe Bilder und fre
   await user.getByLabel("Code", { exact: true }).fill(recovery);
   await user.getByRole("button", { name: "Bestätigen", exact: true }).click();
   await expect(
-    user.getByRole("heading", { name: "Was möchtest du wiederfinden?" }),
+    user.getByRole("heading", { name: "Suche" }),
   ).toBeVisible();
   await context.close();
 });
@@ -344,8 +345,7 @@ test("Agentenverwaltung: bestätigter Zugang, einmaliger Token, Rechteerweiterun
   await dialog.getByLabel("Name", { exact: true }).fill(agentName);
   const vaultId = await dialog.locator('select[name="vaultId"]').inputValue();
   await dialog.getByRole("button", { name: "Bestätigen", exact: true }).click();
-  await dialog.getByLabel("Dein Passwort", { exact: true }).fill(password);
-  await dialog.getByRole("button", { name: "Bestätigen", exact: true }).click();
+  await expect(dialog).toHaveCount(0);
   const card = page.locator(".settings-card").filter({
     has: page.getByRole("heading", { name: agentName + " cli", exact: true }),
   });
@@ -353,7 +353,7 @@ test("Agentenverwaltung: bestätigter Zugang, einmaliger Token, Rechteerweiterun
   await card
     .getByRole("button", { name: "Token ausgeben (90 Tage)", exact: true })
     .click();
-  await dialog.getByLabel("Dein Passwort", { exact: true }).fill(password);
+  await expect(dialog.locator('input[type="password"]')).toHaveCount(0);
   await dialog.getByRole("button", { name: "Bestätigen", exact: true }).click();
   const token = await dialog.locator("textarea").inputValue();
   await dialog.getByRole("button", { name: "Schließen", exact: true }).click();
@@ -380,7 +380,7 @@ test("Agentenverwaltung: bestätigter Zugang, einmaliger Token, Rechteerweiterun
     .getByRole("button", { name: "Vaultrechte bearbeiten", exact: true })
     .click();
   await card.locator("select").first().selectOption("write");
-  await card.getByLabel("Passwort", { exact: true }).fill(password);
+  await expect(card.locator('input[type="password"]')).toHaveCount(0);
   await card
     .getByRole("button", { name: "Rechte speichern", exact: true })
     .click();
@@ -431,7 +431,7 @@ test("Sitzungswiderruf erhält den Editorentwurf bis zur bewussten Neuanmeldung"
   await page.getByLabel("Passwort", { exact: true }).fill(password);
   await page.getByRole("button", { name: "Anmelden", exact: true }).click();
   await expect(
-    page.getByRole("heading", { name: "Was möchtest du wiederfinden?" }),
+    page.getByRole("heading", { name: "Suche" }),
   ).toBeVisible();
   await page
     .getByRole("button", { name: "Neue Erinnerung", exact: true })
@@ -480,7 +480,7 @@ test("Sitzungswiderruf erhält den Editorentwurf bis zur bewussten Neuanmeldung"
     .getByRole("button", { name: "Einladung annehmen", exact: true })
     .click();
   await expect(
-    login.getByRole("heading", { name: "Was möchtest du wiederfinden?" }),
+    login.getByRole("heading", { name: "Suche" }),
   ).toBeVisible();
   await page
     .getByRole("button", { name: "Sitzung erneut prüfen", exact: true })
@@ -505,7 +505,7 @@ test("Sitzungswiderruf erhält den Editorentwurf bis zur bewussten Neuanmeldung"
   await login.getByLabel("Passwort", { exact: true }).fill(password);
   await login.getByRole("button", { name: "Anmelden", exact: true }).click();
   await expect(
-    login.getByRole("heading", { name: "Was möchtest du wiederfinden?" }),
+    login.getByRole("heading", { name: "Suche" }),
   ).toBeVisible();
   await page
     .getByRole("button", { name: "Sitzung erneut prüfen", exact: true })
@@ -533,7 +533,7 @@ test("OAuth-Consent: ausdrücklicher Vault, kumulative Scope-Reduktion und echte
   await page.getByLabel("Passwort", { exact: true }).fill(password);
   await page.getByRole("button", { name: "Anmelden", exact: true }).click();
   await expect(
-    page.getByRole("heading", { name: "Was möchtest du wiederfinden?" }),
+    page.getByRole("heading", { name: "Suche" }),
   ).toBeVisible();
   const verifier = "Browser_Pkce_Verifier_".repeat(4);
   const challenge = createHash("sha256").update(verifier).digest("base64url");
@@ -637,7 +637,7 @@ test("ZIP: echter Exportdownload, validierte Importvorschau, Übernahme und ung�
   await page.getByLabel("Passwort", { exact: true }).fill(password);
   await page.getByRole("button", { name: "Anmelden", exact: true }).click();
   await expect(
-    page.getByRole("heading", { name: "Was möchtest du wiederfinden?" }),
+    page.getByRole("heading", { name: "Suche" }),
   ).toBeVisible();
   const csrf = (await (await page.request.get("/api/v1/auth/csrf")).json())
     .requestToken;
@@ -693,7 +693,7 @@ test("ZIP: echter Exportdownload, validierte Importvorschau, Übernahme und ung�
     .getByRole("button", { name: "Geprüften Import übernehmen", exact: true })
     .click();
   await expect(
-    page.getByRole("heading", { name: "Was möchtest du wiederfinden?" }),
+    page.getByRole("heading", { name: "Suche" }),
   ).toBeVisible();
   await page.getByRole("button", { name: /Wissen auf Reisen/ }).click();
   await expect(
@@ -726,7 +726,7 @@ test("Verwaltung: Tags zusammenführen, Erinnerung verschieben und gelöschten V
   await page.getByLabel("Passwort", { exact: true }).fill(password);
   await page.getByRole("button", { name: "Anmelden", exact: true }).click();
   await expect(
-    page.getByRole("heading", { name: "Was möchtest du wiederfinden?" }),
+    page.getByRole("heading", { name: "Suche" }),
   ).toBeVisible();
   const nonce = Date.now(),
     source = "A Verwaltung " + nonce,

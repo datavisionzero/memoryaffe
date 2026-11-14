@@ -1,3 +1,4 @@
+import { Input, Textarea } from "./input";
 import React, { useEffect, useState } from "react";
 import { api, all } from "./api";
 type Obj = Record<string, any>;
@@ -24,7 +25,8 @@ export function ImportVault({
       {!preparation ? (
         <label>
           {t("ZIP-Archiv auswählen", "Choose ZIP archive")}
-          <input
+          <Input
+            name="vaultArchive"
             type="file"
             accept=".zip,application/zip"
             onChange={(e) => {
@@ -59,7 +61,8 @@ export function ImportVault({
           </p>
           <label>
             {t("Name des neuen Vaults", "New vault name")}
-            <input
+            <Input
+              name="resourceName"
               value={name}
               maxLength={100}
               onChange={(e) => setName(e.target.value)}
@@ -177,12 +180,20 @@ export function Security({
     [test, setTest] = useState("");
   async function action(operationId: string, url: string) {
     const body = {};
-    const p = await api("/me/reauthenticate", "POST", {
-      password,
-      ...(profile.totpEnabled ? { factor: { kind, code } } : {}),
-      request: { operationId, path: {}, query: {}, body },
-    });
-    const r = await api(url, "POST", body, { "X-Action-Proof": p.proof });
+    const p =
+      operationId === "web_setup_totp"
+        ? await api("/me/reauthenticate", "POST", {
+            password,
+            ...(profile.totpEnabled ? { factor: { kind, code } } : {}),
+            request: { operationId, path: {}, query: {}, body },
+          })
+        : null;
+    const r = await api(
+      url,
+      "POST",
+      body,
+      p ? { "X-Action-Proof": p.proof } : {},
+    );
     setPassword("");
     setCode("");
     if (operationId === "web_setup_totp") setSetup(r);
@@ -208,52 +219,65 @@ export function Security({
               "Optionally protect your account with an authenticator app.",
             )}
       </p>
-      <label>
-        {t(
-          "Aktuelles Passwort zur Aktionsbestätigung",
-          "Current password to confirm this action",
+      <details open={!profile.totpEnabled}>
+        <summary>
+          {t("2FA einrichten oder ersetzen", "Set up or replace 2FA")}
+        </summary>
+        <label>
+          {t(
+            "Aktuelles Passwort vor dem 2FA-Setup",
+            "Current password before 2FA setup",
+          )}
+          <Input
+            name="currentPassword"
+            type="password"
+            autoComplete="current-password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </label>
+        {profile.totpEnabled && (
+          <>
+            <label>
+              {t("Aktueller Faktor", "Current factor")}
+              <select
+                autoComplete="off"
+                name="factorKind"
+                value={kind}
+                onChange={(e) => setKind(e.target.value)}
+              >
+                <option value="totp">TOTP</option>
+                <option value="recoveryCode">Recovery-Code</option>
+              </select>
+            </label>
+            <label>
+              Code
+              <Input
+                name="factorCode"
+                value={code}
+                onChange={(e) => setCode(e.target.value)}
+                autoComplete="one-time-code"
+              />
+            </label>
+          </>
         )}
-        <input
-          type="password"
-          autoComplete="current-password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-      </label>
-      {profile.totpEnabled && (
-        <>
-          <label>
-            {t("Aktueller Faktor", "Current factor")}
-            <select value={kind} onChange={(e) => setKind(e.target.value)}>
-              <option value="totp">TOTP</option>
-              <option value="recoveryCode">Recovery-Code</option>
-            </select>
-          </label>
-          <label>
-            Code
-            <input
-              value={code}
-              onChange={(e) => setCode(e.target.value)}
-              autoComplete="one-time-code"
-            />
-          </label>
-        </>
-      )}
+        <div className="actions">
+          <button
+            disabled={!password}
+            onClick={() =>
+              void run(() => action("web_setup_totp", "/me/totp/setup"))
+            }
+          >
+            {profile.totpEnabled
+              ? t("Faktor ersetzen", "Replace factor")
+              : t("Einrichtung vorbereiten", "Prepare setup")}
+          </button>
+        </div>
+      </details>
       <div className="actions">
-        <button
-          disabled={!password}
-          onClick={() =>
-            void run(() => action("web_setup_totp", "/me/totp/setup"))
-          }
-        >
-          {profile.totpEnabled
-            ? t("Faktor ersetzen", "Replace factor")
-            : t("Einrichtung vorbereiten", "Prepare setup")}
-        </button>
         {profile.totpEnabled && (
           <>
             <button
-              disabled={!password || !code}
               onClick={() =>
                 void run(() =>
                   action(
@@ -267,7 +291,6 @@ export function Security({
             </button>
             <button
               className="danger"
-              disabled={!password || !code}
               onClick={() =>
                 void run(() => action("web_disable_totp", "/me/totp/disable"))
               }
@@ -293,15 +316,21 @@ export function Security({
           </p>
           <label>
             Secret
-            <input readOnly value={setup.secret} />
+            <Input name="authenticatorSecret" readOnly value={setup.secret} />
           </label>
           <details>
             <summary>otpauth URI</summary>
-            <textarea readOnly value={setup.otpauthUri} />
+            <Textarea
+              name="authenticatorUri"
+              readOnly
+              value={setup.otpauthUri}
+            />
           </details>
           <label>
             {t("Testcode aus der App", "Test code from the app")}
-            <input
+            <Input
+              name="setupCode"
+              autoComplete="one-time-code"
               value={test}
               onChange={(e) => setTest(e.target.value)}
               inputMode="numeric"
@@ -348,7 +377,13 @@ export function Security({
               "Each code works once. These codes are shown only now.",
             )}
           </p>
-          <textarea readOnly rows={10} value={codes.join("\n")} />
+          <Textarea
+            name="recoveryCodes"
+            aria-label={t("Wiederherstellungscodes", "Recovery codes")}
+            readOnly
+            rows={10}
+            value={codes.join("\n")}
+          />
           <button onClick={() => setCodes([])}>
             {t("Sicher aufbewahrt · Ausblenden", "Stored safely · Hide")}
           </button>
@@ -365,18 +400,7 @@ export function AgentGrants({
   onChanged,
 }: Props & { agent: Obj; vaults: Obj[]; onChanged: () => Promise<void> }) {
   const [editing, setEditing] = useState(false),
-    [grants, setGrants] = useState<Obj[]>(agent.grants),
-    [password, setPassword] = useState(""),
-    [factor, setFactor] = useState(""),
-    [kind, setKind] = useState("totp");
-  const rank: Obj = { read: 1, write: 2, delete: 3 };
-  const expanded = grants.some(
-    (g) =>
-      rank[g.level] >
-      (rank[
-        agent.grants.find((old: Obj) => old.vaultId === g.vaultId)?.level || ""
-      ] || 0),
-  );
+    [grants, setGrants] = useState<Obj[]>(agent.grants);
   return (
     <>
       <button
@@ -393,6 +417,8 @@ export function AgentGrants({
             <label key={v.id}>
               {v.name}
               <select
+                autoComplete="off"
+                name={`vaultPermission-${v.id}`}
                 value={grants.find((g) => g.vaultId === v.id)?.level || ""}
                 onChange={(e) =>
                   setGrants([
@@ -410,66 +436,13 @@ export function AgentGrants({
               </select>
             </label>
           ))}
-          {expanded && (
-            <>
-              <p>
-                {t(
-                  "Erweiterte Rechte erfordern deine Bestätigung.",
-                  "Expanding permissions requires your confirmation.",
-                )}
-              </p>
-              <label>
-                {t("Passwort", "Password")}
-                <input
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </label>
-              <label>
-                {t(
-                  "Zweiter Faktor, falls eingerichtet",
-                  "Second factor, if enabled",
-                )}
-                <select value={kind} onChange={(e) => setKind(e.target.value)}>
-                  <option value="totp">TOTP</option>
-                  <option value="recoveryCode">Recovery-Code</option>
-                </select>
-                <input
-                  value={factor}
-                  onChange={(e) => setFactor(e.target.value)}
-                />
-              </label>
-            </>
-          )}
           <button
             className="primary"
             onClick={() =>
               void run(async () => {
                 const body = { expectedRevision: agent.revision, grants };
-                let headers = {};
-                if (expanded) {
-                  const p = await api("/me/reauthenticate", "POST", {
-                    password,
-                    ...(factor ? { factor: { kind, code: factor } } : {}),
-                    request: {
-                      operationId: "web_update_agent_access",
-                      path: { id: agent.id },
-                      query: {},
-                      body,
-                    },
-                  });
-                  headers = { "X-Action-Proof": p.proof };
-                }
-                await api(
-                  "/agent-accesses/" + agent.id,
-                  "PATCH",
-                  body,
-                  headers,
-                );
+                await api("/agent-accesses/" + agent.id, "PATCH", body);
                 setEditing(false);
-                setPassword("");
-                setFactor("");
                 await onChanged();
               })
             }
@@ -528,12 +501,17 @@ export function Consent({
           </p>
           <label>
             {t("Name des Zugangs", "Access name")}
-            <input value={name} onChange={(e) => setName(e.target.value)} />
+            <Input
+              name="resourceName"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
           </label>
           {vaults.map((v) => (
             <label key={v.id}>
               {v.name}
               <select
+                autoComplete="off"
                 value={selected.find((g) => g.vaultId === v.id)?.level || ""}
                 onChange={(e) =>
                   setSelected([
@@ -553,7 +531,9 @@ export function Consent({
           ))}
           {data.requestedScopes.map((s: string) => (
             <label className="checkbox" key={s}>
-              <input
+              <Input
+                name="requestedScope"
+                value={s}
                 type="checkbox"
                 checked={scopes.includes(s)}
                 onChange={(e) => {
@@ -618,7 +598,7 @@ export function AccountActions({
     method: string,
     body: Obj | null,
     query: Obj = {},
-    proofRequired = true,
+    proofRequired = operationId === "admin_delete_account",
   ) {
     let headers = {};
     if (proofRequired) {
@@ -647,7 +627,8 @@ export function AccountActions({
         <div className="security-output">
           <label>
             {t("E-Mail-Adresse", "Email address")}
-            <input
+            <Input
+              name="managedAccountEmail"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -655,39 +636,18 @@ export function AccountActions({
           </label>
           <label>
             {t("Rolle", "Role")}
-            <select value={role} onChange={(e) => setRole(e.target.value)}>
+            <select
+              autoComplete="off"
+              name="managedAccountRole"
+              value={role}
+              onChange={(e) => setRole(e.target.value)}
+            >
               <option value="user">User</option>
               <option value="admin">Admin</option>
             </select>
           </label>
-          <p>
-            {t(
-              "Identitäts-, Rollenänderungen, Kontowiederherstellung und Löschen benötigen dein eigenes Passwort und gegebenenfalls deinen Faktor.",
-              "Identity and role changes, recovery and deletion require your own password and factor, if enabled.",
-            )}
-          </p>
-          <label>
-            {t("Dein Passwort", "Your password")}
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </label>
-          <label>
-            {t(
-              "Dein zweiter Faktor, falls eingerichtet",
-              "Your second factor, if enabled",
-            )}
-            <select value={kind} onChange={(e) => setKind(e.target.value)}>
-              <option value="totp">TOTP</option>
-              <option value="recoveryCode">Recovery-Code</option>
-            </select>
-            <input value={factor} onChange={(e) => setFactor(e.target.value)} />
-          </label>
           <div className="actions">
             <button
-              disabled={!password}
               onClick={() =>
                 void run(() =>
                   execute(
@@ -718,7 +678,6 @@ export function AccountActions({
               {t("Passwort-Reset-Link", "Password reset link")}
             </button>
             <button
-              disabled={!password}
               onClick={() =>
                 void run(() =>
                   execute(
@@ -732,31 +691,64 @@ export function AccountActions({
             >
               {t("Kontowiederherstellungslink", "Account recovery link")}
             </button>
-            <button
-              className="danger"
-              disabled={!password}
-              onClick={() => {
-                if (
-                  confirm(
-                    t(
-                      "Konto und sämtliche eigenen Daten unwiderruflich löschen?",
-                      "Permanently delete this account and all its data?",
-                    ),
+            <details className="account-delete">
+              <summary>{t("Konto löschen", "Delete account")}</summary>
+              <label>
+                {t("Dein Passwort", "Your password")}
+                <Input
+                  name="currentPassword"
+                  autoComplete="current-password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </label>
+              <label>
+                {t(
+                  "Dein zweiter Faktor, falls eingerichtet",
+                  "Your second factor, if enabled",
+                )}
+                <select
+                  autoComplete="off"
+                  name="factorKind"
+                  value={kind}
+                  onChange={(e) => setKind(e.target.value)}
+                >
+                  <option value="totp">TOTP</option>
+                  <option value="recoveryCode">Recovery-Code</option>
+                </select>
+                <Input
+                  name="factorCode"
+                  autoComplete="one-time-code"
+                  value={factor}
+                  onChange={(e) => setFactor(e.target.value)}
+                />
+              </label>
+              <button
+                className="danger"
+                onClick={() => {
+                  if (
+                    confirm(
+                      t(
+                        "Konto und sämtliche eigenen Daten unwiderruflich löschen?",
+                        "Permanently delete this account and all its data?",
+                      ),
+                    )
                   )
-                )
-                  void run(() =>
-                    execute(
-                      "admin_delete_account",
-                      `/admin/accounts/${account.id}?expectedRevision=${account.revision}`,
-                      "DELETE",
-                      null,
-                      { expectedRevision: account.revision },
-                    ),
-                  );
-              }}
-            >
-              {t("Konto löschen", "Delete account")}
-            </button>
+                    void run(() =>
+                      execute(
+                        "admin_delete_account",
+                        `/admin/accounts/${account.id}?expectedRevision=${account.revision}`,
+                        "DELETE",
+                        null,
+                        { expectedRevision: account.revision },
+                      ),
+                    );
+                }}
+              >
+                {t("Konto löschen", "Delete account")}
+              </button>
+            </details>
           </div>
         </div>
       )}
@@ -769,16 +761,16 @@ export function ProfileOptions({
   profile,
   reload,
   onDeleted,
+  section,
 }: Props & {
+  section: string;
   profile: Obj;
   reload: () => Promise<void>;
   onDeleted: () => Promise<void>;
 }) {
   const [password, setPassword] = useState(""),
     [factor, setFactor] = useState(""),
-    [kind, setKind] = useState("totp"),
-    [email, setEmail] = useState(""),
-    [notice, setNotice] = useState("");
+    [kind, setKind] = useState("totp");
   async function prove(operationId: string, body: Obj | null, query: Obj = {}) {
     return await api("/me/reauthenticate", "POST", {
       password,
@@ -788,140 +780,108 @@ export function ProfileOptions({
   }
   return (
     <>
-      <div className="settings-card">
-        <h3>
-          {t(
-            "Kontosicherheit & Agenteneinstellungen",
-            "Account security & agent settings",
-          )}
-        </h3>
-        <p>
-          {t(
-            "Agenten dürfen neue Tags erstellen",
-            "Agents may create new tags",
-          )}
-          : {profile.allowAgentTagCreation ? t("Ja", "Yes") : t("Nein", "No")}
-        </p>
-        <label>
-          {t("Dein Passwort zur Bestätigung", "Your password to confirm")}
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </label>
-        {profile.totpEnabled && (
+      {section === "agents" && (
+        <div className="settings-card">
+          <h3>{t("Agenteneinstellungen", "Agent settings")}</h3>
+          <p>
+            {t(
+              "Agenten dürfen neue Tags erstellen",
+              "Agents may create new tags",
+            )}
+            : {profile.allowAgentTagCreation ? t("Ja", "Yes") : t("Nein", "No")}
+          </p>
+          <button
+            onClick={() =>
+              void run(async () => {
+                const body = {
+                  expectedRevision: profile.revision,
+                  allowAgentTagCreation: !profile.allowAgentTagCreation,
+                };
+                await api("/me", "PATCH", body);
+                await reload();
+              })
+            }
+          >
+            {profile.allowAgentTagCreation
+              ? t(
+                  "Agenten-Tag-Erstellung abschalten",
+                  "Disable agent tag creation",
+                )
+              : t(
+                  "Agenten-Tag-Erstellung erlauben",
+                  "Allow agent tag creation",
+                )}
+          </button>
+        </div>
+      )}
+      {section === "delete" && (
+        <div className="settings-card danger-zone">
+          <h3>{t("Eigenes Konto löschen", "Delete your account")}</h3>
+          <p>
+            {t(
+              "Löscht dein Konto und alle eigenen Vaults unwiderruflich. Gib zur Bestätigung dein Passwort und gegebenenfalls deinen zweiten Faktor ein.",
+              "Permanently deletes your account and vaults. Enter your password and factor to confirm.",
+            )}
+          </p>
           <label>
-            {t("Zweiter Faktor", "Second factor")}
-            <select value={kind} onChange={(e) => setKind(e.target.value)}>
-              <option value="totp">TOTP</option>
-              <option value="recoveryCode">Recovery-Code</option>
-            </select>
-            <input value={factor} onChange={(e) => setFactor(e.target.value)} />
+            {t("Dein Passwort zur Bestätigung", "Your password to confirm")}
+            <Input
+              name="currentPassword"
+              autoComplete="current-password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
           </label>
-        )}
-        <button
-          disabled={!profile.allowAgentTagCreation && !password}
-          onClick={() =>
-            void run(async () => {
-              const body = {
-                expectedRevision: profile.revision,
-                allowAgentTagCreation: !profile.allowAgentTagCreation,
-              };
-              const headers: Record<string, string> =
-                profile.allowAgentTagCreation
-                  ? {}
-                  : {
-                      "X-Action-Proof": (
-                        await prove("web_update_profile", body)
-                      ).proof,
-                    };
-              await api("/me", "PATCH", body, headers);
-              setPassword("");
-              setFactor("");
-              await reload();
-            })
-          }
-        >
-          {profile.allowAgentTagCreation
-            ? t(
-                "Agenten-Tag-Erstellung abschalten",
-                "Disable agent tag creation",
-              )
-            : t("Agenten-Tag-Erstellung erlauben", "Allow agent tag creation")}
-        </button>
-        {profile.smtpEnabled && (
-          <>
-            <h4>{t("E-Mail-Adresse ändern", "Change email address")}</h4>
+          {profile.totpEnabled && (
             <label>
-              {t("Neue E-Mail-Adresse", "New email address")}
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+              {t("Zweiter Faktor", "Second factor")}
+              <select
+                autoComplete="off"
+                name="factorKind"
+                value={kind}
+                onChange={(e) => setKind(e.target.value)}
+              >
+                <option value="totp">TOTP</option>
+                <option value="recoveryCode">Recovery-Code</option>
+              </select>
+              <Input
+                name="factorCode"
+                autoComplete="one-time-code"
+                value={factor}
+                onChange={(e) => setFactor(e.target.value)}
               />
             </label>
-            <button
-              disabled={!email || !password}
-              onClick={() =>
-                void run(async () => {
-                  await api("/me/email-change", "POST", {
-                    currentPassword: password,
-                    newEmail: email,
-                  });
-                  setPassword("");
-                  setEmail("");
-                  setNotice(
-                    t(
-                      "Bestätigung wurde angefordert. Bitte prüfe deine neue E-Mail-Adresse.",
-                      "Confirmation requested. Check your new email address.",
-                    ),
-                  );
-                })
-              }
-            >
-              {t("Bestätigung anfordern", "Request confirmation")}
-            </button>
-            {notice && <p>{notice}</p>}
-          </>
-        )}
-      </div>
-      <div className="settings-card danger-zone">
-        <h3>{t("Eigenes Konto löschen", "Delete your account")}</h3>
-        <p>
-          {t(
-            "Löscht dein Konto und alle eigenen Vaults unwiderruflich. Gib zur Bestätigung oben dein Passwort und gegebenenfalls deinen zweiten Faktor ein.",
-            "Permanently deletes your account and vaults. Enter your password and factor above to confirm.",
           )}
-        </p>
-        <button
-          className="danger"
-          disabled={!password}
-          onClick={() => {
-            if (
-              confirm(
-                t(
-                  "Alle eigenen Daten und das Konto unwiderruflich löschen?",
-                  "Permanently delete your account and all your data?",
-                ),
+          <button
+            className="danger"
+            disabled={!password}
+            onClick={() => {
+              if (
+                confirm(
+                  t(
+                    "Alle eigenen Daten und das Konto unwiderruflich löschen?",
+                    "Permanently delete your account and all your data?",
+                  ),
+                )
               )
-            )
-              void run(async () => {
-                const query = { expectedRevision: profile.revision };
-                const p = await prove("web_delete_account", null, query);
-                await api(
-                  "/me?expectedRevision=" + profile.revision,
-                  "DELETE",
-                  undefined,
-                  { "X-Action-Proof": p.proof },
-                );
-                await onDeleted();
-              });
-          }}
-        >
-          {t("Konto unwiderruflich löschen", "Permanently delete account")}
-        </button>
-      </div>
+                void run(async () => {
+                  const query = { expectedRevision: profile.revision };
+                  const p = await prove("web_delete_account", null, query);
+                  await api(
+                    "/me?expectedRevision=" + profile.revision,
+                    "DELETE",
+                    undefined,
+                    { "X-Action-Proof": p.proof },
+                  );
+                  await onDeleted();
+                });
+            }}
+          >
+            {t("Konto unwiderruflich löschen", "Permanently delete account")}
+          </button>
+        </div>
+      )}
     </>
   );
 }
@@ -955,7 +915,12 @@ export function AgentTokens({
         <div className="security-output">
           <label>
             {t("Laufzeit neuer Tokens", "New token lifetime")}
-            <select value={days} onChange={(e) => setDays(e.target.value)}>
+            <select
+              autoComplete="off"
+              name="tokenLifetimeDays"
+              value={days}
+              onChange={(e) => setDays(e.target.value)}
+            >
               <option value="30">30 {t("Tage", "days")}</option>
               <option value="90">90 {t("Tage", "days")}</option>
               <option value="365">365 {t("Tage", "days")}</option>
@@ -967,7 +932,8 @@ export function AgentTokens({
               "Überlappung bei Tokenwechsel (Sekunden, 0–86400)",
               "Rotation overlap (seconds, 0–86400)",
             )}
-            <input
+            <Input
+              name="rotationOverlapSeconds"
               type="number"
               value={overlap}
               min={0}

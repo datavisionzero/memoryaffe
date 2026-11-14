@@ -11,7 +11,7 @@ public class ManagementService(IDataStore db, ISecurity security, ProductOptions
         if (op.Id == "web_list_agent_accesses") return Page(Db.Accesses.Where(x => x.OwnerId == a.Account.Id && x.RevokedAt == null).ToList().OrderByDescending(x => x.CreatedAt).Select(AccessView), a, op);
         if (op.Id == "web_create_agent_access")
         {
-            Proof(a, op); var access = new AgentAccess { OwnerId = a.Account.Id, Name = Security.Name(b.Str("name"), 100) }; Db.Add(access); ApplyGrants(a, access, b); await Db.Save(ct); return AccessView(access);
+            var access = new AgentAccess { OwnerId = a.Account.Id, Name = Security.Name(b.Str("name"), 100) }; Db.Add(access); ApplyGrants(a, access, b); await Db.Save(ct); return AccessView(access);
         }
         if (op.Id is "web_get_agent_access" or "web_update_agent_access" or "web_delete_agent_access" or "web_list_tokens" or "web_issue_token" or "web_revoke_token")
         {
@@ -23,7 +23,7 @@ public class ManagementService(IDataStore db, ISecurity security, ProductOptions
             if (op.Id == "web_revoke_token") { var c = Db.Credentials.SingleOrDefault(x => x.Id == p.Id("tokenId") && x.AccessId == access.Id && x.Kind == "cli") ?? throw J.Fail(404, "not_found", "Token nicht gefunden."); if (c.RevokedAt == null) { c.RevokedAt = Clock.Now; access.Revision++; } return J.Ok; }
             if (op.Id == "web_issue_token")
             {
-                J.Require(access.Kind == "cli", 403, "permission_denied", "OAuth-Zugänge verwenden keine CLI-Tokens."); Proof(a, op);
+                J.Require(access.Kind == "cli", 403, "permission_denied", "OAuth-Zugänge verwenden keine CLI-Tokens.");
                 var days = b.ContainsKey("lifetimeDays") ? b["lifetimeDays"]?.GetValue<int>() : 90;
                 if (b.ContainsKey("replacesTokenId")) { var old = Db.Credentials.SingleOrDefault(x => x.Id == b.Id("replacesTokenId") && x.AccessId == access.Id && x.Kind == "cli" && x.RevokedAt == null) ?? throw J.Fail(404, "not_found", "Zu ersetzendes Token nicht gefunden."); var expiry = Clock.Now.AddSeconds(b.Int("overlapSeconds")); if (old.ExpiresAt == null || old.ExpiresAt > expiry) old.ExpiresAt = expiry; }
                 else J.Require(!b.ContainsKey("overlapSeconds"), 400, "validation_failed", "Überlappung benötigt ein zu ersetzendes Token.");
@@ -34,7 +34,6 @@ public class ManagementService(IDataStore db, ISecurity security, ProductOptions
             if (b.ContainsKey("grants"))
             {
                 var old = Db.Grants.Where(x => x.AccessId == access.Id).ToList(); var grants = ParseGrants(a, b);
-                if (grants.Any(g => !old.Any(x => x.VaultId == g.VaultId && x.Level >= g.Level))) Proof(a, op);
                 if (!old.Select(x => (x.VaultId, x.Level)).Order().SequenceEqual(grants.Order())) { foreach (var g in old) Db.Remove(g); await Db.Save(ct); foreach (var g in grants) Db.Add(new VaultGrant { OwnerId = a.Account.Id, AccessId = access.Id, VaultId = g.VaultId, Level = g.Level }); changed = true; }
             }
             if (changed) access.Revision++; await Db.Save(ct); return AccessView(access);
@@ -46,8 +45,7 @@ public class ManagementService(IDataStore db, ISecurity security, ProductOptions
         {
             var target = Db.Accounts.SingleOrDefault(x => x.Id == p.Id("id")) ?? throw J.Fail(404, "not_found", "Konto nicht gefunden."); J.Revision(op.Id == "admin_delete_account" ? q : b, target.Revision);
             if (op.Id == "admin_delete_account") { Proof(a, op); DeleteAccount(target); return J.Ok; }
-            if (op.Id is "admin_issue_password_reset" or "admin_issue_recovery") { if (op.Id == "admin_issue_recovery") Proof(a, op); J.Require(!b.Bool("sendEmail"), 503, "smtp_unavailable", "SMTP ist nicht konfiguriert. Bitte Link manuell übergeben."); return IssueLink(target.Id, op.Id == "admin_issue_recovery" ? "recovery" : "reset", TimeSpan.FromHours(1)); }
-            if ((b.ContainsKey("role") && (b.Str("role") == "admin") != target.IsAdmin) || (b.ContainsKey("email") && b.Str("email") != target.Email)) Proof(a, op);
+            if (op.Id is "admin_issue_password_reset" or "admin_issue_recovery") { J.Require(!b.Bool("sendEmail"), 503, "smtp_unavailable", "SMTP ist nicht konfiguriert. Bitte Link manuell übergeben."); return IssueLink(target.Id, op.Id == "admin_issue_recovery" ? "recovery" : "reset", TimeSpan.FromHours(1)); }
             var admin = b.Str("role", target.IsAdmin ? "admin" : "user") == "admin"; var suspended = b.Str("status", target.Suspended ? "suspended" : "active") == "suspended";
             LastAdmin(target, admin && !suspended); var email = b.Str("email", target.Email).Trim(TextRules.WhiteSpace); AccountService.Email(email); var key = email.ToUpperInvariant(); J.Require(!Db.Accounts.Any(x => x.Id != target.Id && x.EmailKey == key), 409, "name_conflict", "E-Mail-Adresse ist bereits vergeben.");
             if (target.Email != email || target.IsAdmin != admin || target.Suspended != suspended) { target.Email = email; target.EmailKey = key; target.IsAdmin = admin; target.Suspended = suspended; target.Revision++; if (suspended) accounts.Revoke(target.Id, true); }
@@ -56,7 +54,7 @@ public class ManagementService(IDataStore db, ISecurity security, ProductOptions
         if (op.Id == "admin_list_invitations") return Page(Db.Flows.Where(x => x.Kind == "invitation").ToList().OrderByDescending(x => x.CreatedAt).Select(InvitationView), a, op);
         if (op.Id == "admin_invite")
         {
-            if (b.Str("role") == "admin") Proof(a, op); J.Require(!b.Bool("sendEmail"), 503, "smtp_unavailable", "SMTP ist nicht konfiguriert. Bitte Link manuell übergeben."); AccountService.Email(b.Str("email"));
+            J.Require(!b.Bool("sendEmail"), 503, "smtp_unavailable", "SMTP ist nicht konfiguriert. Bitte Link manuell übergeben."); AccountService.Email(b.Str("email"));
             var key = b.Str("email").ToUpperInvariant(); J.Require(!Db.Accounts.Any(x => x.EmailKey == key), 409, "name_conflict", "Konto bereits vorhanden.");
             foreach (var old in Db.Flows.Where(x => x.Kind == "invitation" && !x.Consumed).ToList().Where(x => JsonNode.Parse(x.Data)!["email"]!.GetValue<string>().ToUpperInvariant() == key)) old.Consumed = true;
             var token = J.Secret(); var flow = new Flow { Kind = "invitation", Hash = J.Hash(token), Data = J.Obj(new { email = b.Str("email"), role = b.Str("role") }).ToJsonString(), ExpiresAt = Clock.Now.AddDays(7) }; Db.Add(flow);

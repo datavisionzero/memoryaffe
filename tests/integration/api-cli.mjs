@@ -1,3 +1,4 @@
+import { runAccountActions } from './account-actions.mjs';
 import { runLastAdminRace } from './admin-race.mjs';
 import { runLifecycle } from './lifecycle.mjs';
 import { runSearch } from './search.mjs';
@@ -47,6 +48,7 @@ export class Browser {
   async refreshCsrf() { const r = await this.request('GET', '/api/v1/auth/csrf'); expect(r, 200); check(typeof r.data.requestToken === 'string', 'CSRF token missing'); this.csrf = r.data.requestToken; secrets.add(this.csrf); return r; }
   async ok(method, path, body, options) { const r = await this.request(method, path, body, options); check(r.status >= 200 && r.status < 300, `${method} ${path.split('?')[0]} returned HTTP ${r.status}, code ${r.data?.code ?? 'missing'}`); return r.data; }
   async proved(method, path, body, operationId, pathValues = {}, query = {}) {
+    if (!["web_setup_totp", "web_delete_account", "admin_delete_account"].includes(operationId)) return this.ok(method, path, body);
     const r = await this.ok('POST', '/api/v1/me/reauthenticate', { password: this.password, request: { operationId, path: pathValues, query, body } });
     secrets.add(r.proof); return this.ok(method, path, body, { headers: { 'X-Action-Proof': r.proof } });
   }
@@ -134,11 +136,14 @@ export async function runIntegration() {
   });
   await step('action proof binding, explicit agent creation and token metadata', async () => {
     const body = { name: `CLI integration ${nonce}`, grants: [{ vaultId: vault.id, level: 'delete' }] };
-    expect(await owner.request('POST', '/api/v1/agent-accesses', body), 403, 'reauthentication_required');
-    const proof = await owner.ok('POST', '/api/v1/me/reauthenticate', { password: adminPassword, request: { operationId: 'web_create_agent_access', path: {}, query: {}, body } }); secrets.add(proof.proof);
-    expect(await owner.request('POST', '/api/v1/agent-accesses', { ...body, name: 'Different action' }, { headers: { 'X-Action-Proof': proof.proof } }), 403, 'reauthentication_required');
-    access = await owner.ok('POST', '/api/v1/agent-accesses', body, { headers: { 'X-Action-Proof': proof.proof } });
-    expect(await owner.request('POST', '/api/v1/agent-accesses', body, { headers: { 'X-Action-Proof': proof.proof } }), 403, 'reauthentication_required');
+    access = await owner.ok('POST', '/api/v1/agent-accesses', body);
+    expect(await owner.request('POST', '/api/v1/me/totp/setup', {}), 403, 'reauthentication_required');
+    const request = { operationId: 'web_setup_totp', path: {}, query: {}, body: {} };
+    const proof = await owner.ok('POST', '/api/v1/me/reauthenticate', { password: adminPassword, request }); secrets.add(proof.proof);
+    const profileForProof = await owner.ok('GET', '/api/v1/me');
+    expect(await owner.request('DELETE', `/api/v1/me?expectedRevision=${profileForProof.revision}`, undefined, { headers: { 'X-Action-Proof': proof.proof } }), 403, 'reauthentication_required');
+    const prepared = await owner.ok('POST', '/api/v1/me/totp/setup', {}, { headers: { 'X-Action-Proof': proof.proof } }); secrets.add(prepared.secret);
+    expect(await owner.request('POST', '/api/v1/me/totp/setup', {}, { headers: { 'X-Action-Proof': proof.proof } }), 403, 'reauthentication_required');
     const tokenBody = { expectedRevision: access.revision, lifetimeDays: 30 };
     issued = await owner.proved('POST', `/api/v1/agent-accesses/${access.id}/tokens`, tokenBody, 'web_issue_token', { id: access.id });
     token = issued.token; check(typeof token === 'string' && token.length >= 32, 'Issued token missing'); secrets.add(token);
@@ -180,6 +185,7 @@ export async function runIntegration() {
       const beforeRevoke = await owner.ok('GET', `/api/v1/agent-accesses/${access.id}`); await owner.ok('DELETE', `/api/v1/agent-accesses/${access.id}/tokens/${issued.credential.id}?expectedRevision=${beforeRevoke.revision}`); await cli(['vault', 'list'], undefined, 3);
     });
   } finally { if (temp) await rm(temp, { recursive: true, force: true }); }
+  await step('Account actions without reauthentication, protected deletion and password change', () => runAccountActions({ owner, Browser, check, expect, secrets, nonce }));
   if (process.env.MEMORYAFFE_TEST_LIFECYCLE === '1') await step('Version retention, trash tags, moves, grant lifecycle, sessions and isolated recovery', () => runLifecycle({ owner, Browser, check, same, expect, secrets, nonce, agent }));
   if (process.env.MEMORYAFFE_TEST_ADMIN_RACE === '1') await step('Last-active-admin race in isolated database and API process', () => runLastAdminRace({ Browser, processRun, check, expect, secrets, root }));
   if (process.env.MEMORYAFFE_TEST_SEARCH === '1') await step('PostgreSQL search corpus, Unicode names, 1MiB, distant phrases and language switch', async () => { searchEvidence = await runSearch({ owner, other, check, same, expect, nonce, processRun }); });

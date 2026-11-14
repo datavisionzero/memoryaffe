@@ -1,3 +1,4 @@
+import { Input, Textarea } from "./input";
 import React, { useEffect, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, useNavigate } from "react-router";
@@ -111,8 +112,33 @@ function Preview({ text }: { text: string }) {
     </div>
   );
 }
+function sessionLabel(session: Obj) {
+  const agent = session.browser || session.device || "";
+  const browser = /Edg\//.test(agent)
+    ? "Edge"
+    : /Firefox\//.test(agent)
+      ? "Firefox"
+      : /(?:Chrome|Chromium)\//.test(agent)
+        ? "Chrome"
+        : /Safari\//.test(agent)
+          ? "Safari"
+          : agent || "Browser";
+  const system = /Android/.test(agent)
+    ? "Android"
+    : /iPhone|iPad/.test(agent)
+      ? "iOS"
+      : /Windows/.test(agent)
+        ? "Windows"
+        : /Macintosh/.test(agent)
+          ? "macOS"
+          : /Linux/.test(agent)
+            ? "Linux"
+            : "";
+  return [browser, system].filter(Boolean).join(" · ");
+}
 function App() {
   const navigate = useNavigate();
+  const profileSection = location.pathname.split("/")[3] || "appearance";
   const [profile, setProfile] = useState<Profile | null>(null),
     [boot, setBoot] = useState(true),
     [route, setRoute] = useState(location.pathname),
@@ -371,7 +397,7 @@ function App() {
       if (route === "/app/trash" && vaultId)
         setRows(await all(`/vaults/${vaultId}/trash`));
       if (route === "/app/agents") setRows(await all("/agent-accesses"));
-      if (route === "/app/profile") setRows(await all("/me/sessions"));
+      if (route.startsWith("/app/profile")) setRows(await all("/me/sessions"));
       if (route === "/admin/accounts") setRows(await all("/admin/accounts"));
       if (route === "/admin/invitations")
         setRows(await all("/admin/invitations"));
@@ -463,7 +489,21 @@ function App() {
     return (
       <label>
         {label}
-        <input name={name} type={type} required defaultValue={value} />
+        <Input
+          name={name === "name" ? "resourceName" : name}
+          type={type}
+          required
+          defaultValue={value}
+          autoComplete={
+            name === "currentPassword"
+              ? "current-password"
+              : name === "email"
+                ? "username"
+                : name === "code"
+                  ? "one-time-code"
+                  : "off"
+          }
+        />
       </label>
     );
   }
@@ -481,57 +521,37 @@ function App() {
           <a className="brand" href="/">
             <span className="brand-mark">m</span>memoryaffe
           </a>
-          <div>
-            <span className="eyebrow">DEIN PERSÖNLICHER WISSENSSPEICHER</span>
-            <h1>
-              Gute Gedanken.
-              <br />
-              Ein bleibender Ort.
-            </h1>
-            <p>
-              Dein Wissen, deine Agenten, deine Infrastruktur.
-              <br />
-              Alles Wichtige an einem Ort.
-            </p>
-            <div className="orbit">
-              ✳<span>Erinnern. Verbinden. Weiterdenken.</span>
-            </div>
+          <div className="orbit" aria-hidden="true">
+            ✳
           </div>
-          <small>Selbst gehostet. Offen. Unter deiner Kontrolle.</small>
         </aside>
         <main className="auth-main">
           <div className="auth-appearance" aria-label="Darstellung">
             <button
-              aria-label="Snow – hell"
+              aria-label="Light"
               aria-pressed={authTheme === "light"}
               onClick={() => setAuthTheme("light")}
             >
-              <Sun size={16} /> Snow
+              <Sun size={16} /> Light
             </button>
             <button
-              aria-label="Monokai – dunkel"
+              aria-label="Dark"
               aria-pressed={authTheme === "dark"}
               onClick={() => setAuthTheme("dark")}
             >
-              <Moon size={16} /> Monokai
+              <Moon size={16} /> Dark
             </button>
           </div>
           <div className="auth-card">
-            <span className="eyebrow">WILLKOMMEN BEI MEMORYAFFE</span>
             <h2>
               {route === "/setup"
-                ? "Dein Gedächtnis beginnt hier."
+                ? "Administratorkonto anlegen"
                 : route === "/invite"
-                  ? "Schön, dass du dabei bist."
+                  ? "Einladung annehmen"
                   : route.includes("reset") || route.includes("recover")
-                    ? "Wieder Zugriff erhalten."
-                    : "Gut, dich wiederzusehen."}
+                    ? "Kontozugriff wiederherstellen"
+                    : "Anmelden"}
             </h2>
-            <p className="muted">
-              {route === "/setup"
-                ? "Lege das erste Administratorkonto an."
-                : "Melde dich an und knüpfe an dein Wissen an."}
-            </p>
             {error && (
               <div role="alert" className="error">
                 {error}
@@ -543,6 +563,7 @@ function App() {
               </div>
             )}
             <form
+              autoComplete="off"
               key={route + (factor ? ":factor" : ":password")}
               onSubmit={submitAuth(async (d, isCurrent) => {
                 const val = (k: string) => String(d.get(k) || "");
@@ -619,7 +640,7 @@ function App() {
                 <>
                   <label>
                     Faktor
-                    <select name="factorKind">
+                    <select autoComplete="off" name="factorKind">
                       <option value="totp">Authenticator-Code</option>
                       <option value="recoveryCode">
                         Wiederherstellungscode
@@ -659,7 +680,7 @@ function App() {
                     field("Einladungstoken", "token")}
                   {route === "/login" && (
                     <label className="checkbox">
-                      <input name="rememberMe" type="checkbox" />
+                      <Input name="rememberMe" type="checkbox" />
                       Angemeldet bleiben
                     </label>
                   )}
@@ -759,6 +780,7 @@ function App() {
       <div className="vault-switch">
         <label>{t("AKTUELLER VAULT", "CURRENT VAULT")}</label>
         <select
+          autoComplete="off"
           aria-label="Vault"
           value={vaultId}
           onChange={(e) => {
@@ -829,34 +851,12 @@ function App() {
         )}
       </nav>
       <div className="sidebar-bottom">
-        <div className="private-note">
-          <Shield size={17} />
-          <div>
-            {t("Dein Wissen gehört dir.", "Your knowledge is yours.")}
-            <small>
-              {t(
-                "Privat in deiner Infrastruktur.",
-                "Private on your infrastructure.",
-              )}
-            </small>
-          </div>
-        </div>
         {profile.role === "admin" && !admin && (
           <button onClick={() => go("/admin/accounts")}>
             <Shield size={16} />
             {t("Administration", "Administration")}
           </button>
         )}
-        <button className="account" onClick={() => go("/app/profile")}>
-          <span className="avatar">
-            {profile.email.slice(0, 1).toUpperCase()}
-          </span>
-          <span>
-            {profile.email}
-            <small>{t("Profil & Einstellungen", "Profile & settings")}</small>
-          </span>
-          <Settings size={15} />
-        </button>
       </div>
     </div>
   );
@@ -893,6 +893,7 @@ function App() {
             <Menu size={20} />
           </button>
           <form
+            autoComplete="off"
             className="search-box"
             role="search"
             onSubmit={(e) => {
@@ -902,7 +903,9 @@ function App() {
             }}
           >
             <Search size={20} />
-            <input
+            <Input
+              name="memoryQuery"
+              type="search"
               ref={searchInput}
               aria-label={t("Erinnerungen durchsuchen", "Search memories")}
               placeholder={t(
@@ -939,11 +942,6 @@ function App() {
             )}
             <span className="top-account">
               <strong>{profile.email}</strong>
-              <small>
-                {admin
-                  ? t("Administration", "Administration")
-                  : t("Dein privates Gedächtnis", "Your private memory")}
-              </small>
             </span>
             <button
               className="avatar"
@@ -1042,18 +1040,7 @@ function App() {
             <>
               <div className="page-heading">
                 <div>
-                  <h1>
-                    {t(
-                      "Was möchtest du wiederfinden?",
-                      "What would you like to find?",
-                    )}
-                  </h1>
-                  <p>
-                    {t(
-                      "Notizen, Entscheidungen und Wissen in deinem Vault.",
-                      "Notes, decisions and knowledge in your vault.",
-                    )}
-                  </p>
+                  <h1>{t("Suche", "Search")}</h1>
                 </div>
               </div>
               <div className="filter-row">
@@ -1232,7 +1219,8 @@ function App() {
                     <div className="editor-meta">
                       <label>
                         {t("Titel", "Title")}
-                        <input
+                        <Input
+                          name="memoryTitle"
                           value={draft.title}
                           maxLength={200}
                           onChange={(e) => {
@@ -1243,7 +1231,8 @@ function App() {
                       </label>
                       <label>
                         {t("Zusammenfassung (optional)", "Summary (optional)")}
-                        <textarea
+                        <Textarea
+                          name="memorySummary"
                           rows={2}
                           maxLength={1000}
                           value={draft.summary || ""}
@@ -1452,26 +1441,21 @@ function App() {
               <div className="page-heading">
                 <div>
                   <span className="eyebrow">{current?.name}</span>
-                  <h1>{t("Gedanken verbinden.", "Connect your thoughts.")}</h1>
-                  <p>
-                    {t(
-                      "Tags geben deinem Wissen Struktur.",
-                      "Tags give structure to your knowledge.",
-                    )}
-                  </p>
+                  <h1>{t("Tags", "Tags")}</h1>
                 </div>
               </div>
               <form
+                autoComplete="off"
                 className="inline-form"
                 onSubmit={submit(async (d) => {
                   await api(`/vaults/${vaultId}/tags`, "POST", {
-                    name: d.get("name"),
+                    name: d.get("resourceName"),
                   });
                   setTags(await all(`/vaults/${vaultId}/tags`));
                 })}
               >
-                <input
-                  name="name"
+                <Input
+                  name="resourceName"
                   required
                   maxLength={50}
                   aria-label="Tagname"
@@ -1526,7 +1510,7 @@ function App() {
               {!rows.length && (
                 <div className="empty">
                   <Trash2 size={35} />
-                  <h3>{t("Alles aufgeräumt.", "All clear.")}</h3>
+                  <h3>{t("Papierkorb ist leer", "Trash is empty")}</h3>
                 </div>
               )}
               <div className="list">
@@ -1568,13 +1552,7 @@ function App() {
             <>
               <div className="page-heading">
                 <div>
-                  <span className="eyebrow">VAULT</span>
-                  <h1>
-                    {t(
-                      "Ein Raum für dein Wissen.",
-                      "A space for your knowledge.",
-                    )}
-                  </h1>
+                  <h1>{t("Vault-Einstellungen", "Vault settings")}</h1>
                   <p>
                     {t(
                       "Einstellungen gelten nur für diesen Vault.",
@@ -1584,12 +1562,13 @@ function App() {
                 </div>
               </div>
               <form
+                autoComplete="off"
                 className="settings-card"
                 key={current.id + current.revision}
                 onSubmit={submit(async (d) => {
                   const v = await api(`/vaults/${vaultId}`, "PATCH", {
                     expectedRevision: current.revision,
-                    name: d.get("name"),
+                    name: d.get("resourceName"),
                     versionLimit: Number(d.get("versionLimit")),
                     searchLanguage: d.get("searchLanguage"),
                   });
@@ -1606,6 +1585,7 @@ function App() {
                 <label>
                   {t("Suchsprache", "Search language")}
                   <select
+                    autoComplete="off"
                     name="searchLanguage"
                     defaultValue={current.searchLanguage}
                   >
@@ -1619,7 +1599,7 @@ function App() {
                     "Historische Versionen je Erinnerung (0–100)",
                     "Historical versions per memory (0–100)",
                   )}
-                  <input
+                  <Input
                     name="versionLimit"
                     type="number"
                     min={0}
@@ -1674,16 +1654,11 @@ function App() {
               </div>
             </>
           )}
-          {route === "/app/profile" && (
+          {route.startsWith("/app/profile") && (
             <>
               <div className="page-heading">
                 <div>
-                  <span className="eyebrow">
-                    {t("DEIN KONTO", "YOUR ACCOUNT")}
-                  </span>
-                  <h1>
-                    {t("Ganz wie du magst.", "Just the way you like it.")}
-                  </h1>
+                  <h1>{t("Konto", "Account")}</h1>
                   <p>{profile.email}</p>
                 </div>
                 <button
@@ -1700,152 +1675,197 @@ function App() {
                   {t("Abmelden", "Sign out")}
                 </button>
               </div>
-              <div className="settings-card">
-                <h3>{t("Darstellung & Sprache", "Appearance & language")}</h3>
-                <label>
-                  {t("Farbschema", "Theme")}
-                  <select
-                    value={profile.theme}
-                    aria-label={t("Farbschema", "Theme")}
-                    onChange={(e) =>
-                      void run(async () =>
-                        setProfile(
-                          await api("/me", "PATCH", { theme: e.target.value }),
-                        ),
-                      )
-                    }
-                  >
-                    <option value="dark">
-                      {t("Monokai · Dunkel", "Monokai · Dark")}
-                    </option>
-                    <option value="light">
-                      {t("Snow · Hell", "Snow · Light")}
-                    </option>
-                    <option value="system">System</option>
-                  </select>
-                </label>
-                <label>
-                  {t("Anzeigesprache", "Display language")}
-                  <select
-                    value={profile.language}
-                    aria-label={t("Anzeigesprache", "Display language")}
-                    onChange={(e) =>
-                      void run(async () =>
-                        setProfile(
-                          await api("/me", "PATCH", {
-                            language: e.target.value,
-                          }),
-                        ),
-                      )
-                    }
-                  >
-                    <option value="de">Deutsch</option>
-                    <option value="en">English</option>
-                  </select>
-                </label>
-              </div>
-              <Security
-                t={t}
-                run={run}
-                profile={profile}
-                reload={async () => setProfile(await api("/me"))}
-              />
-              <ProfileOptions
-                t={t}
-                run={run}
-                profile={profile}
-                reload={async () => setProfile(await api("/me"))}
-                onDeleted={async () => {
-                  setProfile(null);
-                  setVaults([]);
-                  setHits([]);
-                  setTags([]);
-                  await refreshCsrf();
-                  go("/login", true);
-                }}
-              />
-              <form
-                className="settings-card"
-                onSubmit={submit(async (d) => {
-                  await api("/me/change-password", "POST", {
-                    currentPassword: d.get("currentPassword"),
-                    newPassword: d.get("newPassword"),
-                  });
-                  setNotice(t("Passwort geändert.", "Password changed."));
-                })}
+              <nav
+                className="profile-nav"
+                aria-label={t("Kontoeinstellungen", "Account settings")}
               >
-                <h3>{t("Passwort ändern", "Change password")}</h3>
-                {field(
-                  t("Aktuelles Passwort", "Current password"),
-                  "currentPassword",
-                  "password",
-                )}
-                {field(
-                  t(
-                    "Neues Passwort (mindestens 15 Zeichen)",
-                    "New password (at least 15 characters)",
-                  ),
-                  "newPassword",
-                  "password",
-                )}
-                <button>{t("Passwort speichern", "Save password")}</button>
-              </form>
-              <div className="settings-card">
-                <h3>{t("Aktive Sitzungen", "Active sessions")}</h3>
-                {rows.map((s) => (
-                  <div className="list-row" key={s.id}>
-                    <span>
-                      {[s.browser, s.device].filter(Boolean).join(" · ")}
-                      {s.current
-                        ? " · " + t("Diese Sitzung", "This session")
-                        : ""}
-                    </span>
-                    {!s.current && (
-                      <button
-                        onClick={() =>
-                          void run(async () => {
-                            await api("/me/sessions/" + s.id, "DELETE");
-                            setRows(await all("/me/sessions"));
-                          })
+                {[
+                  ["appearance", t("Darstellung", "Appearance")],
+                  ["password", t("Passwort", "Password")],
+                  [
+                    "two-factor",
+                    t("Zwei-Faktor-Schutz", "Two-factor authentication"),
+                  ],
+                  ["sessions", t("Sitzungen", "Sessions")],
+                  ["agents", t("Agenteneinstellungen", "Agent settings")],
+                  ["delete", t("Konto löschen", "Delete account")],
+                ].map(([id, label]) => (
+                  <a
+                    key={id}
+                    href={"/app/profile/" + id}
+                    aria-current={profileSection === id ? "page" : undefined}
+                    onClick={(event) => {
+                      if (
+                        !event.ctrlKey &&
+                        !event.metaKey &&
+                        !event.shiftKey &&
+                        !event.altKey
+                      ) {
+                        event.preventDefault();
+                        go("/app/profile/" + id);
+                      }
+                    }}
+                  >
+                    {label}
+                  </a>
+                ))}
+              </nav>
+              <section key={profileSection} className="profile-panel">
+                {profileSection === "appearance" && (
+                  <div className="settings-card">
+                    <h3>
+                      {t("Darstellung & Sprache", "Appearance & language")}
+                    </h3>
+                    <label>
+                      {t("Farbschema", "Theme")}
+                      <select
+                        autoComplete="off"
+                        name="theme"
+                        value={profile.theme}
+                        aria-label={t("Farbschema", "Theme")}
+                        onChange={(e) =>
+                          void run(async () =>
+                            setProfile(
+                              await api("/me", "PATCH", {
+                                theme: e.target.value,
+                              }),
+                            ),
+                          )
                         }
                       >
-                        {t("Abmelden", "Revoke")}
-                      </button>
-                    )}
+                        <option value="dark">Dark</option>
+                        <option value="light">Light</option>
+                        <option value="system">System</option>
+                      </select>
+                    </label>
+                    <label>
+                      {t("Anzeigesprache", "Display language")}
+                      <select
+                        autoComplete="off"
+                        name="displayLanguage"
+                        value={profile.language}
+                        aria-label={t("Anzeigesprache", "Display language")}
+                        onChange={(e) =>
+                          void run(async () =>
+                            setProfile(
+                              await api("/me", "PATCH", {
+                                language: e.target.value,
+                              }),
+                            ),
+                          )
+                        }
+                      >
+                        <option value="de">Deutsch</option>
+                        <option value="en">English</option>
+                      </select>
+                    </label>
                   </div>
-                ))}
-                <button
-                  onClick={() =>
-                    void run(async () => {
-                      await api("/me/sessions/revoke-others", "POST", {});
-                      setRows(await all("/me/sessions"));
-                    })
-                  }
-                >
-                  {t("Andere Sitzungen abmelden", "Revoke other sessions")}
-                </button>
-              </div>
+                )}
+                {profileSection === "two-factor" && (
+                  <Security
+                    t={t}
+                    run={run}
+                    profile={profile}
+                    reload={async () => setProfile(await api("/me"))}
+                  />
+                )}
+                <ProfileOptions
+                  section={profileSection}
+                  t={t}
+                  run={run}
+                  profile={profile}
+                  reload={async () => setProfile(await api("/me"))}
+                  onDeleted={async () => {
+                    setProfile(null);
+                    setVaults([]);
+                    setHits([]);
+                    setTags([]);
+                    await refreshCsrf();
+                    go("/login", true);
+                  }}
+                />
+                {profileSection === "password" && (
+                  <form
+                    autoComplete="off"
+                    className="settings-card"
+                    onSubmit={submit(async (d) => {
+                      await api("/me/change-password", "POST", {
+                        currentPassword: d.get("currentPassword"),
+                        newPassword: d.get("newPassword"),
+                      });
+                      setNotice(t("Passwort geändert.", "Password changed."));
+                    })}
+                  >
+                    <h3>{t("Passwort ändern", "Change password")}</h3>
+                    {field(
+                      t("Aktuelles Passwort", "Current password"),
+                      "currentPassword",
+                      "password",
+                    )}
+                    {field(
+                      t(
+                        "Neues Passwort (mindestens 15 Zeichen)",
+                        "New password (at least 15 characters)",
+                      ),
+                      "newPassword",
+                      "password",
+                    )}
+                    <button>{t("Passwort speichern", "Save password")}</button>
+                  </form>
+                )}
+                {profileSection === "sessions" && (
+                  <div className="settings-card">
+                    <h3>{t("Aktive Sitzungen", "Active sessions")}</h3>
+                    {rows.map((s) => (
+                      <div className="list-row" key={s.id}>
+                        <span className="session-details">
+                          <strong>
+                            {sessionLabel(s)}
+                            {s.current
+                              ? " · " + t("Diese Sitzung", "This session")
+                              : ""}
+                          </strong>
+                          <small>
+                            {t("Zuletzt aktiv", "Last active")}:{" "}
+                            {new Date(s.lastActiveAt).toLocaleString(
+                              en ? "en" : "de",
+                            )}
+                          </small>
+                        </span>
+                        {!s.current && (
+                          <button
+                            onClick={() =>
+                              void run(async () => {
+                                await api("/me/sessions/" + s.id, "DELETE");
+                                setRows(await all("/me/sessions"));
+                              })
+                            }
+                          >
+                            {t("Abmelden", "Revoke")}
+                          </button>
+                        )}
+                      </div>
+                    ))}
+                    <button
+                      onClick={() =>
+                        void run(async () => {
+                          await api("/me/sessions/revoke-others", "POST", {});
+                          setRows(await all("/me/sessions"));
+                        })
+                      }
+                    >
+                      {t("Andere Sitzungen abmelden", "Revoke other sessions")}
+                    </button>
+                  </div>
+                )}
+              </section>
             </>
           )}
           {route === "/app/agents" && (
             <>
               <div className="page-heading">
                 <div>
-                  <span className="eyebrow">
-                    {t("KONTROLLIERTER ZUGANG", "CONTROLLED ACCESS")}
-                  </span>
-                  <h1>
-                    {t(
-                      "Wissen für deine Agenten.",
-                      "Knowledge for your agents.",
-                    )}
-                  </h1>
-                  <p>
-                    {t(
-                      "Du bestimmst, welcher Agent welche Vaults verwenden darf.",
-                      "You decide which vaults each agent may use.",
-                    )}
-                  </p>
+                  <h1>{t("Agenten", "Agents")}</h1>
                 </div>
                 <button
                   className="primary"
@@ -1911,7 +1931,7 @@ function App() {
                       }
                       onIssue={(body) =>
                         setModal({
-                          kind: "reauth",
+                          kind: "issueToken",
                           operationId: "web_issue_token",
                           path: { id: a.id },
                           body,
@@ -1924,7 +1944,7 @@ function App() {
                     <button
                       onClick={() =>
                         setModal({
-                          kind: "reauth",
+                          kind: "issueToken",
                           operationId: "web_issue_token",
                           path: { id: a.id },
                           body: {
@@ -1946,14 +1966,7 @@ function App() {
             <>
               <div className="page-heading">
                 <div>
-                  <span className="eyebrow">ADMINISTRATION</span>
                   <h1>{t("Konten", "Accounts")}</h1>
-                  <p>
-                    {t(
-                      "Konten verwalten. Inhalte anderer Nutzer bleiben privat.",
-                      "Manage accounts. Other users’ content stays private.",
-                    )}
-                  </p>
                 </div>
                 <button
                   className="primary"
@@ -2009,23 +2022,15 @@ function App() {
             <>
               <div className="page-heading">
                 <div>
-                  <span className="eyebrow">ADMINISTRATION</span>
-                  <h1>
-                    {t("Ein guter Gedanke wird geteilt.", "Invite someone in.")}
-                  </h1>
-                  <p>
-                    {t(
-                      "Lade ein Konto ein. Jeder Nutzer erhält ausschließlich eigene Vaults.",
-                      "Invite an account. Every user receives private vaults.",
-                    )}
-                  </p>
+                  <h1>{t("Einladungen", "Invitations")}</h1>
                 </div>
               </div>
               <form
+                autoComplete="off"
                 className="inline-form"
                 onSubmit={submit(async (d) => {
                   const r = await api("/admin/invitations", "POST", {
-                    email: d.get("email"),
+                    email: d.get("invitationEmail"),
                     role: "user",
                     sendEmail: false,
                   });
@@ -2037,8 +2042,8 @@ function App() {
                   setRows(await all("/admin/invitations"));
                 })}
               >
-                <input
-                  name="email"
+                <Input
+                  name="invitationEmail"
                   type="email"
                   required
                   aria-label="E-Mail-Adresse"
@@ -2127,7 +2132,7 @@ function App() {
                 ? t("Neuer Vault", "New vault")
                 : modal.kind === "agent"
                   ? t("CLI-Zugang anlegen", "Create CLI access")
-                  : modal.kind === "reauth"
+                  : modal.kind === "issueToken"
                     ? t("Aktion bestätigen", "Confirm action")
                     : modal.kind === "history"
                       ? t("Versionshistorie", "Version history")
@@ -2149,7 +2154,12 @@ function App() {
                     "Shown only now. Store this secret securely.",
                   )}
                 </p>
-                <textarea readOnly value={secret} />
+                <Textarea
+                  name="issuedSecret"
+                  aria-label={t("Einmaliges Geheimnis", "One-time secret")}
+                  readOnly
+                  value={secret}
+                />
                 <button
                   onClick={() =>
                     void run(async () => {
@@ -2248,6 +2258,7 @@ function App() {
               </>
             ) : (
               <form
+                autoComplete="off"
                 onSubmit={submit(async (d) => {
                   if (modal.kind === "moveMemory") {
                     const target = String(d.get("targetVaultId"));
@@ -2276,7 +2287,7 @@ function App() {
                   }
                   if (modal.kind === "vault") {
                     const v = await api("/vaults", "POST", {
-                      name: d.get("name"),
+                      name: d.get("resourceName"),
                     });
                     await loadVaults();
                     setVaultId(v.id);
@@ -2287,7 +2298,7 @@ function App() {
                       `/vaults/${vaultId}/tags/${modal.tag.id}`,
                       "PATCH",
                       {
-                        name: d.get("name"),
+                        name: d.get("resourceName"),
                         expectedRevision: modal.tag.revision,
                       },
                     );
@@ -2331,46 +2342,23 @@ function App() {
                   }
                   if (modal.kind === "agent") {
                     const body = {
-                      name: d.get("name"),
+                      name: d.get("resourceName"),
                       grants: [
                         { vaultId: d.get("vaultId"), level: d.get("level") },
                       ],
                     };
+                    await api("/agent-accesses", "POST", body);
+                    setRows(await all("/agent-accesses"));
+                  }
+                  if (modal.kind === "issueToken") {
+                    const result = await api(modal.url, "POST", modal.body);
+                    setRows(await all("/agent-accesses"));
+                    setSecret(result.token);
                     setModal({
-                      kind: "reauth",
-                      operationId: "web_create_agent_access",
-                      path: {},
-                      body,
-                      url: "/agent-accesses",
+                      kind: "secret",
+                      title: t("Dein CLI-Token", "Your CLI token"),
                     });
                     return;
-                  }
-                  if (modal.kind === "reauth") {
-                    const f = String(d.get("code") || "");
-                    const r = await api("/me/reauthenticate", "POST", {
-                      password: d.get("password"),
-                      ...(f
-                        ? { factor: { kind: d.get("factorKind"), code: f } }
-                        : {}),
-                      request: {
-                        operationId: modal.operationId,
-                        path: modal.path,
-                        query: {},
-                        body: modal.body,
-                      },
-                    });
-                    const result = await api(modal.url, "POST", modal.body, {
-                      "X-Action-Proof": r.proof,
-                    });
-                    setRows(await all("/agent-accesses"));
-                    if (result.token) {
-                      setSecret(result.token);
-                      setModal({
-                        kind: "secret",
-                        title: t("Dein CLI-Token", "Your CLI token"),
-                      });
-                      return;
-                    }
                   }
                   setModal(null);
                 })}
@@ -2378,7 +2366,7 @@ function App() {
                 {modal.kind === "moveMemory" && (
                   <label>
                     {t("Zielvault", "Target vault")}
-                    <select name="targetVaultId">
+                    <select autoComplete="off" name="targetVaultId">
                       {vaults
                         .filter((v) => v.id !== memory!.vaultId)
                         .map((v) => (
@@ -2399,7 +2387,7 @@ function App() {
                     </p>
                     <label>
                       {t("Zieltag", "Target tag")}
-                      <select name="targetTagId">
+                      <select autoComplete="off" name="targetTagId">
                         {tags
                           .filter((tag) => tag.id !== modal.tag.id)
                           .map((tag) => (
@@ -2419,7 +2407,7 @@ function App() {
                   <>
                     <label>
                       Vault
-                      <select name="vaultId">
+                      <select autoComplete="off" name="vaultId">
                         {vaults.map((v) => (
                           <option key={v.id} value={v.id}>
                             {v.name}
@@ -2429,7 +2417,7 @@ function App() {
                     </label>
                     <label>
                       {t("Rechte", "Permissions")}
-                      <select name="level">
+                      <select autoComplete="off" name="level">
                         <option value="read">{t("Lesen", "Read")}</option>
                         <option value="write">
                           {t("Lesen & Schreiben", "Read & write")}
@@ -2444,32 +2432,13 @@ function App() {
                     </label>
                   </>
                 )}
-                {modal.kind === "reauth" && (
-                  <>
-                    {field(
-                      t("Dein Passwort", "Your password"),
-                      "password",
-                      "password",
+                {modal.kind === "issueToken" && (
+                  <p>
+                    {t(
+                      "Neuen CLI-Token für diesen Zugang ausgeben?",
+                      "Issue a new CLI token for this access?",
                     )}
-                    {profile.totpEnabled && (
-                      <>
-                        <label>
-                          {t("Faktor", "Factor")}
-                          <select name="factorKind">
-                            <option value="totp">TOTP</option>
-                            <option value="recoveryCode">Recovery-Code</option>
-                          </select>
-                        </label>
-                        {field("Code", "code")}
-                      </>
-                    )}
-                    <p className="muted">
-                      {t(
-                        "Bestätigung gilt ausschließlich für diese konkrete Aktion.",
-                        "Confirmation applies only to this action.",
-                      )}
-                    </p>
-                  </>
+                  </p>
                 )}
                 {[
                   "deleteMemory",

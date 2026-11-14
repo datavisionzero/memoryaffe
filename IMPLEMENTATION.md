@@ -110,8 +110,8 @@ Ein normaler Passwort-Reset erhält aktivierte 2FA. Umfassende Wiederherstellung
 setzt Passwort und 2FA zurück und widerruft Sitzungen sowie Agentenzugangsdaten;
 der gesonderte Link ist einmalig und gilt eine Stunde. Der Containerweg für
 Admins funktioniert ohne SMTP und zweiten Admin. 2FA-Aktivierung verlangt
-Passwort und TOTP-Test; Abschalten/Ersetzen verlangt Passwort plus TOTP oder
-Wiederherstellungscode. Neue Wiederherstellungscodes entwerten alte.
+Passwort und TOTP-Test; Ersetzen verlangt Passwort plus TOTP oder
+Wiederherstellungscode. Abschalten und neue Recovery-Codes sind ohne erneute Anmeldung möglich. Neue Wiederherstellungscodes entwerten alte.
 
 Einladungen erlauben keine Änderung der gebundenen Adresse. E-Mail-Änderungen
 werden mit und ohne SMTP entsprechend dem Architekturvertrag geprüft.
@@ -119,7 +119,7 @@ Mehrere Admins sind möglich; auch konkurrierende Sperr-, Lösch- oder
 Herabstufungsversuche können nicht den letzten aktiven Admin entfernen.
 Eigene Kontolöschung und administrative Löschung anderer Konten entfernen
 Konto, Vaults, Historie und Zugänge endgültig ohne Kontopapierkorb.
-Kontolöschung, Rollenänderung und umfassende Wiederherstellung prüfen die
+Kontolöschung prüft die
 erneute Authentifizierung des Handelnden, einschließlich dessen aktivierter 2FA.
 Neue Konten erlauben Agenten keine Tag-Erstellung. Neue Agentenzugänge wählen
 keine Vaults automatisch; die angebotene Stufe ist Lesen/Suchen. Reduzierte

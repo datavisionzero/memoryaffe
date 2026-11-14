@@ -14,12 +14,12 @@ var password = Environment.GetEnvironmentVariable("MEMORYAFFE_TEST_ADMIN_PASSWOR
 var fixturesPath = Environment.GetEnvironmentVariable("MEMORYAFFE_TEST_CIMD_FILE") ?? throw new InvalidOperationException("Test-CIMD-Datei fehlt.");
 var allowedPath = Environment.GetEnvironmentVariable("MEMORYAFFE_TEST_ALLOWED_CLIENTS_FILE") ?? throw new InvalidOperationException("Testfreigaben fehlen.");
 const string clientId = "https://client.example.test/metadata.json", redirectUri = "https://client.example.test/callback";
-var browser = new Browser(baseUrl, password); await browser.Csrf(); var login = await browser.Json("POST", "/api/v1/auth/login", new { email, password }); Check(login.Data!["status"]!.GetValue<string>() == "authenticated", "Testkonto muss ohne 2FA angemeldet sein."); await browser.Csrf();
+var browser = new Browser(baseUrl); await browser.Csrf(); var login = await browser.Json("POST", "/api/v1/auth/login", new { email, password }); Check(login.Data!["status"]!.GetValue<string>() == "authenticated", "Testkonto muss ohne 2FA angemeldet sein."); await browser.Csrf();
 var discovery = await browser.Json("GET", "/.well-known/oauth-authorization-server"); Check(discovery.Data!["issuer"]!.GetValue<string>() == baseUrl && discovery.Data["registration_endpoint"] == null, "Discovery identities/capabilities");
 var vault = (await browser.Json("POST", "/api/v1/vaults", new { name = "Protocol " + Guid.NewGuid().ToString("N")[..8] })).Data!;
 var vaultId = vault["id"]!.GetValue<string>();
 var profile = (await browser.Json("GET", "/api/v1/me")).Data!;
-if (!profile["allowAgentTagCreation"]!.GetValue<bool>()) await browser.Proved("PATCH", "/api/v1/me", new { expectedRevision = profile["revision"]!.GetValue<string>(), allowAgentTagCreation = true }, "web_update_profile");
+if (!profile["allowAgentTagCreation"]!.GetValue<bool>()) await browser.Json("PATCH", "/api/v1/me", new { expectedRevision = profile["revision"]!.GetValue<string>(), allowAgentTagCreation = true });
 var goodFixtures = await File.ReadAllTextAsync(fixturesPath); var goodAllowed = await File.ReadAllTextAsync(allowedPath);
 try
 {
@@ -74,7 +74,7 @@ async Task<(string Code, string Verifier)> Grant(string scope = "memory:read mem
     var verifier = Convert.ToHexString(RandomNumberGenerator.GetBytes(32)).ToLowerInvariant(); var challenge = Convert.ToBase64String(SHA256.HashData(Encoding.ASCII.GetBytes(verifier))).TrimEnd('=').Replace('+', '-').Replace('/', '_');
     var start = await browser.Raw("GET", "/oauth/authorize?" + Query(new { response_type = "code", client_id = clientId, redirect_uri = redirectUri, resource = baseUrl + "/mcp", code_challenge_method = "S256", code_challenge = challenge, scope, state = "state/ü?&" })); Check((int)start.StatusCode == 302, "Authorization redirect");
     var id = start.Headers.Location!.Segments.Last(); var request = await browser.Json("GET", "/api/v1/oauth/requests/" + id); Check(request.Status == 200 && request.Data!["clientId"]!.GetValue<string>() == clientId, "Bound consent request");
-    var other = new Browser(baseUrl, password); await other.Csrf(); await other.Json("POST", "/api/v1/auth/login", new { email, password }); await other.Csrf(); Check((await other.Json("GET", "/api/v1/oauth/requests/" + id)).Status == 404, "Consent is browser bound");
+    var other = new Browser(baseUrl); await other.Csrf(); await other.Json("POST", "/api/v1/auth/login", new { email, password }); await other.Csrf(); Check((await other.Json("GET", "/api/v1/oauth/requests/" + id)).Status == 404, "Consent is browser bound");
     var decided = await browser.Json("POST", "/api/v1/oauth/requests/" + id + "/decision", new { decision = "approve", name = "SDK test", grants = new[] { new { vaultId, level = "delete" } }, scopes = scope.Split(' ') }); Check(decided.Status == 200, "Explicit consent");
     var callback = new Uri(decided.Data!["redirectUrl"]!.GetValue<string>()); var parameters = Microsoft.AspNetCore.WebUtilities.QueryHelpers.ParseQuery(callback.Query); Check(parameters["iss"] == baseUrl && parameters["state"] == "state/ü?&", "Callback issuer and state");
     return (parameters["code"].ToString(), verifier);
@@ -87,7 +87,7 @@ static void Error(Response r, string code) => Check(r.Status == 400 && r.Data?["
 static void Check(bool condition, string message) { if (!condition) throw new Exception(message); }
 static string Query(object value) => string.Join('&', J.Obj(value).Select(x => Uri.EscapeDataString(x.Key) + "=" + Uri.EscapeDataString(x.Value!.GetValue<string>())));
 record Response(int Status, JsonNode? Data);
-sealed class Browser(string baseUrl, string password)
+sealed class Browser(string baseUrl)
 {
     private readonly HttpClient http = new(new HttpClientHandler { CookieContainer = new CookieContainer(), AllowAutoRedirect = false });
     private string csrf = "";
@@ -95,5 +95,4 @@ sealed class Browser(string baseUrl, string password)
     public async Task<HttpResponseMessage> Raw(string method, string path, HttpContent? content = null) { var request = new HttpRequestMessage(new HttpMethod(method), baseUrl + path) { Content = content }; if (method != "GET" && path.StartsWith("/api", StringComparison.Ordinal)) request.Headers.Add("X-CSRF-Token", csrf); return await http.SendAsync(request); }
     public async Task<Response> Json(string method, string path, object? value = null, string? proof = null) { var request = new HttpRequestMessage(new HttpMethod(method), baseUrl + path); if (value != null) request.Content = new StringContent(JsonSerializer.Serialize(value, J.Options), Encoding.UTF8, "application/json"); if (method != "GET") request.Headers.Add("X-CSRF-Token", csrf); if (proof != null) request.Headers.Add("X-Action-Proof", proof); var response = await http.SendAsync(request); var text = await response.Content.ReadAsStringAsync(); return new((int)response.StatusCode, text.Length == 0 ? null : JsonNode.Parse(text)); }
     public async Task<Response> Form(string path, object value) { var content = new FormUrlEncodedContent(J.Obj(value).Select(x => KeyValuePair.Create(x.Key, x.Value!.GetValue<string>()))); var response = await Raw("POST", path, content); var text = await response.Content.ReadAsStringAsync(); return new((int)response.StatusCode, text.Length == 0 ? null : JsonNode.Parse(text)); }
-    public async Task<Response> Proved(string method, string path, object body, string operationId) { var proof = await Json("POST", "/api/v1/me/reauthenticate", new { password, request = new { operationId, path = new { }, query = new { }, body } }); return await Json(method, path, body, proof.Data!["proof"]!.GetValue<string>()); }
 }

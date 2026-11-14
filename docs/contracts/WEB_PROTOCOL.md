@@ -84,18 +84,17 @@ Reihenfolgeirrelevanz gilt wie bei Idempotenz; keine Speicherung des Passworts.
 Der tatsächliche Aufruf sendet den Nachweis im Header `X-Action-Proof`.
 Passwort/Faktor werden nicht an jeder Fachroute erneut übertragen.
 
-Bedingt nötig bei Agenten-PATCH nur für neue Vault-Rechte oder höhere Stufen,
-bei Profil-PATCH für false→true der Agenten-Tag-Erlaubnis, bei Admin-PATCH für
-Rollen-/E-Mail-Änderung und bei Einladung mit Adminrolle. Normale Rechteverringerung
-bleibt ohne Nachweis. Neue CLI-Zugänge starten ausdrücklich ausgewählt; ihre
-Erstellung und die getrennte Tokenausgabe werden bestätigt. OAuth-Zugänge
+Aktionsnachweise sind ausschließlich für eigene/administrative Kontolöschung
+und TOTP-Setup erforderlich. Passwortänderung prüft `currentPassword` direkt.
+Andere Verwaltungsaktionen laufen mit Sitzung und CSRF ohne erneutes Passwort.
+Neue CLI-Zugänge starten mit ausdrücklich ausgewählten Vaultrechten.
+OAuth-Zugänge
 entstehen ausschließlich im OAuth-Ablauf; CLI-Tokenausgabe für OAuth-Zugänge
 wird abgewiesen. Grant-Duplikate und fremde Vaults sind ungültig.
 
 Token-/Recovery-Code-Ausgabe ist nicht über allgemeine Idempotenz erneut im
 Klartext abrufbar. Bei verlorener Tokenantwort vorhandenes Credential anhand
-der Metadaten widerrufen und neu ausgeben; bei verlorenen Recovery-Codes nach
-erneuter Bestätigung neue erzeugen. Niemals Secrets in Request-/Response-Logs.
+der Metadaten widerrufen und neu ausgeben; bei verlorenen Recovery-Codes in der angemeldeten Sitzung neue erzeugen. Niemals Secrets in Request-/Response-Logs.
 TOTP-Setup gilt zehn Minuten; ein zweites Setup ersetzt die Vorbereitung,
 nicht die bestehende aktive Konfiguration. Aktivierung/Ersetzung verlangt
 Bestätigung des neuen Codes. Recovery-Codes mindestens 128 Bit Entropie, zehn

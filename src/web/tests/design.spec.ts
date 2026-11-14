@@ -4,10 +4,10 @@ async function fitsViewport(page: Page) {
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 }
 
-test("Anmeldung: Snow und Monokai wechseln auch mobile Primärfarben", async ({ page }, testInfo) => {
+test("Anmeldung: Light und Dark wechseln auch mobile Primärfarben", async ({ page }, testInfo) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/login");
-  for (const [theme, name] of [["light", "Snow – hell"], ["dark", "Monokai – dunkel"]]) {
+  for (const [theme, name] of [["light", "Light"], ["dark", "Dark"]]) {
     await page.getByRole("button", { name, exact: true }).click();
     await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
     await expect.poll(() => page.locator(".auth-card .primary").evaluate(button => {
@@ -54,7 +54,7 @@ for (const width of [390, 1440, 1920]) {
       await page.getByLabel("E-Mail-Adresse", { exact: true }).fill(process.env.E2E_EMAIL || "browser-test@example.test");
       await page.getByLabel("Passwort", { exact: true }).fill(process.env.E2E_PASSWORD || "Browser-Test-Password-2026!");
       await page.getByRole("button", { name: "Anmelden", exact: true }).click();
-      await expect(page.getByRole("heading", { name: "Was möchtest du wiederfinden?" })).toBeVisible();
+      await expect(page.getByRole("heading", { name: "Suche" })).toBeVisible();
       await page.locator(".top-right").getByRole("button", { name: "Profil", exact: true }).click();
       await page.getByLabel("Farbschema", { exact: true }).selectOption(theme);
       await expect(page.locator("html")).toHaveAttribute("data-theme", theme);

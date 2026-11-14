@@ -76,7 +76,7 @@ function route(method, suffix, operationId, input, output = ref('Ok'), options =
   const parameters = [...suffix.matchAll(/\{(\w+)\}/g)].map(([, name]) => ({ name, in: 'path', required: true, schema: name === 'revision' ? rev : id }));
   const inputSchema = typeof input === 'string' ? ref(input) : input;
   if (options.query) for (const [name, schema] of Object.entries(options.query)) parameters.push({ name, in: 'query', required: (options.requiredQuery ?? []).includes(name), schema });
-  if (options.proof) parameters.push({ name: 'X-Action-Proof', in: 'header', required: options.proof === true, schema: tokenOutput, description: 'Required for the sensitive action or rights expansion; see WEB_PROTOCOL.md.' });
+  if (options.proof) parameters.push({ name: 'X-Action-Proof', in: 'header', required: options.proof === true, schema: tokenOutput, description: 'Required before account deletion or TOTP setup; see WEB_PROTOCOL.md.' });
   if (options.retry) parameters.push({ name: 'Idempotency-Key', in: 'header', required: true, schema: { type: 'string', minLength: 1, maxLength: 128, pattern: '^[A-Za-z0-9_.:-]+$(?![\\s\\S])' } });
   const op = { operationId, parameters, security: options.public ? (method === 'get' ? [] : [{ csrf: [] }]) : (method === 'get' ? [{ webSession: [] }] : [{ webSession: [], csrf: [] }]),
     'x-account-scope': options.admin ? 'admin-metadata-only' : options.public ? 'anonymous-flow' : 'own-account',
@@ -94,13 +94,13 @@ route('post', '/auth/login', 'web_login', obj({ email, password: oldPassword, re
 route('post', '/auth/login/second-factor', 'web_login_factor', obj({ factor: ref('Factor') }), ref('Profile'), { public: true });
 route('post', '/auth/logout', 'web_logout', obj({}));
 route('get', '/me', 'web_get_profile', null, ref('Profile'));
-route('patch', '/me', 'web_update_profile', 'ProfilePatch', ref('Profile'), { proof: 'conditional' });
+route('patch', '/me', 'web_update_profile', 'ProfilePatch', ref('Profile'));
 route('delete', '/me', 'web_delete_account', null, ref('Ok'), { ...revisionQuery, proof: true });
 route('get', '/me/sessions', 'web_list_sessions', null, list(ref('Session')), { query: page });
 route('delete', '/me/sessions/{id}', 'web_revoke_session', null);
 route('post', '/me/sessions/revoke-others', 'web_revoke_other_sessions', obj({}));
 route('post', '/me/change-password', 'web_change_password', obj({ currentPassword: oldPassword, newPassword: password }));
-route('post', '/me/email-change', 'web_request_email_change', obj({ currentPassword: oldPassword, newEmail: email }));
+route('post', '/me/email-change', 'web_request_email_change', obj({ newEmail: email }));
 route('post', '/auth/email-change/confirm', 'web_confirm_email', obj({ token: secret }), ref('Ok'), { public: true });
 route('post', '/auth/invitations/redeem', 'web_redeem_invitation', obj({ token: secret, password }), ref('Profile'), { public: true, status: '201' });
 route('post', '/auth/password-reset/request', 'web_request_password_reset', obj({ email }), ref('Ok'), { public: true });
@@ -108,8 +108,8 @@ route('post', '/auth/password-reset/redeem', 'web_redeem_password_reset', obj({ 
 route('post', '/auth/account-recovery/redeem', 'web_redeem_recovery', obj({ token: secret, newPassword: password }), ref('Ok'), { public: true });
 route('post', '/me/totp/setup', 'web_setup_totp', obj({}), obj({ setupId: id, secret: tokenOutput, otpauthUri: { type: 'string', format: 'uri' }, expiresAt: time }), { proof: true });
 route('post', '/me/totp/confirm', 'web_confirm_totp', obj({ setupId: id, code: { type: 'string', pattern: '^[0-9]{6}$(?![\\s\\S])' } }), ref('RecoveryCodes'));
-route('post', '/me/totp/disable', 'web_disable_totp', obj({}), ref('Ok'), { proof: true });
-route('post', '/me/totp/recovery-codes', 'web_replace_recovery_codes', obj({}), ref('RecoveryCodes'), { proof: true });
+route('post', '/me/totp/disable', 'web_disable_totp', obj({}), ref('Ok'));
+route('post', '/me/totp/recovery-codes', 'web_replace_recovery_codes', obj({}), ref('RecoveryCodes'));
 route('get', '/vaults', 'web_list_vaults', null, list(ref('WebVault')), { query: page });
 route('get', '/vaults/{id}', 'web_get_vault', null, ref('WebVault'));
 route('post', '/vaults', 'web_create_vault', 'VaultCreate', ref('WebVault'), { status: '201' });
@@ -133,11 +133,11 @@ for (const kind of ['vaults', 'memories']) {
 }
 route('get', '/agent-accesses', 'web_list_agent_accesses', null, list(ref('AgentAccess')), { query: page });
 route('get', '/agent-accesses/{id}', 'web_get_agent_access', null, ref('AgentAccess'));
-route('post', '/agent-accesses', 'web_create_agent_access', 'AgentCreate', ref('AgentAccess'), { status: '201', proof: true });
-route('patch', '/agent-accesses/{id}', 'web_update_agent_access', 'AgentPatch', ref('AgentAccess'), { proof: 'conditional' });
+route('post', '/agent-accesses', 'web_create_agent_access', 'AgentCreate', ref('AgentAccess'), { status: '201' });
+route('patch', '/agent-accesses/{id}', 'web_update_agent_access', 'AgentPatch', ref('AgentAccess'));
 route('delete', '/agent-accesses/{id}', 'web_delete_agent_access', null, ref('Ok'), revisionQuery);
 route('get', '/agent-accesses/{id}/tokens', 'web_list_tokens', null, list(ref('Credential')), { query: page });
-route('post', '/agent-accesses/{id}/tokens', 'web_issue_token', 'TokenCreate', ref('TokenIssued'), { status: '201', proof: true });
+route('post', '/agent-accesses/{id}/tokens', 'web_issue_token', 'TokenCreate', ref('TokenIssued'), { status: '201' });
 route('delete', '/agent-accesses/{id}/tokens/{tokenId}', 'web_revoke_token', null, ref('Ok'), revisionQuery);
 route('get', '/vaults/{id}/export', 'web_export_vault', null, null, { zip: true });
 route('post', '/imports/validate', 'web_prepare_import', obj({ archive: { type: 'string', format: 'binary', description: 'ZIP, max 100 MiB compressed and 500 MiB expanded, 10000 records.' } }), ref('ImportPreparation'), { multipart: true, status: '201' });
@@ -145,12 +145,12 @@ route('get', '/imports/{id}', 'web_get_import', null, ref('ImportPreparation'));
 route('delete', '/imports/{id}', 'web_cancel_import', null);
 route('post', '/imports', 'web_commit_import', obj({ preparationId: id, targetName: text(100) }), ref('WebVault'), { status: '201', retry: true });
 route('get', '/admin/accounts', 'admin_list_accounts', null, list(ref('Account')), { query: page, admin: true });
-route('patch', '/admin/accounts/{id}', 'admin_update_account', 'AccountPatch', ref('Account'), { admin: true, proof: 'conditional' });
+route('patch', '/admin/accounts/{id}', 'admin_update_account', 'AccountPatch', ref('Account'), { admin: true });
 route('delete', '/admin/accounts/{id}', 'admin_delete_account', null, ref('Ok'), { ...revisionQuery, admin: true, proof: true });
 route('get', '/admin/invitations', 'admin_list_invitations', null, list(ref('Invitation')), { query: page, admin: true });
-route('post', '/admin/invitations', 'admin_invite', obj({ email, role: en('user', 'admin'), sendEmail: bool }, ['email', 'role']), obj({ invitation: ref('Invitation'), link: ref('LinkIssued') }), { admin: true, status: '201', proof: 'conditional' });
+route('post', '/admin/invitations', 'admin_invite', obj({ email, role: en('user', 'admin'), sendEmail: bool }, ['email', 'role']), obj({ invitation: ref('Invitation'), link: ref('LinkIssued') }), { admin: true, status: '201' });
 route('delete', '/admin/invitations/{id}', 'admin_revoke_invitation', null, ref('Ok'), { admin: true });
-for (const [suffix, operationId, proof] of [['password-reset', 'admin_issue_password_reset', false], ['account-recovery', 'admin_issue_recovery', true]]) route('post', `/admin/accounts/{id}/${suffix}`, operationId, obj({ expectedRevision: rev, sendEmail: bool }, ['expectedRevision']), ref('LinkIssued'), { admin: true, proof });
+for (const [suffix, operationId, proof] of [['password-reset', 'admin_issue_password_reset', false], ['account-recovery', 'admin_issue_recovery', false]]) route('post', `/admin/accounts/{id}/${suffix}`, operationId, obj({ expectedRevision: rev, sendEmail: bool }, ['expectedRevision']), ref('LinkIssued'), { admin: true, proof });
 route('get', '/admin/diagnostics', 'admin_diagnostics', null, obj({ version: str, databaseReady: bool, databaseBytes: int, temporaryBytes: int, uptimeSeconds: int }), { admin: true });
 route('get', '/oauth/requests/{id}', 'web_get_oauth_consent', null, obj({ id, clientName: str, clientId: { type: 'string', format: 'uri' }, resource: { type: 'string', format: 'uri' }, requestedScopes: arr(en('memory:read','memory:write','memory:delete')), expiresAt: time }));
 route('post', '/oauth/requests/{id}/decision', 'web_decide_oauth_consent', { oneOf: [obj({ decision: { const: 'deny' } }), obj({ decision: { const: 'approve' }, name: text(100), grants: { ...arr(ref('Grant')), minItems: 1 }, scopes: { ...arr(en('memory:read','memory:write','memory:delete')), minItems: 1, maxItems: 3, uniqueItems: true } })] }, obj({ redirectUrl: { type: 'string', format: 'uri', description: 'Server-validated callback with code/error, state if supplied, and iss.' } }));

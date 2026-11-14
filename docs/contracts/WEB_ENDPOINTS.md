@@ -27,7 +27,7 @@ dürfen keinen der folgenden nutzervorbehaltenen Anwendungsfälle aufrufen.
 | Einladung | POST `/auth/invitations/redeem` | Gebundene E-Mail; Einmalverbrauch; sieben Tage |
 | Passwort-Reset | POST `/auth/password-reset/request`, `/auth/password-reset/redeem` | Generische Anfrageantwort; Reset erhält TOTP, widerruft Sitzungen und Credentials |
 | Kontowiederherstellung | POST `/auth/account-recovery/redeem` | Gesondertes einmaliges Geheimnis; setzt Passwort und TOTP zurück |
-| TOTP | POST `/me/totp/setup`, `/me/totp/confirm`, `/me/totp/disable`, `/me/totp/recovery-codes` | Nur Profil; kein implizites Aktivieren bei Secret-Ausgabe; Reauthentifizierung |
+| TOTP | POST `/me/totp/setup`, `/me/totp/confirm`, `/me/totp/disable`, `/me/totp/recovery-codes` | Nur Profil; kein implizites Aktivieren bei Secret-Ausgabe; Reauthentifizierung nur vor Setup |
 | Vaults | POST `/vaults`, PATCH/DELETE `/vaults/{id}` | Eigener Eigentümer; Name, Suchsprache, Versionslimit; Löschung entfernt Grants |
 | Tags | PATCH/DELETE `/vaults/{vaultId}/tags/{id}`, POST `/vaults/{vaultId}/tags/{id}/merge` | Nutzer-only; transaktionale Versionierung betroffener Zuordnungen |
 | Verschieben | POST `/memories/{id}/move` | Ziel-Vault und erwartete Revision; gleicher Eigentümer, atomare Tag-Abbildung |
@@ -40,7 +40,7 @@ dürfen keinen der folgenden nutzervorbehaltenen Anwendungsfälle aufrufen.
 | Importvorbereitung | GET/DELETE `/imports/{id}` | Eigene Vorschau/Ergebnis beziehungsweise Abbruch; 30 Minuten, eine Vorbereitung pro Nutzer |
 | Admin-Konten | GET `/admin/accounts`, PATCH/DELETE `/admin/accounts/{id}` | Status/Rolle/E-Mail, keine fremden Inhaltsfelder, Schutz letzten aktiven Admins |
 | Admin-Einladungen | GET/POST `/admin/invitations`, DELETE `/admin/invitations/{id}` | Manueller Link, optional SMTP, Ablauf/Widerruf |
-| Admin-Wiederherstellung | POST `/admin/accounts/{id}/password-reset`, `/admin/accounts/{id}/account-recovery` | Zwei getrennte Prozesse, erneute Authentifizierung bei umfassender Wiederherstellung |
+| Admin-Wiederherstellung | POST `/admin/accounts/{id}/password-reset`, `/admin/accounts/{id}/account-recovery` | Zwei getrennte Prozesse, angemeldete Adminsitzung und CSRF |
 | Diagnose | GET `/admin/diagnostics` | Version/Bereitschaft/Speicher, keine fremden Inhalte oder Geheimnisse |
 | OAuth-Zustimmung | GET `/oauth/requests/{id}`, POST `/oauth/requests/{id}/decision` | Eigener browsergebundener Ablauf, ausdrückliche Vaultauswahl, geprüfte Rückleitung |
 
